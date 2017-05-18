@@ -1,0 +1,238 @@
+﻿@{
+    Layout = null;
+}
+
+@Styles.Render("~/Scripts/bootstrap/css/1", "~/Scripts/datatables/css/1", "~/Content/1", "~/Scripts/alertjs/themes/1", "~/Scripts/select2/css/1", "~/Scripts/iconpicker/css/1", "~/Scripts/fancyTree/skin-win7/1", "~/Scripts/fileUpload/1")
+@Scripts.Render("~/bundles/js")
+
+<script type="text/javascript">
+    $(function () {
+
+        var btnTable = $('#btnTable').custromTable({
+            ajax: {
+                url: "/Button/GetButtonList",
+                data: function (d) {
+                    d.ButtonName =$.trim($("#ButtonName").val())
+                    return JSON.stringify(d);
+                }
+            },
+            columns: [
+                { data: 'ButtonID', visible: false },
+                { data: 'ButtonOpID', title: "按钮ID" },
+                { data: 'ButtonName', title: "按钮名称" },
+                { data: 'ButtonOperation', title: '按钮操作名称' },
+                {
+                    data: 'ButtonMagic', title: '按钮图标', render: function (data, type, row, meta) {
+                        return '<span class="' + data + '" aria-hidden="true"></span>';
+                    }
+                },
+                { data: 'ButtonDescribe', title: '按钮描述' },
+                { data: 'CreateTime', title: "创建时间",width:100 }
+            ]
+        });
+
+        //查询按钮
+        $("#btnQuery").click(function () {
+             btnTable.ajax.reload();
+        })
+
+        //菜单弹出层
+        var openMenuLayer = function () {
+            mainLayer = parent.layer.open({
+                type: 1,
+                title: "新增按钮",
+                area: ['500px', '480px'],
+                closeBtn: 1,
+                shadeClose: false,
+                skin: 'layerStyle',
+                content: $("#btnLayer").html(),
+                btn: [dditConfig.btn.close, dditConfig.btn.comfrie],
+                yes: function (index, layero) {
+                    confrimBtn(index);
+                },
+                success: function (i, l) {
+                    parent.$("#btnForm").FromEvent(function () {
+
+                        $("[name='ButtonMagic']").iconPicker();
+
+                        jQuery.validator.addMethod("notChinese", function (value, element) {
+                            var chinese = /[\u4E00-\u9FA5]/i;
+                            return chinese.test(value) ? false : true
+                        }, "不允许带有中文");
+
+                        //验证表单
+                        $("#btnForm").validate({
+                            rules: {
+                                ButtonName: {
+                                    required: true
+                                },
+                                ButtonOpID: {
+                                    required: true,
+                                    notChinese: true
+                                },
+                                ButtonOperation: {
+                                    notChinese: true
+                                },
+                                ButtonMagic: {
+                                    required: true
+                                },
+                            },
+                            messages: {
+                                ButtonName: {
+                                    required: "必填"
+                                },
+                                ButtonOpID: {
+                                    required: "必填",
+                                    notChinese: "不允许带有中文"
+                                },
+                                ButtonOperation: {
+                                    notChinese: "不允许带有中文"
+                                },
+                                ButtonMagic: {
+                                    required: "必填"
+                                }
+                            },
+                            highlight: function (element) {
+                                $(element).closest('.form-group').addClass('has-error');
+                            },
+
+                            success: function (label) {
+                                label.closest('.form-group').removeClass('has-error');
+                                label.remove();
+                            }
+                        })
+                    });
+                }
+            });
+        };
+
+        var confrimBtn = function (index) {
+            var btnId = parent.$("#ButtonID").val();
+            var btnFrom=parent.$("#btnForm");
+            if (btnFrom.valid()) {
+                btnFrom.ajaxSubmit({
+                    success: function (data) {
+                        if (data.result) {
+                            parent.layer.close(index);
+                            btnTable.ajax.reload(null, btnId == "" ? true : false);          //刷新列表
+                            alertify.success("操作成功！");    //弹出消息日志
+                        } else {
+                            alertify.error(data.message);
+                        }
+                    }
+                });
+            }
+        }
+
+        //新增按钮
+        $("#btnCreate").click(function () {
+            openMenuLayer();
+        });
+
+        //编辑按钮
+        $("#btnEdit").click(function () {
+            var cc = btnTable.rows('.selected')
+            if (cc[0].length > 0) {
+                var model = cc.data();         // 得到操作的实体
+                openMenuLayer() // 弹出操作的模态视图
+                parent.layer.title("编辑按钮", parent.layer.index)
+                parent.$("#btnForm").setForm(model[0]);  //给表单赋值
+            } else {
+                alertify.log("请选择一条操作信息！");
+            }
+        });
+
+        //删除按钮
+        $("#btnDelete").click(function () {
+            var cc = btnTable.rows('.selected')
+            if (cc[0].length > 0) {
+                var model = cc.data();
+                parent.layer.confirm("确定要删除该信息吗！", dditConfig.hintLayer, function () {
+                    $.post("/Button/RemoveButton", { btnID: model[0].ButtonID }, function (data) {
+                        if (data.result) {
+                            cc.remove().draw(false);
+                            parent.layer.close(parent.layer.index);
+                            alertify.success("信息删除成功！");
+                        } else {
+                            alertify.error(data.message);
+                        }
+                    });
+                });
+
+            } else {
+                alertify.log("请选择一条操作信息！");
+            }
+        });
+
+    })
+
+</script>
+
+<div class="margin w100f xoverhide">
+    <div class="panel panel-default" style="margin-top: 10px;">
+        <ul class="list-group">
+            <li class="list-group-item">
+                <button type="button" class="btn btn-default" id="btnCreate" >
+                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增
+                </button>
+
+                <button type="button" class="btn btn-default" id="btnEdit">
+                    <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> 编辑
+                </button>
+
+                <button type="button" class="btn btn-default" id="btnDelete">
+                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> 删除
+                </button>
+            </li>
+            <li class="list-group-item">
+                <form class="form-inline" onsubmit="return false;">
+                    <div class="form-group">
+                        <label for="ButtonName">按钮名称</label>
+                        <input type="text" class="form-control" name="ButtonName" id="ButtonName" placeholder="按钮名称">
+                    </div>
+                    <button type="button" class="btn btn-info " id="btnQuery">
+                        <span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询
+                    </button>
+                </form>
+            </li>
+        </ul>
+    </div>
+
+    <table id="btnTable" class="table table-bordered table-striped w100f" cellspacing="0"></table>
+</div>
+
+<div class="displayn" id="btnLayer">
+    <form class="form-horizontal formPadding" id="btnForm" method="post" action="/Button/AddorEditButtonInfo">
+        <div class="form-group">
+            @Html.Hidden("ButtonID")
+            <label for="ButtonName" class="col-sm-2 control-label labsty">按钮名称<span style="color:red">*</span></label>
+            <div class="col-sm-10 pad-r20">
+                <input type="text" class="form-control" maxlength="15" name="ButtonName" placeholder="按钮元素的Value属性">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="ButtonOpID" class="col-sm-2 control-label labsty">按钮ID<span style="color:red">*</span></label>
+            <div class="col-sm-10 pad-r20">
+                <input type="text" class="form-control" maxlength="50" name="ButtonOpID" placeholder="按钮元素的ID属性">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="ButtonOperation" class="col-sm-2 control-label labsty">按钮操作&nbsp;&nbsp;</label>
+            <div class="col-sm-10 pad-r20">
+                <input type="text" class="form-control" maxlength="50" name="ButtonOperation" placeholder="已经作废的字段，不用填">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="ButtonMagic" class="col-sm-2 control-label labsty">按钮图标<span style="color:red">*</span></label>
+            <div class="col-sm-10 pad-r20">
+                <input type="text" class="form-control" name="ButtonMagic" placeholder="按钮的图标">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="ButtonDescribe" class="col-sm-2 control-label labsty">按钮描述&nbsp;&nbsp;</label>
+            <div class="col-sm-10 pad-r20">
+                <textarea name="ButtonDescribe" class="form-control" rows="6" maxlength="200"></textarea>
+            </div>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,440 @@
+﻿@{
+    Layout = null;
+}
+
+@using DDit.Core.Data.SystemEntity.Entity;
+@using DDitApplicationFrame.Common;
+
+@Styles.Render("~/Scripts/bootstrap/css/1", "~/Scripts/datatables/css/1", "~/Content/1", "~/Scripts/alertjs/themes/1", "~/Scripts/select2/css/1", "~/Scripts/iconpicker/css/1", "~/Scripts/fancyTree/skin-win7/1", "~/Scripts/fileUpload/1")
+@Scripts.Render("~/bundles/js")
+
+<script type="text/javascript">
+
+    $(function () {
+
+        var table = $('#roleTable').custromTable({
+            ajax: {
+                url: "/Role/GetRoleList",
+                data: function (d) {
+                    d.RoleName = $("#RoleName").val();
+                    return JSON.stringify(d);
+                }
+            },
+            columns: [
+                { data: 'RoleID', visible: false },
+                { data: 'RoleName', title: "角色名称" },
+                { data: 'RoleDescription', title: "角色描述" },
+                { data: 'CreateTime', title: "创建时间", width: 100 }
+            ]
+        });
+
+        //查询按钮
+        $("#roleQuery").click(function () {
+             table.ajax.reload();
+        })
+
+        //新增角色层
+        var openCreateRoleLayer = function () {
+            mainLayer = parent.layer.open({
+                type: 1,
+                title: "新增角色",
+                area: ['550px', '330px'],
+                closeBtn: 1,
+                shadeClose: false,
+                skin: 'layerStyle',
+                content: $("#creatRoleLayer").html(),
+                btn: [dditConfig.btn.close, dditConfig.btn.comfrie],
+                yes: function (index, layero) {
+                   confrimBtn(index);
+                },
+                success: function (i, l) {
+                  parent.$("#roleForm").FromEvent(function () {
+                    //验证表单
+                    $("#roleForm").validate({
+                        rules: {
+                            RoleName: {
+                                required: true,
+                                remote: {
+                                    url: "/Role/ValidRoleName",    //后台处理程序
+                                    type: "Post",                   //数据发送方式
+                                    dataType: "json",              //接受数据格式   
+                                    data: {                        //要传递的数据
+                                        RoleID: function () {
+                                            return $("#RoleID").val();
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        messages: {
+                            RoleName: {
+                                required: "必填",
+                                remote: "该角色名已存在！"
+                            }
+                        },
+                        highlight: function (element) {
+                            $(element).closest('.form-group').addClass('has-error');
+                        },
+                        success: function (label) {
+                            label.closest('.form-group').removeClass('has-error');
+                            label.remove();
+                        }
+                    })
+                });
+              }
+           });
+        }
+
+        //角色确认按钮
+        var confrimBtn = function (index) {
+            var roleId = parent.$("#RoleID").val();
+            var roleform = parent.$("#roleForm");
+            if (roleform.valid()) {
+                roleform.ajaxSubmit({
+                    success: function (data) {
+                        if (data.result) {
+                            parent.layer.close(index);
+                            table.ajax.reload(null, roleId == "" ? true : false);              //刷新列表
+                            alertify.success("操作成功！");    //弹出消息日志
+                        } else {
+                            alertify.error(data.message);
+                        }
+                    }
+                });
+            }
+        }
+
+        //分配角色权限层
+        var openDistouLayer = function () {
+            DistouLayer = parent.layer.open({
+                type: 1,
+                title: "分配权限",
+                area: ['600px', '580px'],
+                closeBtn: 1,
+                shadeClose: false,
+                skin: 'layerStyle',
+                content: $("#distouLayer").html(),
+                btn: [dditConfig.btn.close, dditConfig.btn.comfrie],
+                yes: function (index, layero) {
+                    distributeRoleBtn(index);
+                },
+                success: function (i, l) {
+                    parent.$("#distributeRole").FromEvent(function () {
+                         //菜单树初始化
+                         $("#menuTree").fancytree({
+                             checkbox: true,
+                             selectMode: 2,
+                             activate: function (event, data) {
+                                 var cc = data.node.data.btn;
+                                 if (cc != undefined && cc.length > 0) {
+                                     showBtn(data.node)
+                                 } else {
+                                     $("#btngroups").html("")
+                                 }
+                             },
+                             select: function (event, data) {
+                                 var obj = data.node;
+                                 if (obj.selected) { //是否选择
+                                     if (data.node.folder) {  //是否为父节点
+                                         if (obj.children != null && obj.children.length > 0) { //节点数大于O
+                                             $.each(obj.children, function (i, v) {
+                                                 v.setSelected();
+                                                 if (v.data.btn.length > 0) {
+                                                     var btnstr = "";
+                                                     $.each(v.data.btn, function (is, vs) {
+                                                         btnstr += vs.ButtonID + ","
+                                                     })
+                                                     $(v.li).attr("data-btnstr", btnstr);
+                                                 }
+                                             });
+                                         }
+                                     } else {
+                                         var btnstr = "";
+                                         $.each(obj.data.btn, function (is, vs) {
+                                             btnstr += vs.ButtonID + ","
+                                         })
+                                         $(obj.li).attr("data-btnstr", btnstr);
+        
+                                     }
+                                 } else {
+                                     if (data.node.folder) {
+                                         if (obj.children != null && obj.children.length > 0) { //节点数大于O
+                                             $.each(obj.children, function (i, v) {
+                                                 $(v.li).removeAttr("data-btnstr");
+                                                 v.setSelected(false);
+                                             })
+                                         }
+                                     } else {
+                                         $(obj.li).removeAttr("data-btnstr");
+                                     }
+                                 }
+                             }
+                         });
+
+                         $(document).on('click', '#btngroups button', function () {
+                             var tree = $("#menuTree").fancytree("getTree"),
+                                 activeNode = tree.getActiveNode();
+                             var btnid = $(this).attr("name")
+                             if ($(this).hasClass("right")) {
+                                 $(this).removeClass("right")
+                                 if (activeNode.selected) {
+                                     var bb = $(activeNode.li).data("btnstr")
+                                     var nn = bb.replace(btnid.toString() + ",", "");
+                                     $(activeNode.li).data("btnstr", nn);
+                                 }
+                             } else {
+                                 $(this).addClass("right")
+                                 if (activeNode.selected) {
+                                     var bb = $(activeNode.li).data("btnstr")
+                                     var nn = bb + btnid.toString() + ",";
+                                     $(activeNode.li).data("btnstr", nn);
+                                 }
+                             }
+                         })
+
+                         function showBtn(obj) {
+                             var group = $(obj.li).data("btnstr");
+                             var cc = obj.data.btn;
+                             var btngroup = "";
+                             console.log(cc);
+                             $.each(cc, function (i, v) {
+                                 var selClass = "";
+                                 if (group != undefined && group != "") {
+                                     var btnArry = group.split(',');
+                                     if (btnArry.indexOf(v.ButtonModel.ButtonID.toString()) >= 0) {
+                                         selClass = "right";
+                                     }
+                                 }
+                                 btngroup += "<div class='col-md-4 mbottom10'>";
+                                 btngroup += "<button type='button' class='btn btn-default " + selClass + "' name='" + v.ButtonModel.ButtonID + "'>"
+                                 btngroup += "<span class='" + v.ButtonModel.ButtonMagic + "' aria-hidden='true'></span>" + v.ButtonModel.ButtonName + "</button></div>"
+                             })
+                             $("#btngroups").html(btngroup)
+                         }
+                     });                             
+                }
+            });
+        }
+
+        //权限分配按钮
+        var distributeRoleBtn = function (index){
+            var rId = parent.$("#roleID").val();
+            var tree = parent.$("#menuTree").fancytree("getTree")
+            var selecedTree = tree.getSelectedNodes();
+            if (selecedTree.length > 0) {
+                var rbList = { RoleID: rId };
+                var menuArray = [];
+                var rbArray = [];
+                $.each(selecedTree, function (i, v) {
+                    var btnofmenu = $(v.li).data("btnstr")
+                    menuArray.push(v.data.id);
+                    if (btnofmenu != undefined && btnofmenu != "") {
+                        $.each(btnofmenu.split(","), function (si, sv) {
+                            if (sv != "") 
+                                rbArray.push({ RoleID: rId, MenuID: v.data.id, ButtonID: sv });
+                        });
+                    }
+                });
+                rbList["menuId"] = menuArray;
+                rbList["modelList"] = rbArray;
+                $.ajaxSetup({ global: false, contentType: "application/json"});
+                $.post("/Role/DistributionMenuAndButton", JSON.stringify(rbList), function (data) {
+                    if (data.result) {
+                        parent.layer.close(index);
+                        alertify.log("角色权限分配成功！");
+                    }
+                })
+
+            } else {
+                alertify.log("请选择要分配的菜单和按钮！");
+            }
+        }
+
+        //新增角色按钮
+        $("#roleCreate").click(function () {
+            openCreateRoleLayer();
+        });
+
+        //编辑按钮操作
+        $("#roleEdit").click(function () {
+            var cc = table.rows('.selected')
+            if (cc[0].length > 0) {
+                var model = cc.data();         // 得到操作的实体
+                openCreateRoleLayer();
+                parent.layer.title("编辑角色", mainLayer)
+                parent.$("#roleForm").setForm(model[0]);  //给表单赋值
+
+            } else {
+                alertify.log("请选择一条操作信息！");
+            }
+        });
+
+        //删除按钮操作
+        $("#roleDelete").click(function () {
+            var cc = table.rows('.selected')
+            if (cc[0].length > 0) {
+                var model = cc.data();
+                parent.layer.confirm("确定要删除该信息吗！", dditConfig.hintLayer, function () {
+                    $.post("/Role/RemoveRole", { roleID: model[0].RoleID }, function (data) {
+                        if (data.result) {
+                            cc.remove().draw(false);
+                            parent.layer.close(parent.layer.index);
+                            alertify.success(data.message);
+                        } else {
+                            alertify.error(data.message);
+                        }
+                    });
+                });
+            } else {
+                alertify.log("请选择一条操作信息！");
+            }
+        });
+
+        //分配权限按钮
+        $("#roleAuthority").click(function () {
+            var cc = table.rows('.selected')
+            if (cc[0].length > 0) {
+                var model = cc.data();
+                openDistouLayer();
+                parent.$("#selecedMenuName").text(model[0].RoleName);
+                parent.$("#roleID").val(model[0].RoleID);
+                var menuList = model[0].MenuList;
+                
+                var menuIDarray = [];
+                $.each(menuList, function (i, v) {
+                    menuIDarray.push(v.MenuID);
+                })
+
+                var tree = parent.$("#menuTree").fancytree("getTree");
+
+                tree.visit(function (node) {
+                    if ($.inArray(node.data.id, menuIDarray) > -1) {
+                        node.setSelected();
+                    }
+                })
+                
+                $.each(tree.getSelectedNodes(), function (i, v) {
+                    if ($.inArray(v.data.id, menuIDarray) == -1) {
+                        v.setSelected(false);
+                    }
+                })
+                
+            } else {
+                alertify.log("请选择一条操作信息！");
+            }
+        })
+
+    })
+
+
+</script>
+
+<div class="margin w100f xoverhide">
+    <div class="panel panel-default" style="margin-top: 10px">
+        <ul class="list-group">
+            <li class="list-group-item">
+                <button type="button" class="btn btn-default" id="roleCreate">
+                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增
+                </button>
+
+                <button type="button" class="btn btn-default" id="roleEdit">
+                    <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> 编辑
+                </button>
+                <button type="button" class="btn btn-default" id="roleDelete">
+                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> 删除
+                </button>
+                <button type='button' class='btn btn-default' id="roleAuthority">
+                    <span class='glyphicon glyphicon-tower' aria-hidden='true'></span>分配权限
+                </button>
+            </li>
+            <li class="list-group-item">
+                <form class="form-inline" onsubmit="return false;">
+                    <div class="form-group">
+                        <label for="RoleName">角色名称</label>
+                        <input type="text" class="form-control" name="RoleName" id="RoleName" placeholder="角色名称">
+                    </div>
+                    <button type="button" class="btn btn-info " id="roleQuery">
+                        <span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询
+                    </button>
+                </form>
+            </li>
+        </ul>
+    </div>
+
+    <table id="roleTable" class="table table-bordered table-striped w100f" cellspacing="0"></table>
+
+</div>
+
+<div id="creatRoleLayer" class="displayn">
+    <form class="form-horizontal formPadding" id="roleForm" method="post" action="/Role/AddOrEditRoleInfo">
+        <div class="form-group">
+            @Html.Hidden("RoleID")
+            <label for="Name" class="col-sm-2 control-label labsty">角色名称<span style="color:red">*</span></label>
+            <div class="col-sm-10 pad-r20">
+                <input type="text" class="form-control" maxlength="15" name="RoleName" id="Name" placeholder="操作员">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="RoleDescription" class="col-sm-2 control-label labsty">角色描述&nbsp;&nbsp;</label>
+            <div class="col-sm-10 pad-r20">
+                <textarea name="RoleDescription" id="Remark" class="form-control" rows="6" maxlength="200"></textarea>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div id="distouLayer" class="displayn">
+    <form id="distributeRole"></form>
+    <div class="alert alert-success m0" role="alert">
+        角色：<span id="selecedMenuName"></span>
+        @Html.Hidden("roleID")
+    </div>
+    <div class="container-fluid h400">
+        <div class="row fh100">
+            <div class="col-md-4 fh100 boright over-auto">
+                <div id="menuTree">
+                    <ul>
+                        @foreach (var item in ViewBag.MenuList as List<Menu>)
+                        {
+                            <li data-id="@item.MenuID" class="folder expanded children">
+                                @item.MenuName
+                                @{
+                            if (item.Childs.Count > 0)
+                            {
+                                <ul>
+                                    @foreach (var itemchild in item.Childs)
+                                    {
+                                        <li data-id="@itemchild.MenuID" data-btn="@(BaseController.SerializeObject(itemchild.mbList))">
+                                            @itemchild.MenuName
+                                            @{
+                                        if (itemchild.Childs != null && itemchild.Childs.Count > 0)
+                                        {
+                                            <ul>
+                                                @foreach (var itemchilds in itemchild.Childs)
+                                                {
+                                                    <li data-id="@itemchilds.MenuID">@itemchilds.MenuName</li>
+                                                }
+                                            </ul>
+                                        }
+                                            }
+                                        </li>
+                                    }
+                                </ul>
+                            }
+                                }
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="container-fluid mtop30">
+                    <div class="row" id="btngroups">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

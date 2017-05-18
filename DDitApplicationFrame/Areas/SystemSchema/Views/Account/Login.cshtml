@@ -1,0 +1,90 @@
+﻿@{
+    ViewBag.Title = "Login";
+    Layout = "~/Views/Shared/LogLayout.cshtml";
+}
+
+
+@section scripts{  
+  <script type="text/javascript">
+      $(function () {
+
+          $(".user,.mima").keypress(function (e) {
+              if (e.keyCode == 13) {
+                  $("#login").trigger("click");
+              }
+          })
+
+          $("#login").click(function () {
+              var UserName =$.trim($(".user").val())
+              if (UserName == "") {
+                  $(".form-message").css({ "visibility": "visible" });
+                  $(".tag").text("请输入用户名！");
+                  $(".user").focus();
+                  return;
+              }
+              var Password = $.trim($(".mima").val());
+              if (Password == "") {
+                  $(".form-message").css({ "visibility": "visible" });
+                  $(".tag").text("请输入密码！");
+                  $(".mima").focus();
+                  return;
+              }
+
+              $(".tag").hide();
+              $(".loading").show();
+              
+              $.post("/Account/Login", { UserName: UserName, UserPassword: Password }, function (data) {
+                 
+                  if (data.result) {
+                      var taskurl = $("#taskurl").val();
+                      if (taskurl == "" || taskurl == "/") {
+                          window.location.href = "/Home/Index";
+                      } else {
+                          window.location.href = taskurl;
+                      }
+                  } else {
+                      $(".loading").hide();
+                    //  $(".form-message").css({ "visibility": "visible" });
+                      $(".tag").text(data.message).show();
+                  }
+              });
+          });
+      });
+      
+  </script>
+}
+
+@Html.Hidden("taskurl",ViewBag.TaskUrl as string);
+<div class="logo">
+    <img src="../Images/DDitlogo.png" class="img" />
+</div>
+
+<div class="contain">
+    <div class="Loginform">
+        <div class="form-message">
+            <div class="loading">
+                <img src="../Images/loginloading.gif" />&nbsp;&nbsp;&nbsp;登陆中......
+            </div>
+            <div class="tag">输入密码不正确</div>
+        </div>
+        <div class="form-account">
+            <input class="user" type="text" placeholder="请输入邮箱/手机号" />
+        </div>
+        <div class="form-password">
+            <input class="mima" type="password" placeholder="请输入6位数字密码" />
+        </div>
+        <div>
+            <button type="submit" id="login">登　录</button>
+        </div>
+    </div>
+</div>
+
+<div class="title">
+   <p>适用浏览器：IE8以上、360、FireFox、Chrome、Safari、Opera、傲游、搜狗、世界之窗. </p>
+</div>
+
+<div class="copyright">
+    ©2012 - 2016 All Rights Reserved By 大连龙图信息技术股份有限公司
+    <br />
+    投诉邮箱：alarm@taxrefund.com.cn 
+</div>

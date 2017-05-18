@@ -1,0 +1,423 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = null;
+}
+@using DDit.Core.Data.SystemEntity.Entity;
+@using DDitApplicationFrame.Common;
+
+@Styles.Render("~/Scripts/bootstrap/css/1", "~/Scripts/datatables/css/1", "~/Content/1", "~/Scripts/alertjs/themes/1", "~/Scripts/select2/css/1", "~/Scripts/iconpicker/css/1", "~/Scripts/fancyTree/skin-win7/1", "~/Scripts/fileUpload/1")
+@Scripts.Render("~/bundles/js")
+
+<script type="text/javascript">
+    $(function () {
+
+        //初始化查询部门
+        $("#DepartmentID").select2({
+            minimumResultsForSearch: -1,
+            tags: "true",
+            placeholder: "select...",
+            allowClear: true,
+        }).val(null).trigger("change");
+
+        //初始化表格配置
+        var table = $('#userTable').custromTable({
+            ajax: {
+                url: "/User/GetUserList",
+                data: function (d) {
+                    d.UserName = $("#UserName").val();
+                    d.UserReallyname = $("#UserReallyname").val();
+                    d.DepartmentID = $("#DepartmentID").val();
+                    return JSON.stringify(d);
+                }
+            },
+            columns: [
+                { data: 'UserID', visible: false },
+                { data: 'UserName',title:"用户名" },
+                { data: 'UserReallyname',title:"昵称" },
+                {
+                    data: 'DepartmentID', title: "部门", render: function (data, type, row, meta) {
+                        var result="";
+                        var cc = $("#json").val();
+                        var bmobj = eval(cc);
+                        $.each(bmobj, function (i, v) {
+                            if (v.ID == data) {
+                                result = v.DicValue;
+                                return;
+                            }
+                        })
+                        return result;
+                    }
+                },
+                {
+                    data: 'IsEnable', title: "是否可用", render: function (data, type, row, meta) {
+                        return data ? "可用" : "不可用";
+                    }
+                },
+                {
+                    data: 'CreateTime', title: "创建时间"
+                }
+            ],
+            error: function () {
+
+            }
+        });
+
+        //弹出用户信息层
+        var openCreateUserLayer = function () {
+            mainLayer=parent.layer.open({
+                type: 1,
+                title: "新增用户",
+                area: ['550px', '460px'],
+                closeBtn: 1,
+                shadeClose: false,
+                skin: 'layerStyle',
+                content: $("#userLayer").html(),
+                btn: [dditConfig.btn.close, dditConfig.btn.comfrie],
+                yes: function (index, layero) {
+                    confrimBtn(index);
+                },
+                success: function (i, l) {
+                    parent.$("#Userform").FromEvent(function () {
+                        //信息初始化
+                        $("#userPortrait").fileinput({
+                            language: 'zh',
+                            showUpload: false,
+                            maxFileCount: 1,
+                            allowedFileExtensions: ['jpg', 'png', 'gif']
+                        });
+
+                        //部门初始化
+                        $("#Department").select2({
+                            minimumResultsForSearch: -1,
+                            tags: "true",
+                            placeholder: "选择部门",
+                            allowClear: true,
+                        }).val(null).trigger("change");
+
+                        //验证表单
+                        $("#Userform").validate({
+                            rules: {
+                                UserName: {
+                                    required: true,
+                                    remote: {
+                                        url: "/User/ValidUserName",     //后台处理程序
+                                        type: "get",                   //数据发送方式
+                                        dataType: "json",              //接受数据格式   
+                                        data: {                        //要传递的数据
+                                            UserID: function () {
+                                                return $("#UserID").val();
+                                            }
+                                        }
+                                    }
+                                },
+                                UserReallyname: {
+                                    required: true
+                                },
+                                UserPassword: {
+                                    required: true,
+                                    rangelength: [3, 10]
+                                },
+                                sPassword: {
+                                    equalTo: "#Password"
+                                },
+                                DepartmentID: {
+                                    required: true
+                                }
+                            },
+                            messages: {
+                                UserName: {
+                                    required: "必填",
+                                    remote: "该用户名已存在！"
+                                },
+                                UserReallyname: {
+                                    required: "必填"
+                                },
+                                UserPassword: {
+                                    required: "不能为空",
+                                    rangelength: "密码应该在3-10位数之间！"
+                                },
+                                sPassword: {
+                                    equalTo: "两次密码输入不一致！"
+                                },
+                                DepartmentID: {
+                                    required: "不能为空"
+                                }
+                            },
+                            highlight: function (element) {
+                                $(element).closest('.form-group').addClass('has-error');
+                            },
+                            success: function (label) {
+                                label.closest('.form-group').removeClass('has-error');
+                                label.remove();
+                            }
+                        })
+                    })
+                }
+            });
+        }
+
+        //弹出分配权限层
+        var openDistriRoleLayer = function () {
+           distriRoleLayer = parent.layer.open({
+               type: 1,
+               title: "分配用户权限",
+               area: ['400px', '400px'],
+               closeBtn: 1,
+               shadeClose: false,
+               skin: 'layerStyle',
+               content: $("#disturRoleLayer").html(),
+               btn: [dditConfig.btn.close, dditConfig.btn.comfrie],
+               yes: function (index, layero) {
+                   distouRole(index);
+               },
+               success: function (i, l) {
+                  parent.$("#castform").FromEvent(function () {
+                      $("#roleitme a").click(function (e) {
+                            var checkbox = $(this).find(":checkbox");
+                            checkbox.trigger("click");
+                      });
+                  })
+               }
+           });
+       }
+
+        //分配角色按钮
+        $("#userdistributionRole").on('click', function () {
+            var cc = table.rows('.selected')
+            if (cc[0].length > 0) {
+                var model = cc.data();
+                $("#layerName").html(model[0].UserName);
+                $("#castUserID").val(model[0].UserID);
+                var cc = $("#roleitme").find("[type='checkbox']")
+                cc.removeAttr("checked");
+                if (model[0].RoleList.length > 0) {
+                    $.each(model[0].RoleList, function (i, v) {
+                        $.each(cc, function (ei, ev) {
+                            if ($(ev).attr("name") == v.RoleID) $(ev).attr("checked", 'true');
+                        });
+                    })
+                }
+                openDistriRoleLayer();
+            } else {
+                alertify.log("请选择一条要操作的信息！");
+            }
+       });
+
+        //分配角色事件
+        var distouRole = function (index) {
+            var cc = parent.$("#roleitme").find("[type='checkbox']:checked");
+            var userid = parent.$("#castUserID").val();
+            var roleIDlist = {};
+            $.each(cc, function (i, v) {
+                roleIDlist[i] = $(v).attr("name")
+            })
+            $.post("/User/DistributionRole", { UserId: userid, RoleIDlist: roleIDlist }, function (data) {
+                if (data.result) {
+                    parent.layer.close(index);
+                    alertify.success("分配角色成功！");
+                    table.ajax.reload(null, true);
+                } else {
+                    alertify.error(data.message);
+                }
+            });
+        };
+
+        //查询按钮
+        $("#userQuery").click(function () {
+            table.ajax.reload();
+        })
+       
+        //新增或修改确认按钮
+        var confrimBtn = function (index) {
+           var userid = parent.$("#UserID").val();
+           var userForm = parent.$("#Userform");
+           if (userForm.valid()) {
+               var loading = parent.layer.load(2);
+               userForm.ajaxSubmit({
+                   dataType: "json",
+                   success: function (data) {
+                       parent.layer.close(loading);
+                       if (data.result) {
+                           parent.layer.close(index); //隐藏弹出
+                           table.ajax.reload(null, userid == "" ? true : false);
+                           alertify.success("操作成功！"); //弹出消息日志
+                       } else {
+                           alertify.error(data.message);
+                       }
+                   },
+                   error:function(data){
+                       parent.layer.close(loading);
+                       var obj = eval('(' + data.responseText + ')');
+                       alertify.error(obj.message);
+                   }
+               });
+           }
+        }
+
+        //新增按钮操作
+        $("#userCreate").click(function () {
+            openCreateUserLayer();
+        });
+
+        //编辑按钮操作
+        $("#userEdit").click(function () {
+            var cc = table.rows('.selected')
+            if (cc[0].length > 0) {
+                var model = cc.data();         // 得到操作的实体
+                openCreateUserLayer();
+                parent.$("#Userform").setForm(model[0]);  //给表单赋值
+                parent.$("#sPassword").val(model[0].UserPassword);
+                parent.$("#Name,#Password,#sPassword").attr("readonly", "readonly");
+                parent.$("#Department").val(model[0].DepartmentID).trigger("change");
+                parent.layer.title("编辑用户", mainLayer)
+                var imgurl = "/User/GetPortrait?imgName=" + model[0].HeadPortrait;
+                if (model[0].HeadPortrait != null&&model[0].HeadPortrait !=="") {
+                    parent.$('#userPortrait').fileinput('refresh', {
+                        initialPreview: [
+                            "<img src='" + imgurl + "' class='file-preview-image' alt='头像图片' title='头像图片'>",
+                        ]
+                    });
+                }
+            
+            } else {
+                alertify.log("请选择一条操作信息！");
+            }
+        });
+
+        //禁用/解除禁用 按钮操作
+        $("#userDisabled").click(function () {
+            var cc = table.rows('.selected')
+            if (cc[0].length > 0) {
+                var model = cc.data();
+                var isenable=model[0].IsEnable?"禁用":"解除禁用";
+                parent.layer.confirm("确定要" + isenable + "该信息吗！", dditConfig.hintLayer, function () {
+                    $.post("/User/DisenableUser", { UserID: model[0].UserID }, function (data) {
+                            if (data.result) {
+                                table.ajax.reload(null, false);
+                                parent.layer.close(parent.layer.index);
+                                alertify.success("信息操作成功！");
+                            }
+                    }); 
+                });
+            } else {
+                alertify.log("请选择一条操作信息！");  
+            }
+        });
+
+    })
+
+</script>
+
+
+<div class="margin w100f xoverhide">
+    @Html.Hidden("json", (ViewBag.jsonbumen) as string)
+    <div class="panel panel-default" style="margin-top: 10px">
+         <ul class="list-group">
+           @Html.Action("CreateButtonByMuen", "Button", new { menuId =4, mark = "user" })
+            <li class="list-group-item">
+                <form class="form-inline">
+                    <div class="form-group">
+                        <label for="UserName">用户名</label>
+                        <input type="text" class="form-control" name="UserName" id="UserName" placeholder="admin">
+                    </div>
+                    <div class="form-group mleft10">
+                        <label for="UserReallyname">昵称</label>
+                        <input type="text" class="form-control" name="UserReallyname" id="UserReallyname" placeholder="nickName">
+                    </div>
+                    <div class="form-group mleft10">
+                        <label for="DepartmentID">部门</label>
+                        <select name="DepartmentID" id="DepartmentID" class="form-control" style="width:150px">
+                            @foreach (var item in ViewBag.bumen as List<Dictionary>)
+                            {
+                                 <option value="@item.ID">@item.DicValue</option>
+                            }
+                        </select>
+                    </div>
+                    <button type="button" class="btn btn-info " id="userQuery">
+                        <span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询
+                    </button>
+                </form>
+            </li>
+        </ul>
+    </div>
+
+    <table id="userTable" class="table table-bordered table-striped w100f" cellspacing="0"></table>
+</div>
+
+<div id="userLayer" class="displayn">
+    <form class="form-horizontal formPadding" id="Userform" method="post" action="/User/AddorEditUserInfo">
+        @Html.Hidden("UserID")
+        <div class="form-group">
+            <label for="Name" class="col-sm-2 control-label labsty">用户名<span style="color:red">*</span></label>
+            <div class="col-sm-6">
+                <input type="text" class="form-control" maxlength="15" name="UserName" id="Name" placeholder="用户名">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="Password" class="col-sm-2 control-label labsty">密码<span style="color:red">*</span></label>
+            <div class="col-sm-6">
+                <input type="password" class="form-control" name="UserPassword" maxlength="10" id="Password" placeholder="密码">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="sPassword" class="col-sm-2 control-label labsty">确认密码<span style="color:red">*</span></label>
+            <div class="col-sm-6">
+                <input type="password" class="form-control" name="sPassword" maxlength="10" id="sPassword" placeholder="确认密码">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="UserReallyname" class="col-sm-2 control-label labsty">昵称<span style="color:red">*</span></label>
+            <div class="col-sm-6">
+                <input type="text" class="form-control" name="UserReallyname" maxlength="10" id="UserReallyname" placeholder="昵称">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="Department" class="col-sm-2 control-label labsty">部门<span style="color:red">*</span></label>
+            <div class="col-sm-6">
+                <select name="DepartmentID" id="Department" class="form-control" style="width:265px">
+                    @foreach (var item in ViewBag.bumen as List<Dictionary>)
+                    {
+                        <option value="@item.ID">@item.DicValue</option>
+                    }
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="Remark" class="col-sm-2 control-label labsty">备注&nbsp;&nbsp;</label>
+            <div class="col-sm-10 pad-r20">
+                <input type="text" class="form-control" name="Remark" maxlength="200" id="Remark">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="HeadPortrait" class="col-sm-2 control-label labsty">头像&nbsp;&nbsp;</label>
+            <div class="col-sm-10 pad-r20">
+                <input id="userPortrait" name="Portrait" type="file" class="file-loading">
+            </div>
+        </div>
+    </form>
+</div>
+
+<div id="disturRoleLayer" class="displayn">
+    <form id="castform">
+        <div class="divName">
+            <img src="~/Images/userN1.png" /> <span id="layerName"></span>
+        </div>
+        <div>
+            <div class="list-group" id="roleitme">
+                @Html.Hidden("castUserID")
+                @{
+                    foreach (var item in ViewBag.role as List<Role>)
+                    {
+                        <a href="javascript:;" class="list-group-item" style="padding:0 15px">
+                            <div class="checkbox" >
+                                <label>
+                                    <input type="checkbox" name="@item.RoleID"> @item.RoleName
+                                </label>
+                            </div>
+                        </a>
+                    }
+               }
+            </div>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,267 @@
+﻿@{
+    Layout = null;
+}
+@model DDitApplicationFrame.Common.ErrorMessage
+<!DOCTYPE html>
+<html>
+<head>
+    @if (Model.Type != "接口")
+    {
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="renderer" content="webkit">
+        <title>系统内部服务器错误(500)</title>
+        <style>
+            html,
+            body {
+                height: 100%;
+                width: 100%;
+                overflow: auto;
+                background-color: white;
+                padding: 0;
+                margin: 0;
+            }
+        </style>
+    }
+    <style>
+        .center {
+            width: 640px;
+            padding: 0px;
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: 10px;
+        }
+
+        .center_link {
+            text-align: center;
+            width: 100%;
+        }
+
+        .center a {
+            display: inline-block;
+            text-decoration: none;
+            padding: 0 10px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .tbl_exception {
+            border-collapse: collapse;
+            border-spacing: 0;
+            border-left: 1px solid #888;
+            border-top: 1px solid #888;
+            margin: 10px auto;
+            table-layout: fixed;
+            width: 95%;
+            background-color: white;
+            color: black !important;
+            font-size: 14px !important;
+            font-family: '宋体',sans-serif,monospace,monospace !important;
+        }
+
+            .tbl_exception td {
+                border-right: 1px solid #888;
+                border-bottom: 1px solid #888;
+                padding: 5px 15px;
+                word-wrap: break-word;
+            }
+
+            .tbl_exception button {
+                color: black !important;
+                font-size: 12px !important;
+                font-family: '宋体',sans-serif,monospace,monospace !important;
+            }
+
+        .td-remark {
+            background-color: #FFFFCF;
+            font-weight: bold;
+        }
+
+        .td-title {
+            background-color: #E6E6FA;
+            text-align: center;
+        }
+
+        .td-code {
+            white-space: pre;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <div class="center">
+        <img id="img_error" src="../../Images/500.png" height="218" width="640">
+        <div class="center_link">
+        <a href="/Home">返回首页</a>
+        <a href="javascript:void(0)" id="link_expand">
+            @if (@Model.ShowException)
+            {
+                string hidden = "隐藏详细信息"; @hidden
+            }
+            else
+            {
+                string hidden = "显示详细信息"; @hidden
+            }
+        </a>
+    </div>
+</div>
+
+<table id="tbl_exception" class="tbl_exception @if (!@Model.ShowException) { string hidden = "hidden"; @hidden } ">
+    <colgroup>
+        <col style="width:120px;" />
+        <col />
+    </colgroup>
+    <tr>
+        <td colspan="2" class="td-remark">
+            异常相关信息
+            @*<button style="float:right;font-weight:normal;" id="btn_screen">截图报告管理员</button>*@
+        </td>
+    </tr>
+    <tr>
+        <td class="td-title">请求路径</td>
+        <td>@Model.Path</td>
+    </tr>
+    <tr>
+        <td class="td-title">请求类型</td>
+        <td>@Model.Type</td>
+    </tr>
+    <tr>
+        <td class="td-title">错误类型</td>
+        <td>@Model.MsgType</td>
+    </tr>
+    <tr>
+        <td class="td-title">消息内容</td>
+        <td>@Model.Message</td>
+    </tr>
+    <tr>
+        <td class="td-title">异常源</td>
+        <td class="td-code">@Model.Source</td>
+    </tr>
+    <tr>
+        <td class="td-title">异常发生方法</td>
+        <td>@Model.Method</td>
+    </tr>
+    @if (!string.IsNullOrEmpty(@Model.ActionArguments))
+    {
+        <tr>
+            <td class="td-title">请求参数</td>
+            <td>@Model.ActionArguments</td>
+        </tr>
+    }
+    <tr>
+        <td class="td-title">HttpMethod</td>
+        <td>@Model.HttpMethod</td>
+    </tr>
+    <tr>
+        <td class="td-title">UserAgent</td>
+        <td>@Model.UserAgent</td>
+    </tr>
+    <tr>
+        <td class="td-title">异常堆栈</td>
+        <td class="td-code">@Model.StackTrace</td>
+    </tr>
+    <tr>
+        <td class="td-title">异常时间</td>
+        <td class="td-code">@Model.Time</td>
+    </tr>
+    <tr>
+        <td colspan="2" class="td-remark">服务器相关信息</td>
+    </tr>
+    <tr>
+        <td class="td-title">服务器IP</td>
+        <td>@Model.IP</td>
+    </tr>
+    <tr>
+        <td class="td-title">操作系统</td>
+        <td>@Model.OSVersion</td>
+    </tr>
+    <tr>
+        <td class="td-title">操作系统位数</td>
+        <td>@Model.OSBit</td>
+    </tr>
+    <tr>
+        <td class="td-title">NET版本</td>
+        <td>@Model.DotNetVersion</td>
+    </tr>
+    <tr>
+        <td class="td-title">IIS版本</td>
+        <td>@Model.IISVersion</td>
+    </tr>
+    <tr>
+        <td class="td-title">程序池位数</td>
+        <td>@Model.DotNetBit</td>
+    </tr>
+    <tr>
+        <td class="td-title">CPU个数</td>
+        <td>@Model.CPUCount</td>
+    </tr>
+    <tr>
+        <td class="td-title">CPU类型</td>
+        <td>@Model.CPUType</td>
+    </tr>
+</table>
+<script src="~/Scripts/jquery-1.8.2.min.js"></script>
+<script>
+    $(function () {
+        //$("#btn_screen").on("click", function () {
+        //    console.log($("#exception_container").outerHeight())
+        //    html2canvas($("#tbl_exception"), {
+        //        height: $("#tbl_exception").outerHeight() + 300,
+        //        onrendered: function (canvas) {
+        //            var url = canvas.toDataURL();
+        //            //以下代码为下载此图片功能
+        //            var triggerDownload = $("<a>").attr("href", url).attr("download", getNowFormatDate() + "异常信息.png").appendTo("body");
+        //            triggerDownload[0].click();
+        //            triggerDownload.remove();
+        //        }
+        //    });
+        //});
+
+        $("#link_expand").on("click", function () {
+            if ($(this).text() == "显示详细信息") {
+                $(this).text("隐藏详细信息");
+                $("#tbl_exception").slideDown("fast");
+            } else {
+                $(this).text("显示详细信息");
+                $("#tbl_exception").slideUp("fast");
+            }
+        });
+    });
+
+    function getNowFormatDate() {
+        var date = new Date();
+        var seperator1 = "";
+        var seperator2 = "";
+        var month = date.getMonth() + 1;
+        var strDate = date.getDate();
+        if (month >= 1 && month <= 9) {
+            month = "0" + month;
+        }
+        if (strDate >= 0 && strDate <= 9) {
+            strDate = "0" + strDate;
+        }
+
+        var strHour = date.getHours();
+        var strMinutes = date.getMinutes();
+        var strSeconds = date.getSeconds();
+        if (strHour >= 1 && strHour <= 9) {
+            strHour = "0" + strHour;
+        }
+        if (strMinutes >= 0 && strMinutes <= 9) {
+            strMinutes = "0" + strMinutes;
+        }
+        if (strSeconds >= 0 && strSeconds <= 9) {
+            strSeconds = "0" + strSeconds;
+        }
+
+        var currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate
+                + "" + strHour + seperator2 + strMinutes
+                + seperator2 + strSeconds;
+        return currentdate;
+    }
+</script>
+</body>
+</html>
+

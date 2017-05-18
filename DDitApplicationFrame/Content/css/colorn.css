@@ -1,0 +1,33 @@
+.boxbg{background-color:#691f63 !important;  color: #fff;}
+.bordg{border: 5px solid #691f63 !important;}
+
+.tree li.parent_li>span+ul li span{ background: #62115b; border-bottom: 1px solid #751e6e; }
+.tree li.parent_li>span{border-bottom: 1px solid #751e6e;}
+
+
+tbody tr.odd.selected {
+    background-color: #751e6e !important;
+}
+
+tbody tr.even.selected {
+    background-color: #751e6e !important;
+}
+
+.aaa{border-bottom: 1px solid #751e6e;}
+
+.dropdown-menu::after {
+	border-bottom: 6px solid #751e6e;
+}
+
+.layerStyle .layui-layer-title {
+    background-color: #751e6e;
+    color:white;
+    font-size:16px;
+}
+
+
+/*用户页面分配角色列表*/
+#roleitme a:hover {
+   background-color:#751e6e;
+   color:white;
+}

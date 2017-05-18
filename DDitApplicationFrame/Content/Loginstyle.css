@@ -1,0 +1,105 @@
+﻿@charset "utf-8";
+*{ padding: 0; margin: 0; }
+a{ text-decoration: none !important; }
+body{ 
+    background: #2e3e4e;
+}
+
+.logo {
+    margin: auto;
+    margin-top: 8%;
+    width: 983px;
+    height: 100px;
+}
+
+.img {
+   margin-top:20px;  
+ }
+
+.contain{ background: url(../../Images/龙图框架.png) top center no-repeat #fff; 
+	margin: auto;
+    width: 983px;
+    height: 332px;
+    border-radius: 5px;
+    box-shadow: 0 10px 20px rgba(0,0,0,.6);
+}
+
+.title {
+    text-align: center;
+    margin: 20px; 
+    font-family: Microsoft Yahei; 
+    color: #fff; margin: auto; width: 983px; padding-top: 30px;
+}
+
+.copyright {
+    text-align: center;
+    color: #fff;
+    position: absolute;
+    top: 100%;
+    margin-top: -50px;
+    width: 97%;
+    font-family: Microsoft Yahei;
+    line-height: 25px;
+}
+
+.Loginform {
+    margin-top: 71px;
+    float: right;
+    width: 367px;
+    height: 200px;
+}
+
+.form-account {
+    margin-top: 10px;
+    margin-left: 25px;
+    font-family: Microsoft Yahei;
+    font-size: 12pt;
+    color: #999999;
+}
+ 
+.form-password {
+    margin-top: 10px;
+    margin-left: 25px;
+    font-family: Microsoft Yahei;
+    font-size: 12pt;
+    color: #999999;
+}
+.form-message {
+    visibility:visible;
+    height: 30px;
+    width: 65%;
+    margin-top:10px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.loading {
+    margin-left:40px;
+    color:black;
+    font-size:small;
+    display:none;
+}
+
+ .box{width: 270px; background:#ffffff;
+ position: absolute; left: 50%; top:15%; padding:5px 15px 15px 15px; }
+ .box h3{ color: #f0c80d; line-height: 30px; }
+ .box .yzm span{ width:90px; height: 30px; background: #ff0000;
+ display: inline-block; vertical-align: middle; margin-left: 10px;  }
+ .Loginform button{ border: 0 none; border-radius: 5px;border:1px solid #cf870b; background: #f0ac35; color: #ffffff;
+  padding: 5px 20px;  vertical-align: middle; display: inline-block;font-size:large;
+  cursor: pointer; width: 315px; line-height: 30px; margin-top: 20px;margin-left:25px}
+ .Loginform input{ height: 30px; width: 300px;}
+ .Loginform input.user{ background:url(../../Images/user.png) no-repeat; background-position:280px center; }
+ .Loginform input.mima{ background:url(../../Images/mima.png) no-repeat; background-position:280px center; }
+ .Loginform .tag{
+    border:1px solid #fb6565;
+    background-color:#fef4fe;
+    color: #bebebe;
+    border-radius: 3px;
+    text-indent: 25px;
+    background:url(../../Images/cuowu.png) no-repeat; background-position:5px center; 
+    margin: 0 auto;
+    display:none;
+    padding:3px;
+}
+

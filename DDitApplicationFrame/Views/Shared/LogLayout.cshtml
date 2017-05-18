@@ -1,0 +1,25 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+
+    <link href="@Url.Content("~/Content/css/bootstrap.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/css/bootstrap-responsive.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/Loginstyle.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Scripts/datatables/css/dataTables.bootstrap.min.css")" rel="stylesheet" />
+
+    <script src="@Url.Content("~/Scripts/js/jquery.js")"></script>
+    <script src="@Url.Content("~/Scripts/js/bootstrap.js")"></script>
+    <script src="@Url.Content("~/Scripts/datatables/js/dataTables.bootstrap.min.js")"></script>
+
+</head>
+<body >
+    @RenderBody()
+
+    @Scripts.Render("~/bundles/jquery")
+    @RenderSection("scripts", required: false)
+</body>
+</html>
+

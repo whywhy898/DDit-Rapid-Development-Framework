@@ -1,0 +1,160 @@
+﻿
+
+
+
+<script type="text/javascript">
+
+    $(function () {
+
+        var myChart = echarts.init(document.getElementById('main'), "macarons");
+        myChart.setOption({
+            title: {
+                text: '用户访问来源',
+                subtext: '纯属虚构',
+                x: 'center'
+            },
+            tooltip: {
+                trigger: 'item',
+                formatter: "{a} <br/>{b} : {c} ({d}%)"
+            },
+            legend: {
+                orient: 'vertical',
+                left: 'left',
+                data: ['直接访问', '邮件营销', '联盟广告', '视频广告', '搜索引擎']
+            },
+            series: [
+                {
+                    name: '访问来源',
+                    type: 'pie',
+                    radius: '55%',
+                    center: ['50%', '60%'],
+                    data: [
+                        { value: 335, name: '直接访问' },
+                        { value: 310, name: '邮件营销' },
+                        { value: 234, name: '联盟广告' },
+                        { value: 135, name: '视频广告' },
+                        { value: 1548, name: '搜索引擎' }
+                    ],
+                    itemStyle: {
+                        emphasis: {
+                            shadowBlur: 10,
+                            shadowOffsetX: 0,
+                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
+                    }
+                }
+            ]
+        });
+    })
+
+
+</script>
+
+<table style="width: 100%">
+    <tbody>
+        <tr>
+            <td>
+                <div class="Task" style="background-color: #E7191B">
+                    <i></i>
+                    <div class="centre">
+                        <div class="icon">
+                            <img src="~/Images/icon/task-1.png" />
+                        </div>
+                        <div class="Number">10</div>
+                    </div>
+                    <div class="text">
+                        审核待处理任务
+                    </div>
+                </div>
+            </td>
+            <td>
+                <div class="Task" style="background-color: #EEAE44">
+                    <i></i>
+                    <div class="centre">
+                        <div class="icon">
+                            <img src="~/Images/icon/task-2.png" />
+                        </div>
+                        <div class="Number">11</div>
+                    </div>
+                    <div class="text">
+                        消息待处理任务
+                    </div>
+                </div>
+            </td>
+            <td>
+                <div class="Task" style="background-color: #28B779">
+                    <i></i>
+                    <div class="centre">
+                        <div class="icon">
+                            <img src="~/Images/icon/task-3.png" />
+                        </div>
+                        <div class="Number">20</div>
+                    </div>
+                    <div class="text">
+                        对私待处理任务
+                    </div>
+                </div>
+            </td>
+            <td>
+                <div class="Task" style="background-color: #2BA9E3">
+                    <i></i>
+                    <div class="centre">
+                        <div class="icon">
+                            <img src="~/Images/icon/task-4.png" />
+                        </div>
+                        <div class="Number">78</div>
+                    </div>
+                    <div class="text">
+                        订单变更待处理任务
+                    </div>
+                </div>
+            </td>
+            <td>
+                <div class="Task" style="background-color: #C07FE7">
+                    <div class="centre">
+                        <div class="icon">
+                            <img src="~/Images/icon/task-5.png" />
+                        </div>
+                        <div class="Number">18</div>
+                    </div>
+                    <div class="text">
+                        本周销售订单
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<div style="margin-top:70px;width:100%">
+    <div id="main" style="width: 48%;height:400px;margin-left:15px;float:left"></div>
+    <div id="info" style="width: 48%;height:400px;float:right">
+        <div class="panel panel-danger" style="height:98%;width:520px">
+            <!-- Default panel contents -->
+            <div class="panel-heading">
+                <span class="glyphicon glyphicon-bullhorn" aria-hidden="true"></span>
+                通知公告
+            </div>
+
+            <!-- List group -->
+            <ul class="list-group">
+                <li class="list-group-item">
+                    开发者福音：微软Windows 10眼镜HoloLens提前发货
+                </li>
+                <li class="list-group-item">
+                    阿里回应入股神州专车：无深度投资出行领域计划
+                </li>
+                <li class="list-group-item">
+                    苹果官网今日开始接受iPhone SE预约 3288起售
+                </li>
+                <li class="list-group-item">
+                    三大运营商2015年净利润下滑 仍日赚3.8亿元
+                </li>
+                <li class="list-group-item">
+                    消息人士称Google正努力打造直播应用YouTube Connect
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+

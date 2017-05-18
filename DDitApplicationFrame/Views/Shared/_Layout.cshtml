@@ -1,0 +1,325 @@
+﻿@using DDit.Core.Data.SystemEntity.Entity;
+
+@model User
+
+<!DOCTYPE html>
+<html>
+<head>
+    @*@StackExchange.Profiling.MiniProfiler.RenderIncludes()*@
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>龙图信息开发框架</title>
+    @Styles.Render("~/Scripts/bootstrap/css/1", "~/Scripts/datatables/css/1", "~/Content/1", "~/Scripts/alertjs/themes/1","~/Scripts/select2/css/1","~/Scripts/iconpicker/css/1","~/Scripts/fancyTree/skin-win7/1", "~/Scripts/fileUpload/1")
+    <link rel="stylesheet" type="text/css" href=@Url.Content("~/Content/css/colora.css") id="color">
+    @Scripts.Render("~/bundles/js")
+    <script src="~/Scripts/layer/layer.js"></script>
+
+</head>
+<body onload="daytime()">
+    <nav class="navbar navbar-inverse boxbg" id="header">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">Project name</a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="btn btn-lg" data-toggle="modal" data-target="#myModals"><span class="huan"></span><a href="#">换肤</a></li>
+                    <li class="btn btn-lg" data-toggle="modal" data-target="#selfInfo"><span class="person"></span><a href="#">个人中心</a></li>
+                    <li class="btn btn-lg " data-toggle="modal">
+                        <span class="help"></span>
+
+                        <div class="dropdown">
+                            <button class="btn dropdown-toggle btnhelp" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                帮助中心
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenu1" style="min-width: 100px; right: -10px; top:25px;">
+                                <li><a href="#" data-toggle="modal" data-target="#myCall">技术支持</a></li>
+                                <li><a href="#" data-toggle="modal" data-target="#myOur">关于我们</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="btn btn-lg"><a href="/Account/Logout"><span class="off"></span>退出登录</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid" id="treez">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 xl">
+                <div class="treebox" style="border-top:1px solid #ccc; border-bottom:1px solid #ccc; ">
+                    <div class="tree" id="tree">
+                        <div class="aaa"><img src="@( Model.HeadPortrait!=null?"/User/GetPortrait?imgName="+Model.HeadPortrait:"../Images/icon/person.png")"><span>@Model.UserReallyname</span></div>
+                        @Html.Action("MenuItem", "Home", null)
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-10 col-lg-10 syr">
+                <div class="row">
+                    <div class="tit col-lg-12 col-md-12 col-xs-12" id="tit">
+                        <span>首页</span>
+                        <ul></ul>
+                    </div>
+                    <div class="main col-lg-12 col-md-12 col-xs-12 fl" style="padding:0" id="Main">
+                        <div class="sy clearfix">
+                            @Html.Action("Main", "Home", null)
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid footer boxbg">技术支持：大连龙图信息技术有限公司
+        <div id="time"><span></span><b></b></div>
+    </div>
+    <!-- 右键功能 -->
+    <div class="contextMenu" id="myMenu1">
+        <ul>
+            <li id="open"><img src="../Images/icon/load.png" /> 重新加载</li>
+            <li id="delete"><img src="../Images/icon/gby.png" />关闭当前</li>
+            <li id="clse"><img src="../Images/icon/gbs.png" />关闭其它</li>
+        </ul>
+    </div>
+    <!-- 换肤 模态框 -->
+    <div class="modal fade" id="myModals" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document" style="margin: 15% auto;">
+            <div class="modal-content fl bordg" style="border: 5px solid #4A5B79">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">更换皮肤颜色</h4>
+                </div>
+                <div class="modal-body" id="pifu">
+                    <ul id="fu">
+                        <li id="colora"></li>
+                        <li id="colorb"></li>
+                        <li id="colorc"></li>
+                        <li id="colord"></li>
+                        <li id="colore"></li>
+                        <li id="colorf"></li>
+                        <li id="colorg"></li>
+                        <li id="colorh"></li>
+                        <li id="colori"></li>
+                        <li id="colorj"></li>
+                        <li id="colork"></li>
+                        <li id="colorl"></li>
+                        <li id="colorm"></li>
+                        <li id="colorn"></li>
+                        <li id="coloro"></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="selfInfo" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="selfModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content fl bordg" style="border: 5px solid #4A5B79">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="selfModalLabel">个人中心</h4>
+                </div>
+                <div class="modal-body tabchange">
+                    <a class="boxbg" name="one">个人信息</a>
+                    <a>修改密码</a>
+                    <div class="tabox" style="display: block;">
+                        <form class="form-horizontal">
+                            <div class="form-group">
+                                <label for="inputEmail3" class="col-sm-3 control-label">用户名：</label>
+                                <div class="col-sm-9">
+                                    <label>@Model.UserName</label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputPassword3" class="col-sm-3 control-label">昵称：</label>
+                                <div class="col-sm-9">
+                                    <label>@Model.UserReallyname</label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputPassword3" class="col-sm-3 control-label">部门：</label>
+                                <div class="col-sm-9">
+                                    <label>@Model.DepartmentID</label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputPassword3" class="col-sm-3 control-label">角色：</label>
+                                <div class="col-sm-9">
+                                    @foreach (var item in Model.RoleList)
+                                    {
+                                        <label>@item.RoleName</label>
+                                    }
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputPassword3" class="col-sm-3 control-label">备注：</label>
+                                <div class="col-sm-9">
+                                    <label>@Model.Remark</label>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="tabox">
+                        <form class="form-horizontal" id="modifyPassform">
+                            <div class="form-group">
+                                <label for="inputEmail3" class="col-sm-2 control-label">旧密码</label>
+                                <div class="col-sm-10">
+                                    <input type="password" class="form-control" maxlength="10" name="oldPassword">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputPassword3" class="col-sm-2 control-label">新密码</label>
+                                <div class="col-sm-10">
+                                    <input type="password" class="form-control" maxlength="10" name="newPassword">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputPassword3" class="col-sm-2 control-label">确认密码</label>
+                                <div class="col-sm-10">
+                                    <input type="password" class="form-control" maxlength="10" name="conPassword">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-offset-2 col-sm-10">
+                                    <button type="button" class="btn btn-primary fr" id="selfConfrim">
+                                        <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> 提交
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--   帮助myCall 模态框 -->
+    <div class="modal fade" id="myCall" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document" style="margin: 15% auto;">
+            <div class="modal-content fl bordg">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">技术支持</h4>
+                </div>
+                <div class="modal-body" style="width: 500px; height: 100px;">
+                    <div class="row">
+                        <div class="col-sm-12 col-md-12">
+                            <div class="caption">
+
+                                <div style="float: left; margin-left: 50px;"><img src="../Images/call.png"></div>
+                                <div style="float: left;padding-left: 50px; font-size: 26px;">
+                                    <b>技术支持热线：</b>
+                                    <i style="  letter-spacing: 3px; display: block;">4006-700-581</i>
+                                </div>
+                                <div class="ico" style="width: 100%;float: left; margin: 20px 0;">
+                                    <span data-toggle="tooltip" data-placement="right" title="微信：345664"></span>
+                                    <span data-toggle="tooltip" data-placement="left" title="QQ：88835684"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--   帮助myOur 模态框 -->
+    <div class="modal fade" id="myOur" tabindex="-1" role="dialog" aria-labelledby="ModalLabel">
+        <div class="modal-dialog" role="document" style="margin: 15% auto;">
+            <div class="modal-content fl bordg">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="ModalLabel">关于我们</h4>
+                </div>
+                <div class="modal-body" style="width: 500px;">
+                    <div class="row">
+                        <div class="fl col-sm-4" style=" float:left"><img src="../Images/ewm.png"></div>
+                        <div class="fr col-sm-8" style="right">
+                            <h3>龙图信息快速开发框架</h3>
+                            <p>当前版本:2.2.11</p>
+                            <p>大连龙图信息股份有限公司</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    @RenderSection("scripts", required: false)
+    @*@RenderBody()*@
+    <script src="~/Scripts/js/main.js"></script>
+    <script type="text/javascript">
+
+        $(function () {
+           
+            //验证表单
+            $("#modifyPassform").validate({
+                rules: {
+                    oldPassword: {
+                        required: true,
+                        remote: {
+                            url: "/User/ValidUserPassword",    //后台处理程序
+                            type: "get",                   //数据发送方式
+                            dataType: "json",              //接受数据格式
+                        }
+                    },
+                    newPassword: {
+                        required: true,
+                        rangelength: [3, 10]
+                    },
+                    conPassword: {
+                        equalTo: "[name='newPassword']"
+                    }
+                },
+                messages: {
+                    oldPassword: {
+                        required: "必填",
+                        remote: "旧密码输入不正确！"
+                    },
+                    newPassword: {
+                        required: "不能为空",
+                        rangelength: "密码应该在3-10位数之间！"
+                    },
+                    conPassword: {
+                        equalTo: "两次密码输入不一致！"
+                    }
+                },
+                highlight: function (element) {
+                    $(element).closest('.form-group').addClass('has-error');
+                },
+
+                success: function (label) {
+                    label.closest('.form-group').removeClass('has-error');
+                    label.remove();
+                }
+            })
+
+            $("#selfInfo").on('hide.bs.modal', function (e) {
+                $("#modifyPassform").clearForm();
+                $("#selfInfo").find("a[name='one']").trigger("click")
+            })
+
+            $("#selfConfrim").click(function () {
+                if ($("#modifyPassform").valid()) {
+                    $.post("/User/ModifyPassword", { password: $("[name='newPassword']").val() }, function (data) {
+                        if (data.result) {
+                            $("#selfInfo").modal('hide');
+                            alertify.success("修改密码成功！");
+                        }
+                    })
+                }
+            })
+
+        })
+    </script>
+</body>
+</html>
+
+

@@ -1,0 +1,17 @@
+﻿@{
+    Layout = null;
+}
+
+@using DDit.Core.Data.SystemEntity.Entity
+@model IEnumerable<Button>
+
+<li class="list-group-item">
+
+    @foreach (var item in Model)
+    {
+        var data = item.ButtonOperation == "" || item.ButtonOperation == null ? "" : "data-toggle=modal  data-target=#" + ViewBag.mark+item.ButtonOperation + "";
+        <button type="button" class="btn btn-default" id="@(ViewBag.mark + item.ButtonOpID)" @data >
+            <span class="@item.ButtonMagic" aria-hidden="true"></span> @item.ButtonName
+        </button>
+    }
+</li>

@@ -1,0 +1,122 @@
+﻿@{
+    Layout = null;
+}
+@Styles.Render("~/Scripts/bootstrap/css/1", "~/Scripts/datatables/css/1", "~/Content/1", "~/Scripts/alertjs/themes/1", "~/Scripts/select2/css/1", "~/Scripts/iconpicker/css/1", "~/Scripts/fancyTree/skin-win7/1", "~/Scripts/fileUpload/1")
+<link href="~/Scripts/calendar/fullcalendar.css" rel="stylesheet" />
+@Scripts.Render("~/bundles/js")
+<script src="~/Scripts/calendar/moment.min.js"></script>
+<script src="~/Scripts/calendar/fullcalendar.js"></script>
+<script src="~/Scripts/calendar/locale/zh-cn.js"></script>
+<script type="text/javascript">
+    $(function () {
+    
+        //登录表格配置
+        var logtable = $('#loginlogTable').custromTable({
+            ajax: {
+                url: "/Log/GetLogList",
+                data: function (d) {
+                    d.LoginName = $("#LoginName").val();
+                    d.LoginNicker = $("#LoginNicker").val();
+                    return JSON.stringify(d);
+                }
+            },
+            columns: [
+                { data: 'LoginID', visible: false },
+                { data: 'LoginName', title: "用户名" },
+                { data: 'LoginNicker', title: "昵称" },
+                { data: 'LoginIP', title: "IP" },
+                { data: 'LoginTime', title: "登陆时间"}
+            ]
+        });
+
+        //查询按钮
+        $("#logQuery").click(function () {
+            logtable.ajax.reload();
+        })
+  
+        var openlogLayer = function () {
+            mainLayer = parent.layer.open({
+                type: 1,
+                title: "错误日志",
+                area: ['600px', '550px'],
+                closeBtn: 1,
+                shadeClose: false,
+                skin: 'layerStyle',
+                content: $("#logLayer").html(),
+                btn: [dditConfig.btn.close]
+            });
+        }
+
+        $("#calendar").fullCalendar({
+            header: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'month,listWeek'
+            },
+            height: 550,
+            locale: "zh-cn",
+            dayClick: function (date, jsEvent, view) {
+                openlogLayer();
+                var filep = date.format();
+                $.get("/Log/ReadyFile", { filePath: filep }, function (data) {
+                    if (data.result) 
+                        parent.$("#fileContent").html(data.message);
+                            
+                })
+            },
+            viewRender: function (view, element) {
+
+            }
+        });
+
+        $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+            if($(e.target).text()=="错误日志")
+               $("#calendar").fullCalendar("render");
+        })
+
+    });
+</script>
+
+<div style="margin:10px">
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs" id="myTabs" role="tablist">
+        <li role="presentation" class="active"><a href="#loginlog" aria-controls="loginlog" role="tab" data-toggle="tab">登陆日志</a></li>
+        <li role="presentation"><a href="#errorlog" aria-controls="errorlog" role="tab" data-toggle="tab">错误日志</a></li>
+    </ul>
+    <!-- Tab panes -->
+    <div class="tab-content">
+        <div role="tabpanel" class="tab-pane active" id="loginlog">
+            <div class="margin w100f xoverhide">
+                <div class="panel panel-default" style="margin-top: 10px">
+                    <ul class="list-group">
+                        <li class="list-group-item">
+                            <form class="form-inline">
+                                <div class="form-group">
+                                    <label for="LoginName">用户名</label>
+                                    <input type="text" class="form-control" name="LoginName" id="LoginName" placeholder="admin">
+                                </div>
+                                <div class="form-group mleft10">
+                                    <label for="LoginNicker">昵称</label>
+                                    <input type="text" class="form-control" name="LoginNicker" id="LoginNicker" placeholder="nickName">
+                                </div>
+                                <button type="button" class="btn btn-info " id="logQuery">
+                                    <span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询
+                                </button>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+                <table id="loginlogTable" class="table table-bordered table-striped w100f" cellspacing="0"></table>
+            </div>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="errorlog" >
+            <div class="margin w100f xoverhide pad10 ">
+                <div id="calendar" ></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="displayn" id="logLayer">
+    <textarea id="fileContent" style="height:430px;width: 100%; border: 0; color: #4799D1"></textarea>
+</div>

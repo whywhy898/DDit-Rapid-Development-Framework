@@ -1,0 +1,375 @@
+/*!
+    * Bootstrap 3.0 IconPicker Style
+    * Custom Style Elements for IconPicker
+    *
+    * Intigrated, Processed and  Built with passion by @titosust; Web Developer @vizrt
+  */
+
+.icon-popup{
+	position: absolute;
+	width: 278px;
+	height: 268px;
+	color: #000;
+	font-size: 15px;
+}
+.icon-popup:before {
+ content: '';
+display: inline-block;
+border-left: 7px solid transparent;
+border-right: 7px solid transparent;
+border-bottom: 7px solid #ccc;
+border-bottom-color: rgba(0,0,0,0.2);
+position: absolute;
+top: -7px;
+left: 6px;
+}
+.icon-popup:after {
+  content: '';
+display: inline-block;
+border-left: 6px solid transparent;
+border-right: 6px solid transparent;
+border-bottom: 6px solid #fff;
+position: absolute;
+top: -6px;
+left: 7px;
+}
+.icon-popup a:hover{
+	background-color:#eee;
+}
+.icon-popup .icon-title{
+	position: relative;
+	background-color: #563d7c;
+	color: #fff;
+	border: 1px solid #463265;
+	
+}
+.icon-popup .icon-title h4{
+	margin: 0;
+	padding: 8px 10px;
+	font-size: 17px;
+	font-weight: bold;
+}
+.pointer{
+	cursor: pointer;
+}
+.icon-popup .ip-control{
+	background-color: white;
+	height: 40px;
+	margin-top: -2px;
+	padding-top: 2px;
+	border-bottom: 1px solid #e5e5e5;
+}
+.icon-popup .ip-search{
+	width: 171px;
+	padding:2px 0px 5px 27px;
+	margin-left: 8px;
+	background-repeat: no-repeat;
+	background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAABIAAAASABGyWs+AAAACXZwQWcAAAAQAAAAEABcxq3DAAACcElEQVQ4y5XSQUiaYRgH8P+rzlSS6lKuZbkvvjq0NWfg0Xu1jO0gWbO5ctBtxDrtsE51CIJZgxWLMQbtsA7TQ5RX5ygPFbRD1rBJDko+ZtI++fT7nM8uDpoWrD+8p/d5fu8Dz8tQChEZs9nsk4ODgwcnJye8RqNRmpubd3ief69Wq1dwSTSl5tbt7e2VYDB4N51Ow2AwoFgsQpKkGxzH3Usmkx+amppGGWO5coARkXFra+vzwuLCnVau9ai3t3fWbDZHC4WCPhaL3Q8EAmMqxrTPJiYWTSbTWMUIv0Tx6fj4OE1OTsay2ewLIpo9f59IfPf6fD7l1fw8EVFXeb/q6+6uK5FIwOl0rhoMBhlA5HyBxXLzncPhWN/Y3IQgCP0VwOHhIQcALS0tqwDeMMY+lRfxPB8WBAHHx8dcBQBAyWQykGVZwxj7SUS6sqMSRdEoiiJUKpVSsYW2tradVCplDofDLiI6BVAPoACAlR44Da2HempqamCxWL5UAFardamzs9M5NTXt5nk+bbPZJAAmAL8B/FheXr4VCAa6bDYbdHodVawRAPb29t4ODAw8FgShODw8vGG321O5XE4dCoW4tbW120ajEfl8Hn19fTm/3/9Iq9V+/EchomvxePyl1+stNNQ3kE6nI71eTx0dHdTT3U11dXV0vbGRqquraWRkRM7n864LvyURWY+Oks8jkchSNBp9nclkfLIse0ZHfRIAqq2tJcYYDT0cuhy5KIqi9Hs8HgkAVVVVEQByuVzy2dnZ1ZDBwUEJADHGCADNzMyk/xv4i7jdbgkAtbe30/7+/vSVAACQZdk5Nzf3LR6PTwHAHzdFLfF/9+ryAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDEwLTAyLTExVDExOjIxOjA0LTA2OjAw10lxMgAAACV0RVh0ZGF0ZTptb2RpZnkAMjAwNi0wNS0zMFQxMToxMzowNi0wNTowMGfB+zwAAAAASUVORK5CYII=) no-repeat 3px;
+
+}
+
+.icon-popup .icon-list{position:absolute;top: 43px;bottom:0;overflow: hidden;}
+.icon-list ul{
+	margin: 0;
+	padding: 0;
+	margin-bottom: 10px;
+}
+.icon-popup .ip-control ul{margin: 4px 0;padding: 0;}
+.icon-popup .ip-control ul li{float: left;list-style-type: none;}
+.icon-popup .ip-control ul li a{margin-top: -3px;color:#373737;}
+.icon-popup .ip-control ul li:first-child{margin-left: 3px;}
+.icon-popup .ip-control ul li:last-child{position: absolute;right: 0;top: 9px;}
+
+.icon-list ul li{
+	display: inline-block;
+	margin: 5px;
+	float: left;
+	border: 1px dotted #eee;
+}
+
+.icon-list ul li a{
+	display: block;
+	text-decoration: none;
+	color:#373737;
+	padding: 4px 8px;
+}
+.icon-list ul li a:hover{color:#000;}
+
+.glyphicon-text {
+    background:url('../../../Images/icons/iconfont-book.png') no-repeat center center;
+    height:15px;
+    width:14px;
+}
+.glyphicon-text1 {
+    background:url('../../../Images/icons/iconfont-caiwu.png') no-repeat center center;
+    height:15px;
+    width:14px;
+}
+.glyphicon-text2 {
+    background:url('../../../Images/icons/iconfont-chanpin.png') no-repeat center center;
+    height:15px;
+    width:14px;
+}
+
+.glyphicon-text3 {
+    background:url('../../../Images/icons/iconfont-gongsimingcheng.png') no-repeat center center;
+    height:15px;
+    width:14px;
+}
+.glyphicon-text4 {
+    background:url('../../../Images/icons/iconfont-home.png') no-repeat center center;
+    height:15px;
+    width:14px;
+}
+.glyphicon-text5 {
+    background:url('../../../Images/icons/iconfont-management.png') no-repeat center center;
+    height:15px;
+    width:14px;
+}
+.glyphicon-text6 {
+    background:url('../../../Images/icons/iconfont-note.png') no-repeat center center;
+    height:15px;
+    width:14px;
+}
+.glyphicon-text7 {
+    background:url('../../../Images/icons/iconfont-redact.png') no-repeat center center;
+    height:15px;
+    width:14px;
+}
+.glyphicon-text8 {
+    background:url('../../../Images/icons/iconfont-shenqingshenpi.png') no-repeat center center;
+    height:15px;
+    width:14px;
+}
+.glyphicon-text9 {
+    background:url('../../../Images/icons/iconfont-suoshuzhiwei.png') no-repeat center center;
+    height:15px;
+    width:14px;
+}
+.glyphicon-text10 {
+    background:url('../../../Images/icons/iconfont-wei.png') no-repeat center center;
+    height:15px;
+    width:14px;
+}
+.glyphicon-text11 {
+    background:url('../../../Images/icons/iconfont-weibiaoti1.png') no-repeat center center;
+    height:15px;
+    width:14px;
+}
+.glyphicon-text12 {
+    background:url('../../../Images/icons/iconfont-weibiaoti10(1).png') no-repeat center center;
+    height:15px;
+    width:14px;
+}
+.glyphicon-text13 {
+    background:url('../../../Images/icons/iconfont-weibiaoti10.png') no-repeat center center;
+    height:15px;
+    width:14px;
+}
+.glyphicon-text14 {
+    background:url('../../../Images/icons/iconfont-weibiaoti11(1).png') no-repeat center center;
+    height:15px;
+    width:14px;
+}
+.glyphicon-text15 {
+    background:url('../../../Images/icons/iconfont-weibiaoti11.png') no-repeat center center;
+    height:15px;
+    width:14px;
+}
+.glyphicon-text16 {
+    background:url('../../../Images/icons/iconfont-weibiaoti12(1).png') no-repeat center center;
+    height:15px;
+    width:14px;
+}
+
+.glyphicon-text17 {
+    background:url('../../../Images/icons/iconfont-weibiaoti12.png') no-repeat center center;
+    height:15px;
+    width:14px;
+}
+.glyphicon-text18 {
+    background:url('../../../Images/icons/iconfont-weibiaoti13(1).png') no-repeat center center;
+    height:15px;
+    width:14px;
+}
+.glyphicon-text19 {
+    background:url('../../../Images/icons/iconfont-weibiaoti13.png') no-repeat center center;
+    height:15px;
+    width:14px;
+}
+.glyphicon-text20 {
+    background:url('../../../Images/icons/iconfont-weibiaoti14(1).png') no-repeat center center;
+    height:15px;
+    width:14px;
+}
+.glyphicon-text21 {
+    background:url('../../../Images/icons/iconfont-weibiaoti14.png') no-repeat center center;
+    height:15px;
+    width:14px;
+}
+.glyphicon-text22 {
+    background:url('../../../Images/icons/iconfont-weibiaoti15.png') no-repeat center center;
+    height:15px;
+    width:14px;
+}
+.glyphicon-text23 {
+    background:url('../../../Images/icons/iconfont-weibiaoti16.png') no-repeat center center;
+    height:15px;
+    width:14px;
+}
+.glyphicon-text24 {
+    background:url('../../../Images/icons/iconfont-weibiaoti17.png') no-repeat center center;
+    height:15px;
+    width:14px;
+}
+.glyphicon-text25 {
+    background:url('../../../Images/icons/iconfont-weibiaoti19.png') no-repeat center center;
+    height:15px;
+    width:14px;
+}
+.glyphicon-text26 {
+    background:url('../../../Images/icons/iconfont-weibiaoti2.png') no-repeat center center;
+    height:15px;
+    width:14px;
+}.glyphicon-text27 {
+    background:url('../../../Images/icons/iconfont-weibiaoti21.png') no-repeat center center;
+    height:15px;
+    width:14px;
+}.glyphicon-text28 {
+    background:url('../../../Images/icons/iconfont-weibiaoti22.png') no-repeat center center;
+    height:15px;
+    width:14px;
+}.glyphicon-text29 {
+    background:url('../../../Images/icons/iconfont-weibiaoti23.png') no-repeat center center;
+    height:15px;
+    width:14px;
+}.glyphicon-text30 {
+    background:url('../../../Images/icons/iconfont-weibiaoti24.png') no-repeat center center;
+    height:15px;
+    width:14px;
+}.glyphicon-text31 {
+    background:url('../../../Images/icons/iconfont-weibiaoti25.png') no-repeat center center;
+    height:15px;
+    width:14px;
+}.glyphicon-text32 {
+    background:url('../../../Images/icons/iconfont-weibiaoti26.png') no-repeat center center;
+    height:15px;
+    width:14px;
+}
+.glyphicon-text33 {
+    background:url('../../../Images/icons/iconfont-weibiaoti3.png') no-repeat center center;
+    height:15px;
+    width:14px;
+}
+.glyphicon-text34 {
+    background:url('../../../Images/icons/iconfont-weibiaoti36.png') no-repeat center center;
+    height:15px;
+    width:14px;
+}
+.glyphicon-text35 {
+    background:url('../../../Images/icons/iconfont-weibiaoti4.png') no-repeat center center;
+    height:15px;
+    width:14px;
+}
+.glyphicon-text36 {
+    background:url('../../../Images/icons/iconfont-weibiaoti45.png') no-repeat center center;
+    height:15px;
+    width:14px;
+}
+.glyphicon-text37 {
+    background:url('../../../Images/icons/iconfont-weibiaoti46.png') no-repeat center center;
+    height:15px;
+    width:14px;
+}
+.glyphicon-text38 {
+    background:url('../../../Images/icons/iconfont-weibiaoti47.png') no-repeat center center;
+    height:15px;
+    width:14px;
+}.glyphicon-text39 {
+    background:url('../../../Images/icons/iconfont-weibiaoti5(1).png') no-repeat center center;
+    height:15px;
+    width:14px;
+}.glyphicon-text40 {
+    background:url('../../../Images/icons/iconfont-weibiaoti5.png') no-repeat center center;
+    height:15px;
+    width:14px;
+}.glyphicon-text41 {
+    background:url('../../../Images/icons/iconfont-weibiaoti6(1).png') no-repeat center center;
+    height:15px;
+    width:14px;
+}.glyphicon-text42 {
+    background:url('../../../Images/icons/iconfont-weibiaoti6.png') no-repeat center center;
+    height:15px;
+    width:14px;
+}.glyphicon-text43 {
+    background:url('../../../Images/icons/iconfont-weibiaoti7(1).png') no-repeat center center;
+    height:15px;
+    width:14px;
+}.glyphicon-text44 {
+    background:url('../../../Images/icons/iconfont-weibiaoti7.png') no-repeat center center;
+    height:15px;
+    width:14px;
+}.glyphicon-text45 {
+    background:url('../../../Images/icons/iconfont-weibiaoti8(1).png') no-repeat center center;
+    height:15px;
+    width:14px;
+}.glyphicon-text46 {
+    background:url('../../../Images/icons/iconfont-weibiaoti8.png') no-repeat center center;
+    height:15px;
+    width:14px;
+}.glyphicon-text47 {
+    background:url('../../../Images/icons/iconfont-weibiaoti9(1).png') no-repeat center center;
+    height:15px;
+    width:14px;
+}.glyphicon-text48 {
+    background:url('../../../Images/icons/iconfont-xiangmuguanli.png') no-repeat center center;
+    height:15px;
+    width:14px;
+}.glyphicon-text49 {
+    background:url('../../../Images/icons/iconfont-weibiaoti9.png') no-repeat center center;
+    height:15px;
+    width:14px;
+}.glyphicon-text50 {
+    background:url('../../../Images/icons/iconfont-xingmingyonghumingnicheng.png') no-repeat center center;
+    height:15px;
+    width:14px;
+}.glyphicon-text51 {
+    background:url('../../../Images/icons/iconfont-yeji.png') no-repeat center center;
+    height:15px;
+    width:14px;
+}.glyphicon-text52 {
+    background:url('../../../Images/icons/iconfont-yidongyun.png') no-repeat center center;
+    height:15px;
+    width:14px;
+}.glyphicon-text53 {
+    background:url('../../../Images/icons/iconfont-yonghuguanli.png') no-repeat center center;
+    height:15px;
+    width:14px;
+}.glyphicon-text54 {
+    background:url('../../../Images/icons/iconfont-zhaopinqiatan.png') no-repeat center center;
+    height:15px;
+    width:14px;
+}.glyphicon-text55 {
+    background:url('../../../Images/icons/iconfont-zhishi(1).png') no-repeat center center;
+    height:15px;
+    width:14px;
+}.glyphicon-text56 {
+    background:url('../../../Images/icons/iconfont-zhishi.png') no-repeat center center;
+    height:15px;
+    width:14px;
+}.glyphicon-text57 {
+    background:url('../../../Images/icons/gl.png') no-repeat center center;
+    height:15px;
+    width:14px;
+}.glyphicon-text58 {
+    background:url('../../../Images/icons/peizhi.png') no-repeat center center;
+    height:15px;
+    width:14px;
+}.glyphicon-text59 {
+    background:url('../../../Images/icons/shezhi.png') no-repeat center center;
+    height:15px;
+    width:14px;
+}
+
+
+

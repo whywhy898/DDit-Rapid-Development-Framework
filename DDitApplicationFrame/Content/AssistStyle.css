@@ -1,0 +1,102 @@
+﻿
+.margin {
+    margin:0 auto;
+}
+.mtop50 {
+    margin-top:50px;
+}
+.mtop30 {
+    margin-top:30px;
+}
+.mbottom10 {
+    margin-bottom:10px
+}
+.marg-b5 {
+    margin-bottom:5px;
+}
+.marg-b15 {
+    margin-bottom:15px;
+}
+.pad0 {
+    padding:0;
+}
+.pad5 {
+    padding:5px;
+}
+.pad10 {
+    padding:10px;
+}
+.pad-l10 {
+    padding-left:10px;
+}
+.pad-r0 {
+    padding-right:0px;
+}
+.pad-r6 {
+    padding-right:6px;
+}
+.pad-r20 {
+    padding-right:20px;
+}
+.taC {
+    text-align:center
+}
+#roleList >td.vaC {
+    vertical-align:middle;
+}
+th { font-weight:700}
+.mleft10 {
+    margin-left:10px;
+}
+.m0 {
+    margin:0;
+}
+.boright {
+    border-right:1px solid #ddd;
+}
+.fh99 {
+    height:99%;
+}
+.fh100 {
+    height:100%;
+}
+.h35 {
+    height:35px;
+}
+.h400 {
+    height:400px!important;
+}
+.h300 {
+    height:300px!important;
+}
+.lineh35 {
+    line-height:35px;
+}
+
+.w175 { width:175px;}
+
+.w150 { width:150px;}
+
+.fw99 {
+    width: 99%;
+}
+.fw100 {
+    width: 100%;
+}
+.over-auto {
+    overflow:auto;
+}
+.xoverhide {
+    overflow-x:hidden
+}
+
+.displayn {
+    display:none;
+}
+
+.displayb {
+    display:block;
+}
+.tan-cent {
+   text-align:center;
+}

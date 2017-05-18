@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{3573DE28-C3A3-46F8-AA20-719133E1AB85}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DDit.Core.Data</RootNamespace>
+    <AssemblyName>DDit.Core.Data</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL" />
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Entity\CoreEntity\News.cs" />
+    <Compile Include="Entity\SystemEntity\Account.cs" />
+    <Compile Include="Entity\BaseEntity.cs" />
+    <Compile Include="Entity\SystemEntity\Button.cs" />
+    <Compile Include="Entity\SystemEntity\Dictionary.cs" />
+    <Compile Include="Entity\SystemEntity\DictionaryCategory.cs" />
+    <Compile Include="Entity\SystemEntity\DoEntity\MenuDo.cs" />
+    <Compile Include="Entity\SystemEntity\LoginLog.cs" />
+    <Compile Include="Entity\SystemEntity\Menu.cs" />
+    <Compile Include="Entity\SystemEntity\MenuMappingButton.cs" />
+    <Compile Include="Entity\SystemEntity\RoleMappingButton.cs" />
+    <Compile Include="Entity\SystemEntity\Test.cs" />
+    <Compile Include="IRepositories\ISystemRepositories\IButtonRepository.cs" />
+    <Compile Include="IRepositories\ISystemRepositories\IDictionaryCategoryRepository.cs" />
+    <Compile Include="IRepositories\ISystemRepositories\IDictionaryRepository.cs" />
+    <Compile Include="IRepositories\ISystemRepositories\IMenuAndBtnRepository.cs" />
+    <Compile Include="IRepositories\ISystemRepositories\IRoleAndBtnRepository.cs" />
+    <Compile Include="Entity\ResultEntity.cs" />
+    <Compile Include="Entity\SystemEntity\Role.cs" />
+    <Compile Include="Entity\SystemEntity\SystemInfo.cs" />
+    <Compile Include="Entity\SystemEntity\User.cs" />
+    <Compile Include="IRepositories\ISystemRepositories\ILoginLogRepository.cs" />
+    <Compile Include="IRepositories\ISystemRepositories\IMenuRepository.cs" />
+    <Compile Include="IRepositories\ISystemRepositories\IRoleRepository.cs" />
+    <Compile Include="IRepositories\ISystemRepositories\ISystemInfoRepository.cs" />
+    <Compile Include="IRepositories\ISystemRepositories\ITestRepository.cs" />
+    <Compile Include="IRepositories\ISystemRepositories\IUserRepository.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DDit.Component.Data\DDit.Component.Data.csproj">
+      <Project>{2e220109-c09a-4b17-a87e-a2b00d995e6a}</Project>
+      <Name>DDit.Component.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DDit.Component.Tools\DDit.Component.Tools.csproj">
+      <Project>{e9d4ff04-3386-479c-ae09-294477f6a7d3}</Project>
+      <Name>DDit.Component.Tools</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

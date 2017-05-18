@@ -1,0 +1,136 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{92F69F14-D13F-4C4F-8207-8BD7575B26E4}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DDit.Core.Data.Repository</RootNamespace>
+    <AssemblyName>DDit.Core.Data.Repository</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AutoMapper, Version=6.0.2.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.6.0.2\lib\net45\AutoMapper.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="AutoMapper.EF6, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.EF6.1.0.0\lib\net45\AutoMapper.EF6.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DelegateDecompiler, Version=1.0.0.0, Culture=neutral, PublicKeyToken=93b26a10a04705bd, processorArchitecture=MSIL">
+      <HintPath>..\packages\DelegateDecompiler.0.23.0\lib\net40-client\DelegateDecompiler.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DelegateDecompiler.EntityFramework, Version=1.0.0.0, Culture=neutral, PublicKeyToken=93b26a10a04705bd, processorArchitecture=MSIL">
+      <HintPath>..\packages\DelegateDecompiler.EntityFramework.0.23.0\lib\net45\DelegateDecompiler.EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Mono.Reflection, Version=1.1.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
+      <HintPath>..\packages\Mono.Reflection.1.1.0.0\lib\Mono.Reflection.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Caching" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Z.EntityFramework.Plus.EF6, Version=1.2.5.0, Culture=neutral, PublicKeyToken=59b66d028979105b, processorArchitecture=MSIL">
+      <HintPath>..\packages\Z.EntityFramework.Plus.EF6.1.2.5\lib\net45\Z.EntityFramework.Plus.EF6.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CoreDbContext.cs" />
+    <Compile Include="Mapping\CoreMapping\MyFastMapping.cs" />
+    <Compile Include="Mapping\SystemMapping\AccountMapping.cs" />
+    <Compile Include="Mapping\SystemMapping\ButtonMapping.cs" />
+    <Compile Include="Mapping\SystemMapping\DictionaryCategoryMapping.cs" />
+    <Compile Include="Mapping\SystemMapping\DictionaryMapping.cs" />
+    <Compile Include="Mapping\SystemMapping\LoginLogMapping.cs" />
+    <Compile Include="Mapping\SystemMapping\MenuMapping.cs" />
+    <Compile Include="Mapping\SystemMapping\MenuMappingButtonMapping.cs" />
+    <Compile Include="Mapping\SystemMapping\RoleMapping.cs" />
+    <Compile Include="Mapping\SystemMapping\RoleMappingButtonMapping.cs" />
+    <Compile Include="Mapping\SystemMapping\SystemInfoMapping.cs" />
+    <Compile Include="Mapping\SystemMapping\TestMapping.cs" />
+    <Compile Include="Mapping\SystemMapping\UserMapping.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\SystemRepositories\ButtonRepository.cs" />
+    <Compile Include="Repositories\CoreRepositories\MyFastRepository.cs" />
+    <Compile Include="Repositories\SystemRepositories\DictionaryRepository.cs" />
+    <Compile Include="Repositories\SystemRepositories\DictionaryCategoryRepository.cs" />
+    <Compile Include="Repositories\SystemRepositories\LoginLogRepository.cs" />
+    <Compile Include="Repositories\SystemRepositories\MenuAndBtnRepository.cs" />
+    <Compile Include="Repositories\SystemRepositories\MenuRepository.cs" />
+    <Compile Include="Repositories\SystemRepositories\RoleAndBtnRepository.cs" />
+    <Compile Include="Repositories\SystemRepositories\RoleRepository.cs" />
+    <Compile Include="Repositories\SystemRepositories\SystemInfoRepository.cs" />
+    <Compile Include="Repositories\SystemRepositories\TestRepository.cs" />
+    <Compile Include="Repositories\SystemRepositories\UserRepository.cs" />
+    <Compile Include="UnitOfWork.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DDit.Component.Data\DDit.Component.Data.csproj">
+      <Project>{2e220109-c09a-4b17-a87e-a2b00d995e6a}</Project>
+      <Name>DDit.Component.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DDit.Component.Tools\DDit.Component.Tools.csproj">
+      <Project>{e9d4ff04-3386-479c-ae09-294477f6a7d3}</Project>
+      <Name>DDit.Component.Tools</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DDit.Core.Data\DDit.Core.Data.csproj">
+      <Project>{3573de28-c3a3-46f8-aa20-719133e1ab85}</Project>
+      <Name>DDit.Core.Data</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

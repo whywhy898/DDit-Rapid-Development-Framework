@@ -1,0 +1,418 @@
+﻿@{
+    Layout = null;
+}
+
+@using DDit.Core.Data.SystemEntity.Entity;
+
+@Styles.Render("~/Scripts/bootstrap/css/1", "~/Scripts/datatables/css/1", "~/Content/1", "~/Scripts/alertjs/themes/1", "~/Scripts/select2/css/1", "~/Scripts/iconpicker/css/1", "~/Scripts/fancyTree/skin-win7/1", "~/Scripts/fileUpload/1")
+@Scripts.Render("~/bundles/js")
+
+@*@StackExchange.Profiling.MiniProfiler.RenderIncludes()*@
+<script type="text/javascript">
+    $(function () {
+
+        var menutable = $('#menuTable').custromTable({
+            ajax: {
+                url: "/Menu/GetMenuList",
+                data: function (d) {
+                    d.MenuName = $("#MenuName").val();
+                    return JSON.stringify(d);
+                }
+            },
+            columns: [
+                { data: 'MenuID', visible: false },
+                { data: 'MenuName', title: "菜单名称" },
+                { data: 'MenuUrl', title: "菜单地址" },
+                {
+                    data: 'MenuParentName', title: "父级名称", render: function (data, type, row, meta) {
+                        return data == null ? "" : data;
+                    }
+                },
+                { data: 'MenuOrder', title: "排序" },
+                {
+                    data: 'MenuIcon', title: "菜单图片", render: function (data, type, row, meta) {                  
+                        return "<span class='" + data + "' style='width:16px;height:16px'></span>"
+                    }
+                },
+                {
+                    data: 'CreateTime', title: "创建时间",width:100
+                }
+            ]
+        });
+
+        //查询按钮
+        $("#menuQuery").click(function () {
+            menutable.ajax.reload();
+        })
+
+        $.ajax({
+            type: "get",
+            url:  "/Menu/ParentMenu",
+            data: {},
+            dataType: "json",
+            async: true,
+            success: function (data) {
+                odata=data;
+            }
+        })
+
+        //菜单弹出层
+        var openMenuLayer = function () {
+            mainLayer = parent.layer.open({
+                type: 1,
+                title: "新增菜单",
+                area: ['500px', '380px'],
+                closeBtn: 1,
+                shadeClose: false,
+                skin: 'layerStyle',
+                content: $("#menuLayer").html(),
+                btn: [dditConfig.btn.close, dditConfig.btn.comfrie],
+                yes: function (index, layero) {
+                    confrimMenuBtn(index);
+                },
+                success: function (i, l) {
+                    parent.$("#menuForm").FromEvent(function () {
+                        //验证表单
+                        $("#menuForm").validate({
+                            rules: {
+                                MenuName: {
+                                    required: true,
+                                }
+                            },
+                            messages: {
+                                MenuName: {
+                                    required: "必填",
+                                }
+                            },
+                            highlight: function (element) {
+                                $(element).closest('.form-group').addClass('has-error');
+                            },
+                            success: function (label) {
+                                label.closest('.form-group').removeClass('has-error');
+                                label.remove();
+                            }
+                        })
+
+                        //父级菜单复选框配置
+                        $("[name='MenuParentID']").select2({
+                            tags: "true",
+                            placeholder: "选择父级菜单",
+                            allowClear: true,
+                            minimumResultsForSearch: -1,
+                            templateResult: function formatState(state) {
+                                if (!state.id) { return state.text; }
+                                var icon = $(state.element).attr("class");
+                                var type = $(state.element).data("leve");
+                                var $state;
+                                if (type == "") {
+                                    $state = $(
+                                      '<span><img style="margin-top:-5px" class="img-flag ' + icon + '" /> ' + state.text + '</span>'
+                                    );
+                                } else {
+                                    $state = $(
+                                     '<span><img style="margin-top:-5px;margin-left:20px" class="img-flag ' + icon + '" /> ' + state.text + '</span>'
+                                   );
+                                }
+                                return $state;
+                            }
+                        }).val(null).trigger("change");
+
+                        //绑定父菜单选择框
+                        (function BindSelect(ctrlName) {
+                            var control = $('#' + ctrlName);
+                            //设置Select2的处理
+                            control.select2({
+                                tags: "true",
+                                placeholder: "选择父级菜单",
+                                allowClear: true,
+                                minimumResultsForSearch: -1,
+                                templateResult: function formatState(state) {
+                                    if (!state.id) { return state.text; }
+                                    var icon = $(state.element).attr("class");
+                                    var type = $(state.element).data("leve");
+                                    var $state;
+                                    if (type == null) {
+                                        $state = $(
+                                          '<span><img style="margin-top:-5px" class="img-flag ' + icon + '" /> ' + state.text + '</span>'
+                                        );
+                                    } else {
+                                        $state = $(
+                                         '<span><img style="margin-top:-5px;margin-left:20px" class="img-flag ' + icon + '" /> ' + state.text + '</span>'
+                                       );
+                                    }
+                                    return $state;
+                                }
+                            });
+
+                            var  odata= document.getElementById("MenuIndex").contentWindow.odata;
+                            control.empty();//清空下拉框
+                            $.each(odata, function (i, item) {
+                                control.append("<option class='" + item.MenuIcon + "' data-leve='" + item.MenuParentID + "' value='" + item.MenuID + "'>&nbsp;" + item.MenuName + "</option>");
+                                $.each(item.Childs, function (ci, vi) {
+                                    control.append("<option class='" + vi.MenuIcon + "' data-leve='" + vi.MenuParentID + "' value='" + vi.MenuID + "'>&nbsp;" + vi.MenuName + "</option>");
+                                })
+                            });
+                            $('#' + ctrlName).val(null).trigger("change");
+
+                        })("MenuParent")
+
+                        //图标插件初始化
+                        $("[name='MenuIcon']").iconPicker({ type: true });
+            
+                    });
+                }
+            });
+        };
+
+        var confrimMenuBtn = function (index) {
+            var menuId = parent.$("#MenuID").val();
+            var menuForm = parent.$("#menuForm");
+            if (menuForm.valid()) {
+                menuForm.ajaxSubmit({
+                    success: function (data) {
+                        if (data.result) {
+                            parent.layer.close(index);
+                            menutable.ajax.reload(null, menuId == "" ? true : false);          //刷新列表
+                            alertify.success("操作成功！");    //弹出消息日志
+                        } else {
+                            alertify.error(data.message);
+                        }
+                    }
+                });
+            }
+        }
+
+        //分配按钮层
+        var openDisbtnlayer = function () {
+            mainLayer = parent.layer.open({
+                type: 1,
+                title: "分配按钮",
+                area: ['500px', '450px'],
+                closeBtn: 1,
+                shadeClose: false,
+                skin: 'layerStyle',
+                content: $("#distributionBtnLayer").html(),
+                btn: [dditConfig.btn.close, dditConfig.btn.comfrie],
+                yes: function (index, layero) {
+
+                    confrimDisBtn(index);
+                },
+                success: function (i, l) {
+                    parent.$("#formJs").FromEvent(function () {
+                        //分配按钮选中
+                        $("#btnGroup button").on('click', function () {
+                            var value = $(this).text();
+                            var tag = $(this).data("tag");
+                            $(this).toggleClass("btnn");
+                            var li = $("li[data-tag='" + tag + "']");
+                            if (li.length > 0)
+                            { li.remove() } else {
+                                if ($(".gbin1-list li").length == 0) {
+                                    $("#orderContain").show();
+                                }
+                                $("<li data-tag='" + tag + "'>" + value + "</li>").insertBefore($(".gbin1-list").find("div"));
+                                $('.gbin1-list').sortable();
+                            }
+                        })
+                    });
+                }
+            });
+        }
+
+        var confrimDisBtn = function (index) {
+            var menu = menutable.rows('.selected');
+            var model = menu.data();
+            var lis =parent.$(".gbin1-list li")
+            if (lis.length > 0) {
+                var mbobj = {};
+                lis.each(function (i, v) {
+                    mbobj["mplist[" + i + "].MenuID"] = model[0].MenuID;
+                    mbobj["mplist[" + i + "].ButtonID"] = $(v).data("tag");
+                    mbobj["mplist[" + i + "].OrderBy"] = i + 1;
+                });
+                mbobj["MenuID"] = model[0].MenuID;
+                $.post("/Button/MenuMappingButton", mbobj, function (data) {
+                    if (data.result) {
+                        alertify.success("菜单和按钮分配成功！");
+                        menutable.ajax.reload();
+                    }
+                });
+            } else {
+                alertify.log("请选择要分配的按钮信息！");
+            }
+            parent.layer.close(index);
+        }
+
+        //新增菜单按钮
+        $("#menuCreate").click(function () {
+            openMenuLayer();
+        });
+
+        //编辑菜单按钮
+        $("#menuEdit").click(function () {
+            var cc = menutable.rows('.selected')
+            if (cc[0].length > 0) {
+                var model = cc.data();
+                openMenuLayer();
+                parent.layer.title("编辑菜单", mainLayer);
+                parent.$("#menuForm").setForm(model[0]);
+                parent.$("#MenuParent").val(model[0].MenuParentID).trigger("change");
+            } else {
+                alertify.log("请选择一条操作信息！");
+            }
+        });
+
+        //删除菜单按钮
+        $("#menuDelete").click(function () {
+            var cc = menutable.rows('.selected')
+            if (cc[0].length > 0) {
+                var model = cc.data();
+                parent.layer.confirm("确定要删除该信息吗！", dditConfig.hintLayer, function () {
+                    $.post("/Menu/RemoveMenu", { menuID: model[0].MenuID }, function (data) {
+                        if (data.result) {
+                            cc.remove().draw(false);
+                            parent.layer.close(parent.layer.index);
+                            alertify.success(data.message);
+                        } else {
+                            alertify.error(data.message);
+                        }
+                    });
+                });
+
+            } else {
+                alertify.log("请选择一条操作信息！");
+            }
+        });
+
+        //分配按钮
+        $("#menuDistribution").click(function () {
+            var cc = menutable.rows('.selected')
+            if (cc[0].length > 0) {
+                var model = cc.data();
+                $("#disMenuName").text(model[0].MenuName);
+                openDisbtnlayer();
+                var menu = menutable.rows('.selected');
+                var model = menu.data();
+                if (model[0].mbList.length > 0) {
+                    parent.$("#orderContain").show()
+                    $.each(model[0].mbList, function (i, v) {
+                        var cc = parent.$("#btnGroup button").filter("[data-tag='" + v.ButtonID + "']");
+                        if (cc.length > 0) {
+                            $(cc).addClass("btnn");
+                            parent.$("<li data-tag='" + v.ButtonID + "'>" + $(cc).text() + "</li>").insertBefore(parent.$(".gbin1-list div"));
+                            if (model[0].mbList.length == i + 1) {
+                                parent.$('.gbin1-list').sortable();
+                            }
+                        }
+                    });
+                }
+            } else {
+                alertify.log("请选择一条操作信息！");
+            }
+        });
+
+     }) 
+</script>
+
+
+
+<div class="margin w100f xoverhide">
+    <div class="panel panel-default" style="margin-top: 10px">
+        <ul class="list-group">
+            <li class="list-group-item">
+                <button type="button" class="btn btn-default" id="menuCreate">
+                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增
+                </button>
+
+                <button type="button" class="btn btn-default" id="menuEdit">
+                    <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> 编辑
+                </button>
+
+                <button type="button" class="btn btn-default" id="menuDelete">
+                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> 删除
+                </button>
+
+                <button type="button" class="btn btn-default" id="menuDistribution">
+                    <span class="glyphicon glyphicon glyphicon-lock" aria-hidden="true"></span> 分配按钮
+                </button>
+            </li>
+            <li class="list-group-item">
+                <form class="form-inline" onsubmit="return false;">
+                    <div class="form-group">
+                        <label for="MenuName">菜单名称</label>
+                        <input type="text" class="form-control" id="MenuName" placeholder="菜单名称">
+                    </div>
+                    <button type="button" class="btn btn-info " id="menuQuery">
+                        <span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询
+                    </button>
+                </form>
+            </li>
+        </ul>
+    </div>
+
+    <table id="menuTable" class="table table-bordered table-striped w100f" cellspacing="0"></table>
+
+</div>
+
+<div id="menuLayer" class="displayn">
+    <form class="form-horizontal formPadding" id="menuForm" method="post" action="/Menu/AddOrEditMenuInfo">
+        <div class="form-group">
+            @Html.Hidden("MenuID")
+            <label for="MenuName" class="col-sm-2 control-label labsty">菜单名称<span style="color:red">*</span></label>
+            <div class="col-sm-10 pad-r20">
+                <input type="text" class="form-control" maxlength="15" name="MenuName">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="MenuUrl" class="col-sm-2 control-label labsty">菜单地址&nbsp;&nbsp;</label>
+            <div class="col-sm-10 pad-r20">
+                <input type="text" class="form-control" maxlength="200" name="MenuUrl">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="MenuParent" class="col-sm-2 control-label labsty">父级菜单&nbsp;&nbsp;</label>
+            <div class="col-sm-10 pad-r20">
+                <select class="form-control" name="MenuParentID" id="MenuParent" style="width:100%" ></select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="MenuOrder" class="col-sm-2 control-label labsty">菜单序号&nbsp;&nbsp;</label>
+            <div class="col-sm-10 pad-r20">
+                <input type="text" class="form-control" name="MenuOrder">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="MenuIcon" class="col-sm-2 control-label labsty">菜单图标&nbsp;&nbsp;</label>
+            <div class="col-sm-10 pad-r20">
+                <input type="text" class="form-control" name="MenuIcon">
+            </div>
+        </div>
+    </form>
+</div>
+
+<div id="distributionBtnLayer" class="displayn">
+    <form id="formJs"></form>
+    @Html.Hidden("MenuID")
+    <div class="alert alert-success" role="alert">
+        菜单：<span id="disMenuName"></span>
+    </div>
+    <div class="container-fluid" style="height:200px" id="btnGroup">
+        <div class="row">
+            @foreach (var item in ViewBag.Button as List<Button>)
+            {
+                <div class="col-xs-3" style="margin-bottom:10px">
+                    <button type="button" class="btn btn-default" data-tag="@item.ButtonID">
+                        <span class="@item.ButtonMagic" aria-hidden="true"></span> @item.ButtonName
+                    </button>
+                </div>
+            }
+        </div>
+    </div>
+    <div id="orderContain">
+        <div style="margin-left:10px;color:red;margin-bottom:5px">拖动元素进行排序</div>
+        <ul class="gbin1-list">
+            <div style="clear:both;"></div>
+        </ul>
+    </div>
+</div>

@@ -1,0 +1,46 @@
+﻿@using DDit.Core.Data.SystemEntity.Entity;
+
+@model IEnumerable<Menu>
+
+@{
+    var menuitem=Model.Where(a=>a.MenuParentID==null).OrderBy(a=>a.MenuOrder);
+    if (menuitem!=null&&menuitem.Count()>0)
+    { 
+        foreach (var item in menuitem)
+        {
+             <ul>
+                <li>
+                    <span class="xlj"><img class="@item.MenuIcon" style="width:16px;height:16px">@item.MenuName</span>
+                    @{
+                        var childmenu = Model.Where(a => a.MenuParentID == item.MenuID).OrderBy(a => a.MenuOrder);
+                        if (childmenu != null && childmenu.Count() > 0)
+                        {
+                            <ul>
+                                @foreach (var childitem in childmenu)
+                                {
+                                    <li>
+                                        <span data-div="@childitem.MenuName" data-menuid="@childitem.MenuID" data-url="@childitem.MenuUrl" ><img class="@childitem.MenuIcon" style="width:16px;height:16px">@childitem.MenuName</span>
+                                        @{
+                                            var threemenuitem = Model.Where(a => a.MenuParentID == childitem.MenuID).OrderBy(a => a.MenuOrder);
+                                            if (threemenuitem != null && threemenuitem.Count() > 0)
+                                            {
+                                                <ul>
+                                                    @foreach (var threemenu in threemenuitem)
+                                                    {
+                                                        <li>
+                                                            <span data-div="con" data-menuid="@childitem.MenuID" data-url="@threemenu.MenuUrl"><img class="@threemenu.MenuIcon" style="width:16px;height:16px">@threemenu.MenuName</span>
+                                                        </li>
+                                                    }
+                                                </ul>
+                                            }
+                                         }
+                                    </li>
+                                 }
+                            </ul>
+                        }
+                    }
+                </li>
+             </ul>
+           }
+    }
+}
