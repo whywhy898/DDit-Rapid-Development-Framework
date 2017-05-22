@@ -4,7 +4,7 @@
 Jquery     Bootstrap  Jquery-UI
 
 ### 开发工具
-VS2013 SQLService2008R2
+VS2013 SQLServer2008R2
 
 # 开发提示
 数据库文件放在App_Code 文件夹里面，直接附加修改web.config 即可链接
