@@ -10,7 +10,9 @@ D:\Project\Open\Source\DDit-Rapid-Development-Framework\DDit.Core.Data.Repositor
 D:\Project\Open\Source\DDit-Rapid-Development-Framework\DDit.Core.Data.Repository\bin\Debug\DelegateDecompiler.EntityFramework.dll
 D:\Project\Open\Source\DDit-Rapid-Development-Framework\DDit.Core.Data.Repository\bin\Debug\EntityFramework.dll
 D:\Project\Open\Source\DDit-Rapid-Development-Framework\DDit.Core.Data.Repository\bin\Debug\EntityFramework.SqlServer.dll
+D:\Project\Open\Source\DDit-Rapid-Development-Framework\DDit.Core.Data.Repository\bin\Debug\Microsoft.Web.Infrastructure.dll
 D:\Project\Open\Source\DDit-Rapid-Development-Framework\DDit.Core.Data.Repository\bin\Debug\Mono.Reflection.dll
+D:\Project\Open\Source\DDit-Rapid-Development-Framework\DDit.Core.Data.Repository\bin\Debug\System.Web.Razor.dll
 D:\Project\Open\Source\DDit-Rapid-Development-Framework\DDit.Core.Data.Repository\bin\Debug\Z.EntityFramework.Plus.EF6.dll
 D:\Project\Open\Source\DDit-Rapid-Development-Framework\DDit.Core.Data.Repository\bin\Debug\System.Web.Mvc.dll
 D:\Project\Open\Source\DDit-Rapid-Development-Framework\DDit.Core.Data.Repository\bin\Debug\log4net.dll
@@ -27,6 +29,7 @@ D:\Project\Open\Source\DDit-Rapid-Development-Framework\DDit.Core.Data.Repositor
 D:\Project\Open\Source\DDit-Rapid-Development-Framework\DDit.Core.Data.Repository\bin\Debug\AutoMapper.xml
 D:\Project\Open\Source\DDit-Rapid-Development-Framework\DDit.Core.Data.Repository\bin\Debug\EntityFramework.xml
 D:\Project\Open\Source\DDit-Rapid-Development-Framework\DDit.Core.Data.Repository\bin\Debug\EntityFramework.SqlServer.xml
+D:\Project\Open\Source\DDit-Rapid-Development-Framework\DDit.Core.Data.Repository\bin\Debug\System.Web.Razor.xml
 D:\Project\Open\Source\DDit-Rapid-Development-Framework\DDit.Core.Data.Repository\bin\Debug\System.Web.Mvc.xml
 D:\Project\Open\Source\DDit-Rapid-Development-Framework\DDit.Core.Data.Repository\bin\Debug\log4net.xml
 D:\Project\Open\Source\DDit-Rapid-Development-Framework\DDit.Core.Data.Repository\bin\Debug\NPOI.xml
@@ -34,3 +37,4 @@ D:\Project\Open\Source\DDit-Rapid-Development-Framework\DDit.Core.Data.Repositor
 D:\Project\Open\Source\DDit-Rapid-Development-Framework\DDit.Core.Data.Repository\obj\Debug\DDit.Core.Data.Repository.csprojResolveAssemblyReference.cache
 D:\Project\Open\Source\DDit-Rapid-Development-Framework\DDit.Core.Data.Repository\obj\Debug\DDit.Core.Data.Repository.dll
 D:\Project\Open\Source\DDit-Rapid-Development-Framework\DDit.Core.Data.Repository\obj\Debug\DDit.Core.Data.Repository.pdb
+D:\Project\Open\Source\DDit-Rapid-Development-Framework\DDit.Core.Data.Repository\bin\Debug\zh-Hans\System.Web.Mvc.resources.dll
