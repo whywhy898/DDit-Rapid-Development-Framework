@@ -12,5 +12,7 @@ namespace DDit.Core.Data.IRepositories
 
        void AddRB(List<RoleMappingButton> modelList);
 
+       List<RoleMappingButton> GetbtnAuthByRole(int roleID);
+
     }
 }

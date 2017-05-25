@@ -85,6 +85,6 @@ namespace DDit.Core.Data.Repository.Repositories
                 return dal.GetRepository<Button>().Get().ToList();
             }
         }
-    
+
     }
 }

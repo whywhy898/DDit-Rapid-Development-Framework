@@ -20,5 +20,6 @@ namespace DDit.Core.Data.IRepositories
        void ModifyBtn(Button model);
 
        Button GetSingleBtnbyID(int id);
+
     }
 }

@@ -6,7 +6,17 @@ using System.Threading.Tasks;
 
 namespace DDit.Core.Data.Entity.CoreEntity
 {
-    class News
+    public class News : BaseEntity
     {
+        public int NewId { get; set; }
+
+        public string NewTitle { get; set; }
+
+        public string NewContent { get; set; }
+
+        public string NewAuthor { get; set; }
+
+        public string CreateTime { get; set; }
+
     }
 }

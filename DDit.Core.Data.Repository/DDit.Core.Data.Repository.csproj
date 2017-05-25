@@ -74,7 +74,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CoreDbContext.cs" />
-    <Compile Include="Mapping\CoreMapping\MyFastMapping.cs" />
+    <Compile Include="Mapping\CoreMapping\NewsMapping.cs" />
     <Compile Include="Mapping\SystemMapping\AccountMapping.cs" />
     <Compile Include="Mapping\SystemMapping\ButtonMapping.cs" />
     <Compile Include="Mapping\SystemMapping\DictionaryCategoryMapping.cs" />
@@ -89,7 +89,7 @@
     <Compile Include="Mapping\SystemMapping\UserMapping.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\SystemRepositories\ButtonRepository.cs" />
-    <Compile Include="Repositories\CoreRepositories\MyFastRepository.cs" />
+    <Compile Include="Repositories\CoreRepositories\NewsRepository.cs" />
     <Compile Include="Repositories\SystemRepositories\DictionaryRepository.cs" />
     <Compile Include="Repositories\SystemRepositories\DictionaryCategoryRepository.cs" />
     <Compile Include="Repositories\SystemRepositories\LoginLogRepository.cs" />

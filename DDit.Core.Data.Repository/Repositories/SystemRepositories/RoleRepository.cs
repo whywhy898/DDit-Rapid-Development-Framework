@@ -112,14 +112,17 @@ namespace DDit.Core.Data.Repository.Repositories
                     roleRepository.Update(roleModel);
                 }
 
-                //删除原有的按钮
-                if (roleModel.rbList.Count > 0) {
-                    roleBtnRepository.Delete(roleModel.rbList.ToList());   
+                if (modelList != null)
+                {
+                    //删除原有的按钮
+                    if (roleModel.rbList.Count > 0)
+                    {
+                        roleBtnRepository.Delete(roleModel.rbList.ToList());
+                    }
+                    //添加新的按钮
+                    roleBtnRepository.Insert(modelList);
+                    dal.Save();
                 }
-
-                //添加新的按钮
-                roleBtnRepository.Insert(modelList);
-                dal.Save();
             }
         }
 

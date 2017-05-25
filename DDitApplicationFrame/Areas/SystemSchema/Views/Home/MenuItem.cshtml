@@ -10,7 +10,7 @@
         {
              <ul>
                 <li>
-                    <span class="xlj"><img class="@item.MenuIcon" style="width:16px;height:16px">@item.MenuName</span>
+                    <span class="xlj"><i class="@item.MenuIcon" style="width:16px;height:16px"></i> @item.MenuName</span>
                     @{
                         var childmenu = Model.Where(a => a.MenuParentID == item.MenuID).OrderBy(a => a.MenuOrder);
                         if (childmenu != null && childmenu.Count() > 0)
@@ -19,7 +19,7 @@
                                 @foreach (var childitem in childmenu)
                                 {
                                     <li>
-                                        <span data-div="@childitem.MenuName" data-menuid="@childitem.MenuID" data-url="@childitem.MenuUrl" ><img class="@childitem.MenuIcon" style="width:16px;height:16px">@childitem.MenuName</span>
+                                        <span data-div="@childitem.MenuName" data-menuid="@childitem.MenuID" data-url="@childitem.MenuUrl" ><i class="@childitem.MenuIcon" style="width:16px;height:16px"></i> @childitem.MenuName</span>
                                         @{
                                             var threemenuitem = Model.Where(a => a.MenuParentID == childitem.MenuID).OrderBy(a => a.MenuOrder);
                                             if (threemenuitem != null && threemenuitem.Count() > 0)
@@ -28,7 +28,7 @@
                                                     @foreach (var threemenu in threemenuitem)
                                                     {
                                                         <li>
-                                                            <span data-div="con" data-menuid="@childitem.MenuID" data-url="@threemenu.MenuUrl"><img class="@threemenu.MenuIcon" style="width:16px;height:16px">@threemenu.MenuName</span>
+                                                            <span data-div="con" data-menuid="@childitem.MenuID" data-url="@threemenu.MenuUrl"><i class="@threemenu.MenuIcon" style="width:16px;height:16px"></i> @threemenu.MenuName</span>
                                                         </li>
                                                     }
                                                 </ul>

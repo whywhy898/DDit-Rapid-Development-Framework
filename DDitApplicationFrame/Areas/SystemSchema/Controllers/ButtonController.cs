@@ -30,8 +30,19 @@ namespace DDitApplicationFrame.Areas.SystemSchema.Controllers
 
         [HttpPost]
         public ActionResult GetButtonItem() {
+
             var btnModel = this.ButtonRepository.GetButtonList();
+
             return Content(SerializeObject(btnModel));
+        }
+
+        [HttpPost]
+        public ActionResult CurrentRoleBtnAuthority(int RoleID)
+        {
+
+            var result = this.RBRepository.GetbtnAuthByRole(RoleID);
+
+            return Json(result);
         }
 
         [HttpPost]
@@ -47,9 +58,6 @@ namespace DDitApplicationFrame.Areas.SystemSchema.Controllers
             }
             return Json(new ResultEntity {result=true });
         }
-
-
-
 
         [HttpPost]
         public ActionResult MenuMappingButton(int MenuID,List<MenuMappingButton> mplist) {
@@ -98,7 +106,9 @@ namespace DDitApplicationFrame.Areas.SystemSchema.Controllers
             buttonList = new List<Button>();
             mb.ForEach(m =>
             {
-                buttonList.Add(newButton.Where(a=>a.ButtonID==m.ButtonID).FirstOrDefault());
+                var btn = newButton.Where(a => a.ButtonID == m.ButtonID).FirstOrDefault();
+                if (btn != null) buttonList.Add(btn);
+                  
             });
 
             return PartialView(buttonList);

@@ -1,0 +1,17 @@
+﻿.ntItem {width:20%; float:left; padding:10px;}
+.ntItem .innerItem {  height:100px;  position:relative; }
+.ntItem .innerItem .innerItemLink { display:block; height:100%;border-radius:2px;  text-decoration:none; padding-top:24px; padding-left:20px; box-sizing:border-box;}
+.ntItem .innerItem .innerItemLink .ilTitle{ display:block;font-size:14px; color:#fff;}
+.ntItem .innerItem .innerItemLink .ilVal{ font-size:25px; color:#fff;}
+.ntItem .innerItem .il1{background:#EB5733;}
+.ntItem .innerItem .il1 i{ width:38px; height:42px; background:url('../images/il1Bg.png') 0 0 no-repeat; position:absolute;right: 16px;top: 29px;}
+.ntItem .innerItem .il2{background:#EA9336;}
+.ntItem .innerItem .il2 i{ width:40px; height:40px; background:url('../images/il2Bg.png') 0 0 no-repeat; position:absolute;right: 16px;top: 29px;}
+.ntItem .innerItem .il3{background:#3EB36F;}
+.ntItem .innerItem .il3 i{ width:35px; height:46px; background:url('../images/il3Bg.png') 0 0 no-repeat; position:absolute;right: 17px; top: 26px;}
+.ntItem .innerItem .il4{background:#3285FF;}
+.ntItem .innerItem .il4 i{ width:34px; height:42px; background:url('../images/il4Bg.png') 0 0 no-repeat; position:absolute;right: 17px; top: 29px;}
+.ntItem .innerItem .il5{background:#C251DA;}
+.ntItem .innerItem .il5 i{ width:34px; height:42px; background:url('../images/il4Bg.png') 0 0 no-repeat; position:absolute;right: 17px; top: 29px;}
+/*.glyphicon{top:2px; margin-right:10px;}
+.tree li::before{bottom: 50px; height: 100%; background: #3485F8; position: absolute; content: ""; top: 0; left: 0; width: 2px;}*/

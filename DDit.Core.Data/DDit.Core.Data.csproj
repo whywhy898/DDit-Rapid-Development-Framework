@@ -55,6 +55,7 @@
     <Compile Include="Entity\SystemEntity\MenuMappingButton.cs" />
     <Compile Include="Entity\SystemEntity\RoleMappingButton.cs" />
     <Compile Include="Entity\SystemEntity\Test.cs" />
+    <Compile Include="IRepositories\ICoreRepositories\INewsRepository.cs" />
     <Compile Include="IRepositories\ISystemRepositories\IButtonRepository.cs" />
     <Compile Include="IRepositories\ISystemRepositories\IDictionaryCategoryRepository.cs" />
     <Compile Include="IRepositories\ISystemRepositories\IDictionaryRepository.cs" />

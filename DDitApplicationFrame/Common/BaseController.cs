@@ -12,6 +12,7 @@ using DDit.Core.Data.SystemEntity.Entity;
 using Autofac;
 using Newtonsoft.Json.Converters;
 using DDit.Core.Data.Entity;
+using DDit.Core.Data.IRepositories.ICoreRepositories;
 
 
 namespace DDitApplicationFrame.Common
@@ -87,6 +88,8 @@ namespace DDitApplicationFrame.Common
         #endregion
 
         #region coreService
+
+        public INewsRepository NewService { get; set; }
 
         #endregion
 

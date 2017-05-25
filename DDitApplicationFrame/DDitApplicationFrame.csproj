@@ -167,6 +167,7 @@
     <Compile Include="Areas\SystemSchema\Controllers\TestController.cs" />
     <Compile Include="Areas\SystemSchema\Controllers\UserController.cs" />
     <Compile Include="Controllers\MainController.cs" />
+    <Compile Include="Controllers\NewsController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -201,6 +202,7 @@
     <Content Include="Content\css\coloro.css" />
     <Content Include="Content\learunui-accordion.css" />
     <Content Include="Content\Loginstyle.css" />
+    <Content Include="Content\lstyle.css" />
     <Content Include="Content\MainStyle.css" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
@@ -542,12 +544,15 @@
     <Content Include="Areas\SystemSchema\Views\Dictionary\Index.cshtml" />
     <Content Include="Areas\SystemSchema\Views\Test\Index.cshtml" />
     <Content Include="Views\Main\Index.cshtml" />
+    <Content Include="Views\News\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="packages.config" />
+    <Content Include="packages.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DDit.Component.Tools\DDit.Component.Tools.csproj">

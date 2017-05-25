@@ -1,0 +1,56 @@
+﻿@{
+    //这里必须设置为null 因为我们前台没有用MVC的模板页 而是用的标签展示
+    Layout = null;
+}
+
+@* 每个展示页面都要加入下面的引用文件 本人把所有JS Css 都用 App_Start->BundleConfig 捆绑生成 MVC特性  *@
+@Styles.Render("~/Scripts/bootstrap/css/1", "~/Scripts/datatables/css/1", "~/Content/1", "~/Scripts/alertjs/themes/1", "~/Scripts/select2/css/1", "~/Scripts/iconpicker/css/1", "~/Scripts/fancyTree/skin-win7/1", "~/Scripts/fileUpload/1")
+@Scripts.Render("~/bundles/js")
+
+<script type="text/javascript">
+    $(function () {
+        /*初始化表格配置 本插件为DataTable 具体配置看官网 
+          这里楼主进行了二次封装为了简化配置，具体可以看 Scripts -> js ->myJavaScript.js*/
+        var table = $('#NewTable').custromTable({
+            ajax: {
+                url: "/News/GetButtonList",
+                data: function (d) {
+                    d.NewTitle = $("#newTitle").val();
+                    return JSON.stringify(d);
+                }
+            },
+            columns: [
+                { data: 'NewId', visible: false },
+                { data: 'NewTitle', title: "新闻标题" },
+                { data: 'NewContent', title: "内容" },
+                {
+                    data: 'NewAuthor', title: "作者"
+                },
+                {
+                    data: 'CreateTime', title: "创建时间"
+                }
+            ]
+        });
+    })
+</script>
+
+<div class="margin w100f xoverhide">
+    <div class="panel panel-default" style="margin-top: 10px">
+        <ul class="list-group">
+            @Html.Action("CreateButtonByMuen", "Button", new { menuId =46, mark = "news" })
+            <li class="list-group-item">
+                <form class="form-inline">
+                    <div class="form-group">
+                        <label for="newTitle">新闻标题</label>
+                        <input type="text" class="form-control" name="newTitle" id="newTitle" placeholder="admin">
+                    </div>
+                    <button type="button" class="btn btn-info " id="newQuery">
+                        <span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询
+                    </button>
+                </form>
+            </li>
+        </ul>
+    </div>
+
+    <table id="NewTable" class="table table-bordered table-striped w100f" cellspacing="0"></table>
+</div>

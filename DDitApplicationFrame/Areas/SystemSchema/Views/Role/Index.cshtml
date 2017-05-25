@@ -134,69 +134,59 @@
                              },
                              select: function (event, data) {
                                  var obj = data.node;
-                                 if (obj.selected) { //是否选择
-                                     if (data.node.folder) {  //是否为父节点
-                                         if (obj.children != null && obj.children.length > 0) { //节点数大于O
-                                             $.each(obj.children, function (i, v) {
-                                                 v.setSelected();
-                                                 if (v.data.btn.length > 0) {
-                                                     var btnstr = "";
-                                                     $.each(v.data.btn, function (is, vs) {
-                                                         btnstr += vs.ButtonID + ","
-                                                     })
-                                                     $(v.li).attr("data-btnstr", btnstr);
-                                                 }
-                                             });
-                                         }
-                                     } else {
-                                         var btnstr = "";
-                                         $.each(obj.data.btn, function (is, vs) {
-                                             btnstr += vs.ButtonID + ","
-                                         })
-                                         $(obj.li).attr("data-btnstr", btnstr);
-        
-                                     }
-                                 } else {
-                                     if (data.node.folder) {
-                                         if (obj.children != null && obj.children.length > 0) { //节点数大于O
-                                             $.each(obj.children, function (i, v) {
-                                                 $(v.li).removeAttr("data-btnstr");
-                                                 v.setSelected(false);
-                                             })
-                                         }
-                                     } else {
-                                         $(obj.li).removeAttr("data-btnstr");
-                                     }
+
+                                 var btnObj = $("#distributeRole").data("btnAuth")
+                                 var btnstr = "";
+                                 if (!data.node.folder) {
+                                     var menuid = data.node.data.id
+                                     $.each(btnObj, function (i, v) {
+                                         if (v.MenuID == menuid)
+                                           btnstr += v.ButtonID + ","
+                                     })
+                                     $(data.node.li).attr("data-btnstr", btnstr);
                                  }
+
+                                 //if (obj.selected) { //是否选择
+                                 //    if (data.node.folder) {  //是否为父节点
+                                 //        if (obj.children != null && obj.children.length > 0) { //节点数大于O
+                                 //            $.each(obj.children, function (i, v) {
+                                 //                v.setSelected();
+                                 //                if (v.data.btn.length > 0) {
+                                 //                    var btnstr = "";
+                                 //                    $.each(v.data.btn, function (is, vs) {
+                                 //                        btnstr += vs.ButtonID + ","
+                                 //                    })
+                                 //                    $(v.li).attr("data-btnstr", btnstr);
+                                 //                }
+                                 //            });
+                                 //        }
+                                 //    } else {
+                                 //        var btnstr = "";
+                                 //        $.each(obj.data.btn, function (is, vs) {
+                                 //            btnstr += vs.ButtonID + ","
+                                 //        })
+                                 //        $(obj.li).attr("data-btnstr", btnstr);
+        
+                                 //    }
+                                 //} else {
+                                 //    if (data.node.folder) {
+                                 //        if (obj.children != null && obj.children.length > 0) { //节点数大于O
+                                 //            $.each(obj.children, function (i, v) {
+                                 //                $(v.li).removeAttr("data-btnstr");
+                                 //                v.setSelected(false);
+                                 //            })
+                                 //        }
+                                 //    } else {
+                                 //        $(obj.li).removeAttr("data-btnstr");
+                                 //    }
+                                 //}
                              }
                          });
 
-                         $(document).on('click', '#btngroups button', function () {
-                             var tree = $("#menuTree").fancytree("getTree"),
-                                 activeNode = tree.getActiveNode();
-                             var btnid = $(this).attr("name")
-                             if ($(this).hasClass("right")) {
-                                 $(this).removeClass("right")
-                                 if (activeNode.selected) {
-                                     var bb = $(activeNode.li).data("btnstr")
-                                     var nn = bb.replace(btnid.toString() + ",", "");
-                                     $(activeNode.li).data("btnstr", nn);
-                                 }
-                             } else {
-                                 $(this).addClass("right")
-                                 if (activeNode.selected) {
-                                     var bb = $(activeNode.li).data("btnstr")
-                                     var nn = bb + btnid.toString() + ",";
-                                     $(activeNode.li).data("btnstr", nn);
-                                 }
-                             }
-                         })
-
                          function showBtn(obj) {
-                             var group = $(obj.li).data("btnstr");
+                             var group = $(obj.li).attr("data-btnstr");
                              var cc = obj.data.btn;
                              var btngroup = "";
-                             console.log(cc);
                              $.each(cc, function (i, v) {
                                  var selClass = "";
                                  if (group != undefined && group != "") {
@@ -211,7 +201,28 @@
                              })
                              $("#btngroups").html(btngroup)
                          }
-                     });                             
+
+                         $("#btngroups").on('click',"button",function () {
+                             var tree = $("#menuTree").fancytree("getTree"),
+                                 activeNode = tree.getActiveNode();
+                             var btnid = $(this).attr("name")
+                             if ($(this).hasClass("right")) {
+                                 $(this).removeClass("right")
+                                 if (activeNode.selected) {
+                                     var bb = $(activeNode.li).attr("data-btnstr");
+                                     var nn = bb.replace(btnid.toString() + ",", "");
+                                     $(activeNode.li).attr("data-btnstr", nn);
+                                 }
+                             } else {
+                                 $(this).addClass("right")
+                                 if (activeNode.selected) {
+                                     var bb = $(activeNode.li).attr("data-btnstr");
+                                     var nn = bb + btnid.toString() + ",";
+                                     $(activeNode.li).attr("data-btnstr",nn);
+                                 }
+                             }
+                         })
+                    });                             
                 }
             });
         }
@@ -226,7 +237,7 @@
                 var menuArray = [];
                 var rbArray = [];
                 $.each(selecedTree, function (i, v) {
-                    var btnofmenu = $(v.li).data("btnstr")
+                    var btnofmenu = $(v.li).attr("data-btnstr")
                     menuArray.push(v.data.id);
                     if (btnofmenu != undefined && btnofmenu != "") {
                         $.each(btnofmenu.split(","), function (si, sv) {
@@ -237,11 +248,16 @@
                 });
                 rbList["menuId"] = menuArray;
                 rbList["modelList"] = rbArray;
-                $.ajaxSetup({ global: false, contentType: "application/json"});
-                $.post("/Role/DistributionMenuAndButton", JSON.stringify(rbList), function (data) {
-                    if (data.result) {
-                        parent.layer.close(index);
-                        alertify.log("角色权限分配成功！");
+                $.ajax({
+                    type:"post",
+                    url: "/Role/DistributionMenuAndButton",
+                    contentType: "application/json",
+                    data:JSON.stringify(rbList), 
+                    success: function (data) {
+                        if (data.result) {
+                            parent.layer.close(index);
+                            alertify.log("角色权限分配成功！");
+                        }
                     }
                 })
 
@@ -292,33 +308,35 @@
 
         //分配权限按钮
         $("#roleAuthority").click(function () {
+       
             var cc = table.rows('.selected')
+
             if (cc[0].length > 0) {
                 var model = cc.data();
-                openDistouLayer();
-                parent.$("#selecedMenuName").text(model[0].RoleName);
-                parent.$("#roleID").val(model[0].RoleID);
-                var menuList = model[0].MenuList;
-                
-                var menuIDarray = [];
-                $.each(menuList, function (i, v) {
-                    menuIDarray.push(v.MenuID);
-                })
+                $.post("/Button/CurrentRoleBtnAuthority", { RoleID: model[0].RoleID }, function (data) {
+                    openDistouLayer();
+                    parent.$("#distributeRole").data("btnAuth", data);
+                    parent.$("#selecedMenuName").text(model[0].RoleName);
+                    parent.$("#roleID").val(model[0].RoleID);
+                    var menuList = model[0].MenuList;
 
-                var tree = parent.$("#menuTree").fancytree("getTree");
+                    var menuIDarray = [];
+                    $.each(menuList, function (i, v) {
+                        menuIDarray.push(v.MenuID);
+                    })
+                    var tree = parent.$("#menuTree").fancytree("getTree");
+                    tree.visit(function (node) {
+                        if ($.inArray(node.data.id, menuIDarray) > -1) {
+                            node.setSelected();
+                        }
+                    })
 
-                tree.visit(function (node) {
-                    if ($.inArray(node.data.id, menuIDarray) > -1) {
-                        node.setSelected();
-                    }
+                    $.each(tree.getSelectedNodes(), function (i, v) {
+                        if ($.inArray(v.data.id, menuIDarray) == -1) {
+                            v.setSelected(false);
+                        }
+                    })
                 })
-                
-                $.each(tree.getSelectedNodes(), function (i, v) {
-                    if ($.inArray(v.data.id, menuIDarray) == -1) {
-                        v.setSelected(false);
-                    }
-                })
-                
             } else {
                 alertify.log("请选择一条操作信息！");
             }

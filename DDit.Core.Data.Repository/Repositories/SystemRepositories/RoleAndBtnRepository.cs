@@ -20,5 +20,14 @@ namespace DDit.Core.Data.Repository.Repositories
                 dal.Save();
             }
         }
+
+
+        public List<RoleMappingButton> GetbtnAuthByRole(int roleID)
+        {
+            using (UnitOfWork dal = new UnitOfWork(new CoreDbContext()))
+            {
+              return dal.GetRepository<RoleMappingButton>().Get(a => a.RoleID == roleID).ToList(); 
+            }
+        }
     }
 }

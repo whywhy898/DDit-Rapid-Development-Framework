@@ -27,21 +27,23 @@ namespace DDit.Core.Data.Entity
         [JsonIgnore]
         public string draw { get; set; }
 
-        [NotMapped]
+       
         [JsonIgnore]
         public List<Orderby> order { get; set; }
 
-        [NotMapped]
+       
         [JsonIgnore]
         public List<Datacolumn> columns { get; set; }          
     }
 
+   [NotMapped]
    public class Orderby {
        public string column { get; set; }
 
        public string dir { get; set; }
    }
 
+   [NotMapped]
    public class Datacolumn {
        public string data { get; set; }
 

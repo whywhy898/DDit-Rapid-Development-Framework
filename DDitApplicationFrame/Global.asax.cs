@@ -31,7 +31,7 @@ namespace DDitApplicationFrame
 
             StackExchange.Profiling.EntityFramework6.MiniProfilerEF6.Initialize();
             var builder = new ContainerBuilder();
-         // builder.RegisterType<UserRepository>().As<IUserRepository>();
+
             SetupResolveRules(builder);
             builder.RegisterControllers(typeof(MvcApplication).Assembly).PropertiesAutowired();
             builder.RegisterAssemblyModules(Assembly.GetExecutingAssembly());
