@@ -1,0 +1,14 @@
+D:\Project\Open\Source\DDit-Rapid-Development-Framework\DDit.Component.Data\bin\Debug\DDit.Component.Data.dll.config
+D:\Project\Open\Source\DDit-Rapid-Development-Framework\DDit.Component.Data\bin\Debug\DDit.Component.Data.dll
+D:\Project\Open\Source\DDit-Rapid-Development-Framework\DDit.Component.Data\bin\Debug\DDit.Component.Data.pdb
+D:\Project\Open\Source\DDit-Rapid-Development-Framework\DDit.Component.Data\bin\Debug\Autofac.dll
+D:\Project\Open\Source\DDit-Rapid-Development-Framework\DDit.Component.Data\bin\Debug\EntityFramework.dll
+D:\Project\Open\Source\DDit-Rapid-Development-Framework\DDit.Component.Data\bin\Debug\EntityFramework.SqlServer.dll
+D:\Project\Open\Source\DDit-Rapid-Development-Framework\DDit.Component.Data\bin\Debug\Microsoft.Web.Infrastructure.dll
+D:\Project\Open\Source\DDit-Rapid-Development-Framework\DDit.Component.Data\bin\Debug\System.Web.Razor.dll
+D:\Project\Open\Source\DDit-Rapid-Development-Framework\DDit.Component.Data\bin\Debug\Autofac.xml
+D:\Project\Open\Source\DDit-Rapid-Development-Framework\DDit.Component.Data\bin\Debug\EntityFramework.xml
+D:\Project\Open\Source\DDit-Rapid-Development-Framework\DDit.Component.Data\bin\Debug\EntityFramework.SqlServer.xml
+D:\Project\Open\Source\DDit-Rapid-Development-Framework\DDit.Component.Data\bin\Debug\System.Web.Razor.xml
+D:\Project\Open\Source\DDit-Rapid-Development-Framework\DDit.Component.Data\obj\Debug\DDit.Component.Data.dll
+D:\Project\Open\Source\DDit-Rapid-Development-Framework\DDit.Component.Data\obj\Debug\DDit.Component.Data.pdb
