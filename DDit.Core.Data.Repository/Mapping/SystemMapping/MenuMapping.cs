@@ -15,17 +15,17 @@ namespace DDit.Core.Data.Repository.Mapping.SystemMapping
 
             HasKey(a=>a.MenuID);
 
-            this.ToTable("Menu","Base");
+            this.ToTable("MENU", "Base");
 
-            this.Property(a => a.MenuID).HasColumnName("Menu_ID");
-            this.Property(a => a.MenuName).HasColumnName("Menu_Name");
-            this.Property(a => a.MenuOrder).HasColumnName("Menu_Order");
-            this.Property(a => a.MenuParentID).HasColumnName("Menu_ParentID");
-            this.Property(a => a.MenuUrl).HasColumnName("Menu_Url");
-            this.Property(a => a.MenuIcon).HasColumnName("Menu_Icon");
-            this.Property(a => a.IsVisible).HasColumnName("IsVisible");
-            this.Property(a => a.CreateTime).HasColumnName("Create_Time");
-            this.Property(a => a.UpdateTime).HasColumnName("Update_Time");
+            this.Property(a => a.MenuID).HasColumnName("MENU_ID");
+            this.Property(a => a.MenuName).HasColumnName("MENU_NAME");
+            this.Property(a => a.MenuOrder).HasColumnName("MENU_ORDER");
+            this.Property(a => a.MenuParentID).HasColumnName("MENU_PARENTID");
+            this.Property(a => a.MenuUrl).HasColumnName("MENU_URL");
+            this.Property(a => a.MenuIcon).HasColumnName("MENU_ICON");
+            this.Property(a => a.IsVisible).HasColumnName("ISVISIBLE");
+            this.Property(a => a.CreateTime).HasColumnName("CREATE_TIME");
+            this.Property(a => a.UpdateTime).HasColumnName("UPDATE_TIME");
 
             HasMany(t => t.Childs)
                         .WithOptional(t => t.Father)

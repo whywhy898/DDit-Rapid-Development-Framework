@@ -14,6 +14,5 @@ namespace DDit.Core.Data.SystemEntity.Entity
 
         public int Age { get; set; }
 
-        public Account Account { get; set; }
     }
 }

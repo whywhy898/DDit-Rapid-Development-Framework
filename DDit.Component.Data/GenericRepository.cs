@@ -4,6 +4,7 @@ using System.Data;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Data.SqlClient;
+using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -22,6 +23,7 @@ namespace DDit.Component.Data
         {
             this.context = context;
             this.dbSet = context.Set<TEntity>();
+            this.context.Database.Log = new Action<string>(q => Debug.WriteLine(q));
         }
 
         public IQueryable<TEntity> Get(

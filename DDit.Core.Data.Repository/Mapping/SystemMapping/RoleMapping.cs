@@ -14,19 +14,19 @@ namespace DDit.Core.Data.Repository.Mapping.SystemMapping
        public RoleMapping() {
 
            HasKey(a => a.RoleID);
-           this.ToTable("Role", "Base");
-           this.Property(a => a.RoleID).HasColumnName("Role_ID");
-           this.Property(a => a.RoleName).HasColumnName("Role_Name");
-           this.Property(a => a.RoleDescription).HasColumnName("Role_Description");
-           this.Property(a => a.CreateTime).HasColumnName("Create_Time");
-           this.Property(a => a.UpdateTime).HasColumnName("Update_Time");
+           this.ToTable("ROLE", "Base");
+           this.Property(a => a.RoleID).HasColumnName("ROLE_ID");
+           this.Property(a => a.RoleName).HasColumnName("ROLE_NAME");
+           this.Property(a => a.RoleDescription).HasColumnName("ROLE_DESCRIPTION");
+           this.Property(a => a.CreateTime).HasColumnName("CREATE_TIME");
+           this.Property(a => a.UpdateTime).HasColumnName("UPDATE_TIME");
 
 
            HasMany(a => a.MenuList).WithMany(a => a.RoleList).Map(m =>
            {
-               m.ToTable("Role_Menu", "Base");
-               m.MapLeftKey("Role_ID");
-               m.MapRightKey("Menu_ID");
+               m.ToTable("ROLE_MENU", "Base");
+               m.MapLeftKey("ROLE_ID");
+               m.MapRightKey("MENU_ID");
            });
 
        }

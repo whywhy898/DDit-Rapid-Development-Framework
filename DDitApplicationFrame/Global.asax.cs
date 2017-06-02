@@ -29,7 +29,8 @@ namespace DDitApplicationFrame
         protected void Application_Start()
         {
 
-            StackExchange.Profiling.EntityFramework6.MiniProfilerEF6.Initialize();
+            //StackExchange.Profiling.EntityFramework6.MiniProfilerEF6.Initialize();
+
             var builder = new ContainerBuilder();
 
             SetupResolveRules(builder);

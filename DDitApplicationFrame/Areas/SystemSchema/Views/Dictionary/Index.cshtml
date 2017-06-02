@@ -47,9 +47,13 @@
         });
 
         //绑定Ajax的内容
-        $.post("/Dictionary/GetGetDicategoryList", {}, function (data) {
-            odata =data;
-        });
+        var getDicategory= function() {
+            $.post("/Dictionary/GetGetDicategoryList", {}, function (data) {
+                odata = data;
+            });
+        }
+
+        getDicategory();
 
         //字典层
         var openDicValueLayer = function () {
@@ -206,6 +210,7 @@
                             table.ajax.reload();       
                             var tree =$("#dicTree").fancytree("getTree")
                             tree.reload();
+                            getDicategory();
                             alertify.success("操作成功！");    
                         } else {
                             alertify.error(data.message);

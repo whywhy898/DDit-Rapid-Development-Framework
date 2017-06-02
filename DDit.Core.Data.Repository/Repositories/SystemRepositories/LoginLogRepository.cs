@@ -13,7 +13,7 @@ namespace DDit.Core.Data.Repository.Repositories
 
         public void AddLoginlog(LoginLog model)
         {
-            using (UnitOfWork dal = new UnitOfWork(new CoreDbContext()))
+            using (UnitOfWork dal = new UnitOfWork(ConnectDB.DataBase()))
             {
                 dal.GetRepository<LoginLog>().Insert(model);
                 dal.Save();
@@ -22,7 +22,7 @@ namespace DDit.Core.Data.Repository.Repositories
 
         public Tuple<int, List<LoginLog>> GetLoginlog(LoginLog model)
         {
-            using (UnitOfWork dal = new UnitOfWork(new CoreDbContext()))
+            using (UnitOfWork dal = new UnitOfWork(ConnectDB.DataBase()))
             {
                 var loginRepository = dal.GetRepository<LoginLog>();
                 var conditions = ExpandHelper.True<LoginLog>();

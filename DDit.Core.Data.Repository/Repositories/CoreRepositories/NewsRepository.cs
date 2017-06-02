@@ -16,7 +16,7 @@ namespace DDit.Core.Data.Repository.Repositories.CoreRepositories
 
         public Tuple<int, List<News>> GetNewsList(News model)
         {
-            using(var dal=new UnitOfWork(new CoreDbContext())){
+            using(var dal=new UnitOfWork(ConnectDB.DataBase())){
 
                 var newsRepository = dal.GetRepository<News>();
                 var conditions = ExpandHelper.True<News>();

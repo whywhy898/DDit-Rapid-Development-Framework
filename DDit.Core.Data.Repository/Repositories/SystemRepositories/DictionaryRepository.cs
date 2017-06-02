@@ -15,7 +15,7 @@ namespace DDit.Core.Data.Repository.Repositories
 
         public Tuple<int, List<Dictionary>> GetDictionaryList(Dictionary model)
         {
-            using (UnitOfWork dal = new UnitOfWork(new CoreDbContext()))
+            using (UnitOfWork dal = new UnitOfWork(ConnectDB.DataBase()))
             {
 
                 var dictionaryRepository = dal.GetRepository<Dictionary>();
@@ -40,7 +40,7 @@ namespace DDit.Core.Data.Repository.Repositories
 
         public void AddDic(Dictionary model)
         {
-            using (UnitOfWork dal = new UnitOfWork(new CoreDbContext()))
+            using (UnitOfWork dal = new UnitOfWork(ConnectDB.DataBase()))
             {
                 dal.GetRepository<Dictionary>().Insert(model);
                 dal.Save();
@@ -49,7 +49,7 @@ namespace DDit.Core.Data.Repository.Repositories
 
         public void DisabledDic(int btnID)
         {
-            using (UnitOfWork dal = new UnitOfWork(new CoreDbContext()))
+            using (UnitOfWork dal = new UnitOfWork(ConnectDB.DataBase()))
             {
                 var dictionaryRepository = dal.GetRepository<Dictionary>();
                 var dicentitly = dictionaryRepository.GetByID(btnID);
@@ -61,7 +61,7 @@ namespace DDit.Core.Data.Repository.Repositories
 
         public void ModifyDic(Dictionary model)
         {
-            using (UnitOfWork dal = new UnitOfWork(new CoreDbContext()))
+            using (UnitOfWork dal = new UnitOfWork(ConnectDB.DataBase()))
             {
                 dal.GetRepository<Dictionary>().UpdateSup(model, new List<string>() { "CreateTime" }, false);
 

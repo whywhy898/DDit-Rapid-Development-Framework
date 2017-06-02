@@ -256,6 +256,7 @@
                 openMenuLayer();
                 parent.layer.title("编辑菜单", mainLayer);
                 parent.$("#menuForm").setForm(model[0]);
+                console.log(model[0]);
                 parent.$("#MenuParent").val(model[0].MenuParentID).trigger("change");
             } else {
                 alertify.log("请选择一条操作信息！");

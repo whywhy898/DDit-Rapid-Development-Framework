@@ -1,4 +1,5 @@
-﻿using DDit.Core.Data.Entity;
+﻿using DDit.Component.Tools;
+using DDit.Core.Data.Entity;
 using DDit.Core.Data.IRepositories;
 using DDit.Core.Data.SystemEntity.Entity;
 using DDitApplicationFrame.Common;
@@ -41,8 +42,9 @@ namespace DDitApplicationFrame.Service
                 }
                 return new Tuple<bool, string, User>(falg, message, User);
             }catch(Exception ex){
-                message = "数据库连接异常，请与管理员联系";
+                message = "服务器异常，请与管理员联系";
                 falg = false;
+                new LogHelper().LogError("被系统过滤捕获的异常" + ex);
                 return new Tuple<bool, string, User>(falg, message,new User());
             }
            

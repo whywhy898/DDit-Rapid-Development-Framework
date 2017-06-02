@@ -17,14 +17,12 @@ namespace DDitApplicationFrame.Areas.SystemSchema.Controllers
 
         public ActionResult Index()
         {
-
             return View();
         }
 
         [HttpPost]
         public ActionResult GetButtonList(Button model) {
             var result = this.ButtonRepository.GetButtonList(model);
- 
             return this.JsonResult(result);
         }
 

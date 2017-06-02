@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 using System.Web.Mvc;
 
 namespace DDit.Core.Data.SystemEntity.Entity
@@ -33,6 +34,7 @@ namespace DDit.Core.Data.SystemEntity.Entity
 
        public ICollection<Menu> Childs { get; set; }
 
+       [JsonIgnore]
        public ICollection<Role> RoleList { get; set; }
 
        public ICollection<MenuMappingButton> mbList { get; set; }

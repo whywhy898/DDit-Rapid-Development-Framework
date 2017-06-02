@@ -13,13 +13,13 @@ namespace DDit.Core.Data.Repository.Mapping.SystemMapping
     {
         public SystemInfoMapping() {
             HasKey(a => a.SystemID);
-            this.ToTable("SystemInfo", "Base");
+            this.ToTable("SYSTEMINFO", "Base");
 
-            this.Property(a => a.SystemID).HasColumnName("System_ID");
-            this.Property(a => a.SystemTitle).HasColumnName("System_Title");
-            this.Property(a => a.SystemCopyright).HasColumnName("System_Version");
-            this.Property(a => a.SystemVersion).HasColumnName("System_Copyright");
-            this.Property(a => a.IsValidCode).HasColumnName("IsValidCode");
+            this.Property(a => a.SystemID).HasColumnName("SYSTEM_ID");
+            this.Property(a => a.SystemTitle).HasColumnName("SYSTEM_TITLE");
+            this.Property(a => a.SystemCopyright).HasColumnName("SYSTEM_VERSION");
+            this.Property(a => a.SystemVersion).HasColumnName("SYSTEM_COPYRIGHT");
+            this.Property(a => a.IsValidCode).HasColumnName("ISVALIDCODE");
 
         }
     }

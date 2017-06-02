@@ -14,9 +14,9 @@ namespace DDit.Core.Data.Repository
     {
         public DbContext context;
 
-        public UnitOfWork(DbContext dbContext)
+        public UnitOfWork(DbContext _context)
         {
-             context = dbContext;
+            context = _context;
         }
 
         public GenericRepository<TEntity> GetRepository<TEntity>() where TEntity : class

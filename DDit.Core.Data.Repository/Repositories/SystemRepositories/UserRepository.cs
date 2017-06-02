@@ -11,6 +11,7 @@ using DDit.Core.Data.Repositories;
 using Z.EntityFramework.Plus;
 using System.Data.Entity;
 using DDit.Core.Data.SystemEntity.Entity;
+using System.Diagnostics;
 
 namespace DDit.Core.Data.Repositories
 {
@@ -19,7 +20,7 @@ namespace DDit.Core.Data.Repositories
 
        public Tuple<int, List<User>> GetList(User model)
         {
-            using (UnitOfWork dal=new UnitOfWork(new CoreDbContext()))
+            using (UnitOfWork dal=new UnitOfWork(ConnectDB.DataBase()))
             {
                 var SysUserRepository = dal.GetRepository<User>();
 
@@ -54,7 +55,7 @@ namespace DDit.Core.Data.Repositories
 
         public User GetSingle(User model)
         {
-            using(UnitOfWork dal=new UnitOfWork(new CoreDbContext())){
+            using(UnitOfWork dal=new UnitOfWork(ConnectDB.DataBase())){
                 var result = dal.GetRepository<User>().Get(filter: a => a.UserName == model.UserName, includeProperties: "RoleList").FirstOrDefault();     
                 return result;
             }
@@ -63,9 +64,19 @@ namespace DDit.Core.Data.Repositories
 
         public User GetbyID(int userID)
         {
-            using (UnitOfWork dal = new UnitOfWork(new CoreDbContext()))
+            using (UnitOfWork dal = new UnitOfWork(ConnectDB.DataBase()))
             {
-                var result = dal.GetRepository<User>().Get(filter: a => a.UserID == userID, includeProperties: "RoleList.MenuList,RoleList.rbList").AsNoTracking().FirstOrDefault();
+               
+                // var result = dal.GetRepository<User>().Get(filter: a => a.UserID == userID, includeProperties: "RoleList.MenuList,RoleList.rbList").AsNoTracking().FirstOrDefault();
+
+                var result = dal.GetRepository<User>().Get(filter: a => a.UserID == userID,includeProperties: "RoleList").FirstOrDefault();
+
+                foreach (var item in result.RoleList)
+	            {
+                    var role=dal.GetRepository<Role>().Get(a=>a.RoleID==item.RoleID,includeProperties:"MenuList,rbList").FirstOrDefault();
+                    item.MenuList = role.MenuList;
+                    item.rbList = role.rbList;
+	            } 
 
                 return result;
             }
@@ -73,7 +84,7 @@ namespace DDit.Core.Data.Repositories
 
         public void AddUser(User model)
         {
-            using (UnitOfWork dal = new UnitOfWork(new CoreDbContext()))
+            using (UnitOfWork dal = new UnitOfWork(ConnectDB.DataBase()))
             {
 
                 dal.GetRepository<User>().Insert(model);
@@ -83,7 +94,7 @@ namespace DDit.Core.Data.Repositories
 
         public void ModifyUser(User model)
         {
-            using (UnitOfWork dal = new UnitOfWork(new CoreDbContext()))
+            using (UnitOfWork dal = new UnitOfWork(ConnectDB.DataBase()))
             {
                 dal.GetRepository<User>().UpdateSup(model, new List<string>() { "IsEnable", "CreateTime" }, false);
                 dal.Save();
@@ -92,7 +103,7 @@ namespace DDit.Core.Data.Repositories
 
         public void DeleteUser(User model)
         {
-            using (UnitOfWork dal = new UnitOfWork(new CoreDbContext()))
+            using (UnitOfWork dal = new UnitOfWork(ConnectDB.DataBase()))
             {
                var sysUserRepository= dal.GetRepository<User>();
                var Usermodel = sysUserRepository.GetByID(model.UserID);
@@ -111,7 +122,7 @@ namespace DDit.Core.Data.Repositories
         /// <returns></returns>
         public void SetUserInfoRole(int userID, List<int> roleIDList)
         {
-            using (UnitOfWork dal = new UnitOfWork(new CoreDbContext()))
+            using (UnitOfWork dal = new UnitOfWork(ConnectDB.DataBase()))
             {
                 var sysUserRepository = dal.GetRepository<User>();
                 var roleRepository = dal.GetRepository<Role>();

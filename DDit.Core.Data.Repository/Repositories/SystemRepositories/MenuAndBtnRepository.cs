@@ -15,7 +15,7 @@ namespace DDit.Core.Data.Repository.Repositories
 
         public void MenuMapBtn(int MenuID,List<MenuMappingButton> mplist)
         {
-            using (UnitOfWork dal = new UnitOfWork(new CoreDbContext()))
+            using (UnitOfWork dal = new UnitOfWork(ConnectDB.DataBase()))
             {
                var menuRepository=dal.GetRepository<Menu>();
                var menuBtnRepository = dal.GetRepository<MenuMappingButton>();
@@ -31,7 +31,7 @@ namespace DDit.Core.Data.Repository.Repositories
 
         public List<MenuMappingButton> GetMBList(MenuMappingButton model)
         {
-            using (UnitOfWork dal = new UnitOfWork(new CoreDbContext()))
+            using (UnitOfWork dal = new UnitOfWork(ConnectDB.DataBase()))
             {
                 var listMb = dal.GetRepository<MenuMappingButton>().Get(filter: a => a.ButtonID == model.ButtonID).ToList();
                 return listMb;

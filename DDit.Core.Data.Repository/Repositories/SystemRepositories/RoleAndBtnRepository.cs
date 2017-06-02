@@ -14,7 +14,7 @@ namespace DDit.Core.Data.Repository.Repositories
 
         public void AddRB(List<RoleMappingButton> modelList)
         {
-            using (UnitOfWork dal = new UnitOfWork(new CoreDbContext()))
+            using (UnitOfWork dal = new UnitOfWork(ConnectDB.DataBase()))
             {
                 dal.GetRepository<RoleMappingButton>().Insert(modelList);
                 dal.Save();
@@ -24,7 +24,7 @@ namespace DDit.Core.Data.Repository.Repositories
 
         public List<RoleMappingButton> GetbtnAuthByRole(int roleID)
         {
-            using (UnitOfWork dal = new UnitOfWork(new CoreDbContext()))
+            using (UnitOfWork dal = new UnitOfWork(ConnectDB.DataBase()))
             {
               return dal.GetRepository<RoleMappingButton>().Get(a => a.RoleID == roleID).ToList(); 
             }

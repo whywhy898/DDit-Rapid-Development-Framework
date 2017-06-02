@@ -17,6 +17,8 @@ namespace DDit.Core.Data.Entity.SystemEntity.DoEntity
 
         public string MenuParentName { get; set; }
 
+        public int? MenuParentID { get; set; }
+
         public int MenuOrder { get; set; }
 
         public string MenuIcon { get; set; }

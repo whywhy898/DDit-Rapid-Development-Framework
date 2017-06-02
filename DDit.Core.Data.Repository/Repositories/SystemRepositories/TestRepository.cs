@@ -13,7 +13,7 @@ namespace DDit.Core.Data.Repository.Repositories.SystemRepositories
     {
         public void Delete()
         {
-            using (UnitOfWork dal = new UnitOfWork(new CoreDbContext())) {
+            using (UnitOfWork dal = new UnitOfWork(ConnectDB.DataBase())) {
                 dal.GetRepository<Test>().Get().Delete();
                 dal.Save();
             }
@@ -21,7 +21,7 @@ namespace DDit.Core.Data.Repository.Repositories.SystemRepositories
 
         public Test GetSingle(int ID)
         {
-            using (UnitOfWork dal = new UnitOfWork(new CoreDbContext()))
+            using (UnitOfWork dal = new UnitOfWork(ConnectDB.DataBase()))
             {
                 return dal.GetRepository<Test>().Get(a => a.ID == ID, includeProperties: "Account").FirstOrDefault<Test>();
             }

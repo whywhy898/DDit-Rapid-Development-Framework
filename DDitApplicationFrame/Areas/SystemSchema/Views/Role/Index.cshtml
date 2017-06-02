@@ -146,6 +146,14 @@
                                      $(data.node.li).attr("data-btnstr", btnstr);
                                  }
 
+                                 if (data.node.folder) {
+                                    if (obj.children != null && obj.children.length > 0) { //节点数大于O
+                                        $.each(obj.children, function (i, v) {
+                                             v.setSelected(obj.selected?true:false);
+                                        })
+                                    }
+                                 }
+
                                  //if (obj.selected) { //是否选择
                                  //    if (data.node.folder) {  //是否为父节点
                                  //        if (obj.children != null && obj.children.length > 0) { //节点数大于O
@@ -248,6 +256,7 @@
                 });
                 rbList["menuId"] = menuArray;
                 rbList["modelList"] = rbArray;
+
                 $.ajax({
                     type:"post",
                     url: "/Role/DistributionMenuAndButton",
@@ -256,6 +265,7 @@
                     success: function (data) {
                         if (data.result) {
                             parent.layer.close(index);
+                            table.ajax.reload();
                             alertify.log("角色权限分配成功！");
                         }
                     }

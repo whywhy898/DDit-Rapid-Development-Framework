@@ -13,11 +13,9 @@ namespace DDit.Core.Data.Repository.Repositories
 
         public SystemInfo GetSystemInfo()
         {
-            using (UnitOfWork dal = new UnitOfWork(new CoreDbContext()))
+            using (UnitOfWork dal = new UnitOfWork(ConnectDB.DataBase()))
             {
-
                 return dal.GetRepository<SystemInfo>().Get().FirstOrDefault();
-
            }
         }
     }

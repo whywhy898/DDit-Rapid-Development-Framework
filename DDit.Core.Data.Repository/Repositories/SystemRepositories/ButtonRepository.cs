@@ -16,7 +16,7 @@ namespace DDit.Core.Data.Repository.Repositories
 
         public Tuple<int, List<Button>> GetButtonList(Button model)
         {
-            using (UnitOfWork dal = new UnitOfWork(new CoreDbContext()))
+            using (UnitOfWork dal = new UnitOfWork(ConnectDB.DataBase()))
             {
                 var buttonRepository = dal.GetRepository<Button>();
                 var conditions = ExpandHelper.True<Button>();
@@ -45,7 +45,7 @@ namespace DDit.Core.Data.Repository.Repositories
 
         public void AddBtn(Button model)
         {
-            using (UnitOfWork dal = new UnitOfWork(new CoreDbContext()))
+            using (UnitOfWork dal = new UnitOfWork(ConnectDB.DataBase()))
             {
                 dal.GetRepository<Button>().Insert(model);
                 dal.Save();
@@ -54,7 +54,7 @@ namespace DDit.Core.Data.Repository.Repositories
 
         public void DeleteBtn(int btnID)
         {
-            using (UnitOfWork dal = new UnitOfWork(new CoreDbContext()))
+            using (UnitOfWork dal = new UnitOfWork(ConnectDB.DataBase()))
             {
                 dal.GetRepository<Button>().Delete(btnID);
                 dal.Save();
@@ -63,7 +63,7 @@ namespace DDit.Core.Data.Repository.Repositories
 
         public void ModifyBtn(Button model)
         {
-            using (UnitOfWork dal = new UnitOfWork(new CoreDbContext()))
+            using (UnitOfWork dal = new UnitOfWork(ConnectDB.DataBase()))
             {
                 dal.GetRepository<Button>().UpdateSup(model, new List<string>() { "CreateTime" }, false);
                 dal.Save();
@@ -72,7 +72,7 @@ namespace DDit.Core.Data.Repository.Repositories
 
         public Button GetSingleBtnbyID(int id)
         {
-            using (UnitOfWork dal = new UnitOfWork(new CoreDbContext()))
+            using (UnitOfWork dal = new UnitOfWork(ConnectDB.DataBase()))
             {
                 return dal.GetRepository<Button>().GetByID(id);
             }
@@ -80,7 +80,7 @@ namespace DDit.Core.Data.Repository.Repositories
 
         public List<Button> GetButtonList()
         {
-            using (UnitOfWork dal = new UnitOfWork(new CoreDbContext()))
+            using (UnitOfWork dal = new UnitOfWork(ConnectDB.DataBase()))
             {
                 return dal.GetRepository<Button>().Get().ToList();
             }

@@ -15,7 +15,7 @@ namespace DDit.Core.Data.Repository.Mapping.SystemMapping
 
             this.HasKey(a => a.ID);
 
-            this.ToTable("test", "Test");
+            this.ToTable("TEST", "TEST");
             this.Property(a => a.ID).HasColumnName("ID");
             this.Property(a => a.Name).HasColumnName("Name");
             this.Property(a => a.Age).HasColumnName("age");

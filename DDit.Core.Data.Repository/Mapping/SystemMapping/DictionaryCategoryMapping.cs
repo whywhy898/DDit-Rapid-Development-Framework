@@ -14,12 +14,12 @@ namespace DDit.Core.Data.Repository.Mapping.SystemMapping
         public DictionaryCategoryMapping() {
 
             HasKey(a => a.ID);
-            ToTable("DictionaryCategory", "Base");
+            ToTable("DICTIONARYCATEGORY", "Base");
             this.Property(a => a.ID).HasColumnName("ID");
-            this.Property(a => a.Category).HasColumnName("Category");
-            this.Property(a => a.Enabled).HasColumnName("Enabled");
-            this.Property(a => a.CreateTime).HasColumnName("Create_Time");
-            this.Property(a => a.UpdateTime).HasColumnName("Update_Time");
+            this.Property(a => a.Category).HasColumnName("CATEGORY");
+            this.Property(a => a.Enabled).HasColumnName("ENABLED");
+            this.Property(a => a.CreateTime).HasColumnName("CREATE_TIME");
+            this.Property(a => a.UpdateTime).HasColumnName("UPDATE_TIME");
 
            
         }

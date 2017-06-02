@@ -23,7 +23,7 @@ namespace DDit.Core.Data.Repository.Repositories
                     .ForMember(de => de.MenuParentName, op => { op.MapFrom(s => s.Father.MenuName); });
             });
 
-            using (UnitOfWork dal = new UnitOfWork(new CoreDbContext()))
+            using (UnitOfWork dal = new UnitOfWork(ConnectDB.DataBase()))
             {
                 var menuRepository = dal.GetRepository<Menu>();
                 var conditions = ExpandHelper.True<Menu>();
@@ -59,7 +59,7 @@ namespace DDit.Core.Data.Repository.Repositories
         }
 
         public List<Menu> GetParentMenu() {
-            using (UnitOfWork dal = new UnitOfWork(new CoreDbContext()))
+            using (UnitOfWork dal = new UnitOfWork(ConnectDB.DataBase()))
             {
                 var result = dal.GetRepository<Menu>().Get(filter: p => p.MenuParentID == null, includeProperties: "Childs,Childs.mbList.ButtonModel").ToList();
                 return result;
@@ -68,7 +68,7 @@ namespace DDit.Core.Data.Repository.Repositories
 
         public Menu OrderAssignment(Menu model)
         {
-            using (UnitOfWork dal = new UnitOfWork(new CoreDbContext()))
+            using (UnitOfWork dal = new UnitOfWork(ConnectDB.DataBase()))
             {
                 var menuRepository = dal.GetRepository<Menu>();
                 model.CreateTime = DateTime.Now;
@@ -93,7 +93,7 @@ namespace DDit.Core.Data.Repository.Repositories
 
         public void AddMenu(Menu model)
         {
-            using (UnitOfWork dal = new UnitOfWork(new CoreDbContext()))
+            using (UnitOfWork dal = new UnitOfWork(ConnectDB.DataBase()))
             {
                 dal.GetRepository<Menu>().Insert(model);
                 dal.Save();
@@ -102,7 +102,7 @@ namespace DDit.Core.Data.Repository.Repositories
 
         public void ModifyMenu(Menu model)
         {
-            using (UnitOfWork dal = new UnitOfWork(new CoreDbContext()))
+            using (UnitOfWork dal = new UnitOfWork(ConnectDB.DataBase()))
             {
                 dal.GetRepository<Menu>().Update(model);
                 dal.Save();
@@ -111,7 +111,7 @@ namespace DDit.Core.Data.Repository.Repositories
 
         public void DeleteMenu(int Menuid)
         {
-            using (UnitOfWork dal = new UnitOfWork(new CoreDbContext()))
+            using (UnitOfWork dal = new UnitOfWork(ConnectDB.DataBase()))
             {
                 dal.GetRepository<Menu>().Delete(Menuid);
                 dal.Save();
@@ -120,7 +120,7 @@ namespace DDit.Core.Data.Repository.Repositories
 
         public Menu GetSingleMenu(int Menuid)
         {
-            using (UnitOfWork dal = new UnitOfWork(new CoreDbContext()))
+            using (UnitOfWork dal = new UnitOfWork(ConnectDB.DataBase()))
             {
                 return dal.GetRepository<Menu>().Get(filter: a => a.MenuID == Menuid, includeProperties: "mbList").FirstOrDefault();            
             }

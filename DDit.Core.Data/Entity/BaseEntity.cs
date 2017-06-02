@@ -14,36 +14,31 @@ namespace DDit.Core.Data.Entity
    public class BaseEntity
     {
         [NotMapped]
-        [JsonIgnore]
         [PropertyModelBinder("start")]
         public int pageIndex { get; set; }
 
         [NotMapped]
-        [JsonIgnore]
         [PropertyModelBinder("length")]
         public int pageSize { get; set; }
 
         [NotMapped]
-        [JsonIgnore]
         public string draw { get; set; }
 
-       
-        [JsonIgnore]
+        [NotMapped]
         public List<Orderby> order { get; set; }
 
-       
-        [JsonIgnore]
+        [NotMapped]
         public List<Datacolumn> columns { get; set; }          
     }
 
-   [NotMapped]
+
    public class Orderby {
        public string column { get; set; }
 
        public string dir { get; set; }
    }
 
-   [NotMapped]
+ 
    public class Datacolumn {
        public string data { get; set; }
 
