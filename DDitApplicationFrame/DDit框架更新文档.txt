@@ -1,0 +1,22 @@
+DDitApplicationFrame 2.1版本 更新时间 2017-06-02
+
+
+
+1.登录错误日志记录，如果发现登录失败可以查看日志查找错误原因。
+
+2.解决ie浏览器打开报JS错误问题。
+
+3.解决角色分配菜单勾选父节点全选问题
+
+4.添加对oracle数据库支持
+   
+   （1）修改web.config 中配置文件    <add key="DBconnect" value="sqlserver" />   sqlserver/oracle 已进行数据库切换
+   
+   （2）切换到oracle 删除所有mapping 中的 表架构 例如      ToTable("BUTTON"); 去掉了第二个参数，sqlserver 必须写。 
+   
+   （3）本次oracle 选择的11版本  不支持APPLY 语法  所以 在Inclub（）方法中加载实体属性的时候不能多级加载 例如：MenuList.mbList
+
+
+
+
+注：本次更新 修改了原user 表名称为 UserInfomation
