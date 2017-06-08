@@ -22,7 +22,7 @@ namespace DDitApplicationFrame.Common
 
             builder.RegisterType<UserService>().As<IUserService>().PropertiesAutowired();
 
-            builder.RegisterType<MysqlDbContext>().As<DbContext>();
+            builder.RegisterType<CoreDbContext>().As<DbContext>();
         }
 
     }
