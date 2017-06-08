@@ -39,8 +39,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Autofac, Version=4.0.1.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
-      <HintPath>..\packages\Autofac.4.0.1\lib\net45\Autofac.dll</HintPath>
+    <Reference Include="Autofac, Version=4.6.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.4.6.0\lib\net45\Autofac.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Autofac.Integration.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
@@ -69,6 +69,14 @@
     </Reference>
     <Reference Include="MiniProfiler.Mvc, Version=3.0.11.0, Culture=neutral, PublicKeyToken=b44f9351044011a3, processorArchitecture=MSIL">
       <HintPath>..\packages\MiniProfiler.MVC4.3.0.11\lib\net40\MiniProfiler.Mvc.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="MySql.Data, Version=6.9.9.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <HintPath>..\packages\MySql.Data.6.9.9\lib\net45\MySql.Data.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="MySql.Data.Entity.EF6, Version=6.9.9.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <HintPath>..\packages\MySql.Data.Entity.6.9.9\lib\net45\MySql.Data.Entity.EF6.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
@@ -166,7 +174,6 @@
     <Compile Include="Common\BaseController.cs" />
     <Compile Include="Common\ErrorHandleAttribute.cs" />
     <Compile Include="Common\ErrorMessage.cs" />
-    <Compile Include="Common\RegisterModule.cs" />
     <Compile Include="Areas\SystemSchema\Controllers\AccountController.cs" />
     <Compile Include="Areas\SystemSchema\Controllers\ButtonController.cs" />
     <Compile Include="Areas\SystemSchema\Controllers\DictionaryController.cs" />
@@ -177,6 +184,7 @@
     <Compile Include="Areas\SystemSchema\Controllers\RoleController.cs" />
     <Compile Include="Areas\SystemSchema\Controllers\TestController.cs" />
     <Compile Include="Areas\SystemSchema\Controllers\UserController.cs" />
+    <Compile Include="Common\RegisterModule.cs" />
     <Compile Include="Controllers\MainController.cs" />
     <Compile Include="Controllers\NewsController.cs" />
     <Compile Include="Controllers\UserController.cs" />
@@ -211,7 +219,6 @@
     <Content Include="Content\css\colorm.css" />
     <Content Include="Content\css\colorn.css" />
     <Content Include="Content\css\coloro.css" />
-    <Content Include="Content\learunui-accordion.css" />
     <Content Include="Content\Loginstyle.css" />
     <Content Include="Content\lstyle.css" />
     <Content Include="Content\MainStyle.css" />
@@ -411,8 +418,6 @@
     <Content Include="Images\loginloading.gif" />
     <Content Include="Images\mima.png" />
     <Content Include="Images\user.png" />
-    <Content Include="Images\DDitlogo1.png" />
-    <Content Include="Images\龙图框架.jpg" />
     <Content Include="Images\龙图框架.png" />
     <Content Include="Scripts\datatables\css\dataTables.bootstrap.css" />
     <Content Include="Scripts\datatables\css\dataTables.bootstrap.min.css" />

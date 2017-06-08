@@ -3,6 +3,7 @@ using DDit.Component.Tools;
 using DDit.Core.Data.IRepositories;
 using DDit.Core.Data.SystemEntity.Entity;
 using System;
+using Autofac;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
@@ -16,7 +17,7 @@ namespace DDit.Core.Data.Repository.Repositories
 
         public Tuple<int, List<Button>> GetButtonList(Button model)
         {
-            using (UnitOfWork dal = new UnitOfWork(ConnectDB.DataBase()))
+            using (UnitOfWork dal = BaseInfo._container.Resolve<UnitOfWork>())
             {
                 var buttonRepository = dal.GetRepository<Button>();
                 var conditions = ExpandHelper.True<Button>();
@@ -45,7 +46,7 @@ namespace DDit.Core.Data.Repository.Repositories
 
         public void AddBtn(Button model)
         {
-            using (UnitOfWork dal = new UnitOfWork(ConnectDB.DataBase()))
+            using (UnitOfWork dal = BaseInfo._container.Resolve<UnitOfWork>())
             {
                 dal.GetRepository<Button>().Insert(model);
                 dal.Save();
@@ -54,7 +55,7 @@ namespace DDit.Core.Data.Repository.Repositories
 
         public void DeleteBtn(int btnID)
         {
-            using (UnitOfWork dal = new UnitOfWork(ConnectDB.DataBase()))
+            using (UnitOfWork dal = BaseInfo._container.Resolve<UnitOfWork>())
             {
                 dal.GetRepository<Button>().Delete(btnID);
                 dal.Save();
@@ -63,7 +64,7 @@ namespace DDit.Core.Data.Repository.Repositories
 
         public void ModifyBtn(Button model)
         {
-            using (UnitOfWork dal = new UnitOfWork(ConnectDB.DataBase()))
+            using (UnitOfWork dal = BaseInfo._container.Resolve<UnitOfWork>())
             {
                 dal.GetRepository<Button>().UpdateSup(model, new List<string>() { "CreateTime" }, false);
                 dal.Save();
@@ -72,7 +73,7 @@ namespace DDit.Core.Data.Repository.Repositories
 
         public Button GetSingleBtnbyID(int id)
         {
-            using (UnitOfWork dal = new UnitOfWork(ConnectDB.DataBase()))
+            using (UnitOfWork dal = BaseInfo._container.Resolve<UnitOfWork>())
             {
                 return dal.GetRepository<Button>().GetByID(id);
             }
@@ -80,7 +81,7 @@ namespace DDit.Core.Data.Repository.Repositories
 
         public List<Button> GetButtonList()
         {
-            using (UnitOfWork dal = new UnitOfWork(ConnectDB.DataBase()))
+            using (UnitOfWork dal = BaseInfo._container.Resolve<UnitOfWork>())
             {
                 return dal.GetRepository<Button>().Get().ToList();
             }

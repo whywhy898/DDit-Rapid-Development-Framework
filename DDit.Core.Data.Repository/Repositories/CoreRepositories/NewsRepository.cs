@@ -3,6 +3,7 @@ using DDit.Component.Tools;
 using DDit.Core.Data.Entity.CoreEntity;
 using DDit.Core.Data.IRepositories.ICoreRepositories;
 using System;
+using Autofac;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
@@ -16,7 +17,7 @@ namespace DDit.Core.Data.Repository.Repositories.CoreRepositories
 
         public Tuple<int, List<News>> GetNewsList(News model)
         {
-            using(var dal=new UnitOfWork(ConnectDB.DataBase())){
+            using(var dal=BaseInfo._container.Resolve<UnitOfWork>()){
 
                 var newsRepository = dal.GetRepository<News>();
                 var conditions = ExpandHelper.True<News>();

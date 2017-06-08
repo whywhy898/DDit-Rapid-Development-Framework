@@ -3,6 +3,7 @@ using DDit.Core.Data.SystemEntity.Entity;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using Autofac;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,7 +16,7 @@ namespace DDit.Core.Data.Repository.Repositories
 
         public Tuple<int, List<Dictionary>> GetDictionaryList(Dictionary model)
         {
-            using (UnitOfWork dal = new UnitOfWork(ConnectDB.DataBase()))
+            using (UnitOfWork dal = BaseInfo._container.Resolve<UnitOfWork>())
             {
 
                 var dictionaryRepository = dal.GetRepository<Dictionary>();
@@ -40,7 +41,7 @@ namespace DDit.Core.Data.Repository.Repositories
 
         public void AddDic(Dictionary model)
         {
-            using (UnitOfWork dal = new UnitOfWork(ConnectDB.DataBase()))
+            using (UnitOfWork dal = BaseInfo._container.Resolve<UnitOfWork>())
             {
                 dal.GetRepository<Dictionary>().Insert(model);
                 dal.Save();
@@ -49,7 +50,7 @@ namespace DDit.Core.Data.Repository.Repositories
 
         public void DisabledDic(int btnID)
         {
-            using (UnitOfWork dal = new UnitOfWork(ConnectDB.DataBase()))
+            using (UnitOfWork dal = BaseInfo._container.Resolve<UnitOfWork>())
             {
                 var dictionaryRepository = dal.GetRepository<Dictionary>();
                 var dicentitly = dictionaryRepository.GetByID(btnID);
@@ -61,7 +62,7 @@ namespace DDit.Core.Data.Repository.Repositories
 
         public void ModifyDic(Dictionary model)
         {
-            using (UnitOfWork dal = new UnitOfWork(ConnectDB.DataBase()))
+            using (UnitOfWork dal = BaseInfo._container.Resolve<UnitOfWork>())
             {
                 dal.GetRepository<Dictionary>().UpdateSup(model, new List<string>() { "CreateTime" }, false);
 

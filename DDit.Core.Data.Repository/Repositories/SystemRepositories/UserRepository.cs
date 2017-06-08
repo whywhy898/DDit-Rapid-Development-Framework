@@ -2,6 +2,7 @@
 using DDit.Core.Data.IRepositories;
 using DDit.Core.Data.Repository;
 using DDit.Component.Tools;
+using Autofac;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,7 +21,7 @@ namespace DDit.Core.Data.Repositories
 
        public Tuple<int, List<User>> GetList(User model)
         {
-            using (UnitOfWork dal=new UnitOfWork(ConnectDB.DataBase()))
+            using (UnitOfWork dal=BaseInfo._container.Resolve<UnitOfWork>())
             {
                 var SysUserRepository = dal.GetRepository<User>();
 
@@ -55,7 +56,7 @@ namespace DDit.Core.Data.Repositories
 
         public User GetSingle(User model)
         {
-            using(UnitOfWork dal=new UnitOfWork(ConnectDB.DataBase())){
+            using(UnitOfWork dal=BaseInfo._container.Resolve<UnitOfWork>()){
                 var result = dal.GetRepository<User>().Get(filter: a => a.UserName == model.UserName, includeProperties: "RoleList").FirstOrDefault();     
                 return result;
             }
@@ -64,7 +65,7 @@ namespace DDit.Core.Data.Repositories
 
         public User GetbyID(int userID)
         {
-            using (UnitOfWork dal = new UnitOfWork(ConnectDB.DataBase()))
+            using (UnitOfWork dal = BaseInfo._container.Resolve<UnitOfWork>())
             {
                
                 // var result = dal.GetRepository<User>().Get(filter: a => a.UserID == userID, includeProperties: "RoleList.MenuList,RoleList.rbList").AsNoTracking().FirstOrDefault();
@@ -84,7 +85,7 @@ namespace DDit.Core.Data.Repositories
 
         public void AddUser(User model)
         {
-            using (UnitOfWork dal = new UnitOfWork(ConnectDB.DataBase()))
+            using (UnitOfWork dal = BaseInfo._container.Resolve<UnitOfWork>())
             {
 
                 dal.GetRepository<User>().Insert(model);
@@ -94,7 +95,7 @@ namespace DDit.Core.Data.Repositories
 
         public void ModifyUser(User model)
         {
-            using (UnitOfWork dal = new UnitOfWork(ConnectDB.DataBase()))
+            using (UnitOfWork dal = BaseInfo._container.Resolve<UnitOfWork>())
             {
                 dal.GetRepository<User>().UpdateSup(model, new List<string>() { "IsEnable", "CreateTime" }, false);
                 dal.Save();
@@ -103,7 +104,7 @@ namespace DDit.Core.Data.Repositories
 
         public void DeleteUser(User model)
         {
-            using (UnitOfWork dal = new UnitOfWork(ConnectDB.DataBase()))
+            using (UnitOfWork dal = BaseInfo._container.Resolve<UnitOfWork>())
             {
                var sysUserRepository= dal.GetRepository<User>();
                var Usermodel = sysUserRepository.GetByID(model.UserID);
@@ -122,7 +123,7 @@ namespace DDit.Core.Data.Repositories
         /// <returns></returns>
         public void SetUserInfoRole(int userID, List<int> roleIDList)
         {
-            using (UnitOfWork dal = new UnitOfWork(ConnectDB.DataBase()))
+            using (UnitOfWork dal = BaseInfo._container.Resolve<UnitOfWork>())
             {
                 var sysUserRepository = dal.GetRepository<User>();
                 var roleRepository = dal.GetRepository<Role>();

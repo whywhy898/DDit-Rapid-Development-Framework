@@ -16,6 +16,10 @@ using DDitApplicationFrame.Service;
 using DDit.Core.Data;
 using StackExchange.Profiling;
 using DDit.Component.Tools;
+using DDitApplicationFrame.Service.Imp;
+using DDit.Core.Data.Repository;
+using System.Data.Entity;
+using System.Web.Compilation;
 
 
 
@@ -28,20 +32,32 @@ namespace DDitApplicationFrame
     {
         protected void Application_Start()
         {
-
+            //开启MiniProfilerEF6监控 
             //StackExchange.Profiling.EntityFramework6.MiniProfilerEF6.Initialize();
 
+            #region autofac IOC容器配置
             var builder = new ContainerBuilder();
 
-            SetupResolveRules(builder);
+            //注册所有的controller
             builder.RegisterControllers(typeof(MvcApplication).Assembly).PropertiesAutowired();
+            //注册所有模块module
             builder.RegisterAssemblyModules(Assembly.GetExecutingAssembly());
 
+            var assemblys = BuildManager.GetReferencedAssemblies().Cast<Assembly>().ToArray();
+
+            //注册所有继承IDependency接口的类
+            builder.RegisterAssemblyTypes(assemblys)
+            .Where(type => typeof(IDependency).IsAssignableFrom(type) && !type.IsAbstract);
+
+            //注册服务，所有IxxxxRepository=>xxxxRepository
+            builder.RegisterAssemblyTypes(assemblys).Where(t => t.Name.EndsWith("Repository") && !t.Name.StartsWith("I")).AsImplementedInterfaces();
+          
             var container = builder.Build();
 
-            BaseController._container = container;
+            BaseInfo._container = container;
 
             DependencyResolver.SetResolver(new AutofacDependencyResolver(container));
+            #endregion
 
             AreaRegistration.RegisterAllAreas();
 
@@ -49,7 +65,6 @@ namespace DDitApplicationFrame
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
-
 
             log4net.Config.XmlConfigurator.Configure();
 
@@ -61,7 +76,6 @@ namespace DDitApplicationFrame
             config.Formatters.JsonFormatter
                         .SerializerSettings
                         .ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
-
         }
 
         protected void Application_BeginRequest()
@@ -77,39 +91,5 @@ namespace DDitApplicationFrame
             MiniProfiler.Stop();
         }
         
-        private void SetupResolveRules(ContainerBuilder builder)
-        {
-            var Inter = new List<Type>();
-            Assembly assembly = Assembly.Load("DDit.Core.Data");
-            foreach (Type aaa in assembly.GetTypes())
-            {
-                if (aaa.Name.StartsWith("I") && aaa.Name.EndsWith("Repository"))
-                {
-                    Inter.Add(aaa);
-                }
-            }
-
-            var entity = new List<Type>();
-            Assembly entassembly = Assembly.Load("DDit.Core.Data.Repository");
-            foreach (Type aaa in entassembly.GetTypes())
-            {
-                if (aaa.Name.EndsWith("Repository"))
-                {
-                    entity.Add(aaa);
-                }
-            }
-
-            foreach (var item in entity)
-            {
-                Inter.ForEach(a =>
-                {
-                    if (a.Name.Contains(item.Name)) {
-                        builder.RegisterType(item).As(a);
-                    }
-                });    
-            }
-
-        }
-
     }
 }

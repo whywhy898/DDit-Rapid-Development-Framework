@@ -2,6 +2,7 @@
 using DDit.Core.Data.IRepositories;
 using DDit.Core.Data.SystemEntity.Entity;
 using DDit.Component.Tools;
+using Autofac;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -16,7 +17,7 @@ namespace DDit.Core.Data.Repository.Repositories
 
         public Tuple<int, List<Role>> GetRoleList(Role model)
         {
-            using (UnitOfWork dal = new UnitOfWork(ConnectDB.DataBase()))
+            using (UnitOfWork dal = BaseInfo._container.Resolve<UnitOfWork>())
             {
                 var conditions = ExpandHelper.True<Role>();
                 if (!string.IsNullOrEmpty(model.RoleName))
@@ -44,7 +45,7 @@ namespace DDit.Core.Data.Repository.Repositories
 
         public void AddRole(Role model)
         {
-            using (UnitOfWork dal = new UnitOfWork(ConnectDB.DataBase()))
+            using (UnitOfWork dal = BaseInfo._container.Resolve<UnitOfWork>())
             {
                dal.GetRepository<Role>().Insert(model);
                dal.Save();
@@ -52,7 +53,7 @@ namespace DDit.Core.Data.Repository.Repositories
         }
 
         public Role Validate(Role model) {
-            using (UnitOfWork dal = new UnitOfWork(ConnectDB.DataBase()))
+            using (UnitOfWork dal = BaseInfo._container.Resolve<UnitOfWork>())
             {
               var temp = dal.GetRepository<Role>().Get(filter: a => a.RoleName == model.RoleName);
               if (model.RoleID != 0) {
@@ -64,7 +65,7 @@ namespace DDit.Core.Data.Repository.Repositories
 
         public void ModifyRole(Role model)
         {
-            using (UnitOfWork dal = new UnitOfWork(ConnectDB.DataBase()))
+            using (UnitOfWork dal = BaseInfo._container.Resolve<UnitOfWork>())
             {
                 dal.GetRepository<Role>().UpdateSup(model, new List<string>() { "CreateTime" }, false);
 
@@ -73,7 +74,7 @@ namespace DDit.Core.Data.Repository.Repositories
         }
 
         public List<Role> GetRoleItem() {
-            using (UnitOfWork dal = new UnitOfWork(ConnectDB.DataBase()))
+            using (UnitOfWork dal = BaseInfo._container.Resolve<UnitOfWork>())
             {
                 return dal.GetRepository<Role>().Get(orderBy: a => a.OrderByDescending(q => q.RoleID)).ToList();
             }
@@ -81,7 +82,7 @@ namespace DDit.Core.Data.Repository.Repositories
 
         public void AddMenuAndBtnOfRole(int roleID, List<int> Menu, List<RoleMappingButton> modelList)
         {
-            using (UnitOfWork dal = new UnitOfWork(ConnectDB.DataBase()))
+            using (UnitOfWork dal = BaseInfo._container.Resolve<UnitOfWork>())
             {
                 var roleRepository=dal.GetRepository<Role>();
                 var roleBtnRepository = dal.GetRepository<RoleMappingButton>();
@@ -126,7 +127,7 @@ namespace DDit.Core.Data.Repository.Repositories
         }
 
         public ResultEntity RemoveRole(int roleID) {
-            using (UnitOfWork dal = new UnitOfWork(ConnectDB.DataBase()))
+            using (UnitOfWork dal = BaseInfo._container.Resolve<UnitOfWork>())
             {
                var roleRepository = dal.GetRepository<Role>();
                var rolemodel = roleRepository.Get(filter: a => a.RoleID == roleID, includeProperties: "UserList").FirstOrDefault();

@@ -25,7 +25,7 @@ $('#tree').on("click", "span[data-div]", function () {
     if (aUrl == "")
         return;
     var amenuID = $(this).data('menuid');
-    var oImg = $(this).find("img").attr("class");
+    var oImg = $(this).find("i").attr("class");
     if (!arrTile[aDiv]) {       //判断是不是已添加了li
 
         loadifarme(aDiv, aUrl);

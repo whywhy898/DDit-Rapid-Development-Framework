@@ -158,6 +158,10 @@
 
                         //图标插件初始化
                         $("[name='MenuIcon']").iconPicker({ type: true });
+
+                        var cc = document.getElementById("MenuIndex").contentWindow.menuPid
+
+                        console.log(cc);
             
                     });
                 }
@@ -253,10 +257,10 @@
             var cc = menutable.rows('.selected')
             if (cc[0].length > 0) {
                 var model = cc.data();
+                menuPid = model[0].MenuParentID;
                 openMenuLayer();
                 parent.layer.title("编辑菜单", mainLayer);
                 parent.$("#menuForm").setForm(model[0]);
-                console.log(model[0]);
                 parent.$("#MenuParent").val(model[0].MenuParentID).trigger("change");
             } else {
                 alertify.log("请选择一条操作信息！");

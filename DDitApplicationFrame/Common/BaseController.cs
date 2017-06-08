@@ -19,11 +19,7 @@ namespace DDitApplicationFrame.Common
 {
     public class BaseController : Controller
     {
-        /// <summary>
-        /// IOC盒子
-        /// </summary>
-        public static IContainer _container;
-
+      
         public User UserInfo { get {
 
             var cc = User.Identity.IsAuthenticated;

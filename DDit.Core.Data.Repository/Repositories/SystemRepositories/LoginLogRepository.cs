@@ -2,6 +2,7 @@
 using DDit.Core.Data.SystemEntity.Entity;
 using DDit.Component.Tools;
 using System;
+using Autofac;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
@@ -13,7 +14,7 @@ namespace DDit.Core.Data.Repository.Repositories
 
         public void AddLoginlog(LoginLog model)
         {
-            using (UnitOfWork dal = new UnitOfWork(ConnectDB.DataBase()))
+            using (UnitOfWork dal = BaseInfo._container.Resolve<UnitOfWork>())
             {
                 dal.GetRepository<LoginLog>().Insert(model);
                 dal.Save();
@@ -22,7 +23,7 @@ namespace DDit.Core.Data.Repository.Repositories
 
         public Tuple<int, List<LoginLog>> GetLoginlog(LoginLog model)
         {
-            using (UnitOfWork dal = new UnitOfWork(ConnectDB.DataBase()))
+            using (UnitOfWork dal = BaseInfo._container.Resolve<UnitOfWork>())
             {
                 var loginRepository = dal.GetRepository<LoginLog>();
                 var conditions = ExpandHelper.True<LoginLog>();
