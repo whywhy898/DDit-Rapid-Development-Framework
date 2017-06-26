@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using DDit.Component.Tools;
-using DDit.Core.Data.SystemEntity.Entity;
+using DDit.Core.Data.Entity.SystemEntity;
 using DDit.Core.Data.Entity;
 
 namespace DDitApplicationFrame.Areas.SystemSchema.Controllers

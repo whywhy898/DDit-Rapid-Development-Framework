@@ -88,6 +88,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Linq.Dynamic, Version=1.0.6132.35681, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Linq.Dynamic.1.0.7\lib\net40\System.Linq.Dynamic.dll</HintPath>
@@ -107,6 +108,7 @@
     <Compile Include="CacheHelp.cs" />
     <Compile Include="CustomModelBind.cs" />
     <Compile Include="DynamicJson.cs" />
+    <Compile Include="EmailHelper.cs" />
     <Compile Include="ExpandHelper.cs" />
     <Compile Include="IDependency.cs" />
     <Compile Include="LogHelper.cs" />
@@ -116,7 +118,6 @@
     <Compile Include="PropertyModelBinderAttribute.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

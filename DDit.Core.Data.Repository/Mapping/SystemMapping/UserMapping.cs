@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Data.Entity.Migrations;
 using System.Data.Entity.ModelConfiguration;
 using DDit.Core.Data.Entity;
-using DDit.Core.Data.SystemEntity.Entity;
+using DDit.Core.Data.Entity.SystemEntity;
 
 namespace DDit.Core.Data.Repository.Mapping.SystemMapping
 {
@@ -21,6 +21,8 @@ namespace DDit.Core.Data.Repository.Mapping.SystemMapping
             this.Property(a => a.UserPassword).HasColumnName("USER_PASSWORD");
             this.Property(a => a.UserName).HasColumnName("USER_NAME");
             this.Property(a => a.UserReallyname).HasColumnName("USER_REALLYNAME");
+            this.Property(a => a.MobilePhone).HasColumnName("MOBILEPHONE");
+            this.Property(a => a.Email).HasColumnName("EMAIL");
             this.Property(a => a.DepartmentID).HasColumnName("DEPARTMENT_ID");
             this.Property(a => a.CreateTime).HasColumnName("CREATE_TIME");
             this.Property(a => a.UpdateTime).HasColumnName("UPDATE_TIME");
@@ -35,6 +37,9 @@ namespace DDit.Core.Data.Repository.Mapping.SystemMapping
                    m.MapLeftKey("USER_ID");
                    m.MapRightKey("ROLE_ID");
             });
+
+            //用户关联部门
+            HasRequired(d => d.Department).WithMany(u => u.Users).HasForeignKey(m=>m.DepartmentID);
    
         }
     } 

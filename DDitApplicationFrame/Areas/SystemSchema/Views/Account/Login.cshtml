@@ -34,7 +34,6 @@
               $(".loading").show();
               
               $.post("/Account/Login", { UserName: UserName, UserPassword: Password }, function (data) {
-                 
                   if (data.result) {
                       var taskurl = $("#taskurl").val();
                       if (taskurl == "" || taskurl == "/") {

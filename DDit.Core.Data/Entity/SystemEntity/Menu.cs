@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using System.Web.Mvc;
 
-namespace DDit.Core.Data.SystemEntity.Entity
+namespace DDit.Core.Data.Entity.SystemEntity
 {
     public class Menu : BaseEntity
     {

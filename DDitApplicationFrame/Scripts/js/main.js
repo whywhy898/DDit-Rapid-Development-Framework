@@ -61,7 +61,46 @@ $('#tree').on("click", "span[data-div]", function () {
         }
         $('#tit span').removeClass('boxbg');
     });
+
     //点击右键效果
+    cilcktitle()
+
+    //点击右侧关闭
+    $('#tit').on("click", "b", function (e) {
+        var $this = $(this).parent('li'),	//查找b的唯一父元素li 
+            msg = $this.attr('msg');	//返回文档中li的参数msg
+        var mdiv = $('.main div[msg="' + msg + '"]'),
+            mMsg = mdiv.siblings('div[msg]');
+        var thisIndex = $(this).parent().index();//获取被点击li的索引值
+        $this.remove();
+        mdiv.hide();
+        arrTile[msg] = 0;
+        $('#jqContextMenu').hide();
+
+        //首页后面有其他tab栏
+        if ($("#tit li").length) {
+            //如果当前在首页栏，删除首页后面的选项卡,tab栏不切换
+            if ($("#tit span").hasClass('boxbg')) {
+                $("#tit li").removeClass('boxbg');
+                $(".main div[msg]").hide();
+                $(".sy").show();
+            } else if ($(this).parent().hasClass('boxbg')) {
+                //如果当前位置不在首页，当前点击的li是活动的，就显示它的前一个
+                $("#tit li").eq(thisIndex - 1).addClass('boxbg').siblings().removeClass('boxbg');
+                var msgs = $("#tit li").eq(thisIndex - 1).attr("msg");
+                // console.log(msgs);
+                $('.main div[msg="' + msgs + '"]').show().siblings().hide();
+            }
+        } else {
+            $(".sy").show();
+        }
+        e.stopPropagation();
+    })
+})
+
+
+//点击右键效果
+function cilcktitle() {
     $('#tit li').contextMenu('myMenu1', {
         bindings: {
             'open': function (t) {
@@ -101,37 +140,46 @@ $('#tree').on("click", "span[data-div]", function () {
             }
         }
     })
-    //点击右侧关闭
-    $('#tit').on("click", "b", function (e) {
-        var $this = $(this).parent('li'),	//查找b的唯一父元素li 
-            msg = $this.attr('msg');	//返回文档中li的参数msg
-        var mdiv = $('.main div[msg="' + msg + '"]'),
-            mMsg = mdiv.siblings('div[msg]');
-        var thisIndex = $(this).parent().index();//获取被点击li的索引值
-        $this.remove();
-        mdiv.hide();
-        arrTile[msg] = 0;
-        $('#jqContextMenu').hide();
+}
 
-        //首页后面有其他tab栏
-        if ($("#tit li").length) {
-            //如果当前在首页栏，删除首页后面的选项卡,tab栏不切换
-            if ($("#tit span").hasClass('boxbg')) {
-                $("#tit li").removeClass('boxbg');
-                $(".main div[msg]").hide();
-                $(".sy").show();
-            } else if ($(this).parent().hasClass('boxbg')) {
-                //如果当前位置不在首页，当前点击的li是活动的，就显示它的前一个
-                $("#tit li").eq(thisIndex - 1).addClass('boxbg').siblings().removeClass('boxbg');
-                var msgs = $("#tit li").eq(thisIndex - 1).attr("msg");
-                // console.log(msgs);
-                $('.main div[msg="' + msgs + '"]').show().siblings().hide();
-            }
-        } else {
-            $(".sy").show();
-        }
-        e.stopPropagation();
-    })
+$("#messUl").on("click", "[name='layerMes']", function () {
+    var aUrl = "/Message/UserMessagePage"
+    var aDiv = "我的消息";
+    if (!arrTile[aDiv]) {       //判断是不是已添加了li
+        loadifarme(aDiv, aUrl);
+        //获取左边相对应图标
+        $('#tit ul').append($("<li></li>").attr({
+            'msg': aDiv,
+            'class': 'boxbg',
+            'data-url': aUrl
+        }).html('<img/>' + aDiv + '<b></b>').find('img').attr('class', "glyphicon glyphicon-text16").css({ "margin-top": "-3px" }).parent());
+        arrTile[aDiv] = 1;
+    }
+    //点击左侧列表  右边显示相对应内容
+    $('div[msg=' + aDiv + ']').show().siblings().hide();
+    $('#tit').find('li[msg=' + aDiv + ']').addClass('boxbg').siblings().removeClass('boxbg');
+
+    cilcktitle()
+})
+
+$("#myMes").click(function () {
+    var aUrl = "/Message/UserMessagePage"
+    var aDiv = "我的消息";
+    if (!arrTile[aDiv]) {       //判断是不是已添加了li
+        loadifarme(aDiv, aUrl);
+        //获取左边相对应图标
+        $('#tit ul').append($("<li></li>").attr({
+            'msg': aDiv,
+            'class': 'boxbg',
+            'data-url': aUrl
+        }).html('<img/>' + aDiv + '<b></b>').find('img').attr('class', "glyphicon glyphicon-text16").css({ "margin-top": "-3px" }).parent());
+        arrTile[aDiv] = 1;
+    }
+    //点击左侧列表  右边显示相对应内容
+    $('div[msg=' + aDiv + ']').show().siblings().hide();
+    $('#tit').find('li[msg=' + aDiv + ']').addClass('boxbg').siblings().removeClass('boxbg');
+
+    cilcktitle()
 })
 
 $('.tree li>span+ul li span').hover(function () {

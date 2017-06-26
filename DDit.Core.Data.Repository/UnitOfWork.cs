@@ -1,7 +1,7 @@
 ﻿using DDit.Component.Data;
 using DDit.Component.Tools;
 using DDit.Core.Data.Entity;
-using DDit.Core.Data.SystemEntity.Entity;
+using DDit.Core.Data.Entity.SystemEntity;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;

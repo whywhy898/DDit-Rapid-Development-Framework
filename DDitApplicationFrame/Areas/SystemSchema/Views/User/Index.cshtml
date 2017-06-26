@@ -2,15 +2,15 @@
     ViewBag.Title = "Index";
     Layout = null;
 }
-@using DDit.Core.Data.SystemEntity.Entity;
+
+@using DDit.Core.Data.Entity.SystemEntity;
 @using DDitApplicationFrame.Common;
 
-@Styles.Render("~/Scripts/bootstrap/css/1", "~/Scripts/datatables/css/1", "~/Content/1", "~/Scripts/alertjs/themes/1", "~/Scripts/select2/css/1", "~/Scripts/iconpicker/css/1", "~/Scripts/fancyTree/skin-win7/1", "~/Scripts/fileUpload/1")
+@Styles.Render("~/Scripts/bootstrap/css/1","~/Scripts/summernote/1", "~/Scripts/datatables/css/1", "~/Content/1", "~/Scripts/alertjs/themes/1", "~/Scripts/select2/css/1", "~/Scripts/iconpicker/css/1", "~/Scripts/fancyTree/skin-win7/1", "~/Scripts/fileUpload/1")
 @Scripts.Render("~/bundles/js")
 
 <script type="text/javascript">
     $(function () {
-
         //初始化查询部门
         $("#DepartmentID").select2({
             minimumResultsForSearch: -1,
@@ -33,7 +33,7 @@
             columns: [
                 { data: 'UserID', visible: false },
                 { data: 'UserName',title:"用户名" },
-                { data: 'UserReallyname',title:"昵称" },
+                { data: 'UserReallyname', title: "昵称" },
                 {
                     data: 'DepartmentID', title: "部门", render: function (data, type, row, meta) {
                         var result="";
@@ -48,6 +48,7 @@
                         return result;
                     }
                 },
+                { data: 'MobilePhone', title: "联系电话" },
                 {
                     data: 'IsEnable', title: "是否可用", render: function (data, type, row, meta) {
                         return data ? "可用" : "不可用";
@@ -64,7 +65,7 @@
             mainLayer=parent.layer.open({
                 type: 1,
                 title: "新增用户",
-                area: ['550px', '460px'],
+                area: ['550px', '560px'],
                 closeBtn: 1,
                 shadeClose: false,
                 skin: 'layerStyle',
@@ -83,6 +84,10 @@
                             allowedFileExtensions: ['jpg', 'png', 'gif']
                         });
 
+                        $('#userPortrait').on('fileclear', function (event) {
+                            $("#HeadPortrait").val("");
+                        });
+
                         //部门初始化
                         $("#Department").select2({
                             minimumResultsForSearch: -1,
@@ -91,13 +96,20 @@
                             allowClear: true,
                         }).val(null).trigger("change");
 
+                        // 手机号码验证
+                        jQuery.validator.addMethod("isMobile", function (value, element) {
+                            var length = value.length;
+                            var mobile = /^(((13[0-9]{1})|(15[0-9]{1}))+\d{8})$/;
+                            return this.optional(element) || (length == 11 && mobile.test(value));
+                        }, "请正确填写您的手机号码");
+
                         //验证表单
                         $("#Userform").validate({
                             rules: {
                                 UserName: {
                                     required: true,
                                     remote: {
-                                        url: "/User/ValidUserName",     //后台处理程序
+                                        url: "/User/ValidUserNameOrMobile",     //后台处理程序
                                         type: "get",                   //数据发送方式
                                         dataType: "json",              //接受数据格式   
                                         data: {                        //要传递的数据
@@ -113,6 +125,22 @@
                                 UserPassword: {
                                     required: true,
                                     rangelength: [3, 10]
+                                },
+                                MobilePhone: {
+                                    isMobile: true,
+                                    remote: {
+                                        url: "/User/ValidUserNameOrMobile",
+                                        type: "get",                  
+                                        dataType: "json",             
+                                        data: {                     
+                                            UserID: function () {
+                                                return $("#UserID").val();
+                                            }
+                                        }
+                                    }
+                                },
+                                Email: {
+                                    email: true
                                 },
                                 sPassword: {
                                     equalTo: "#Password"
@@ -132,6 +160,12 @@
                                 UserPassword: {
                                     required: "不能为空",
                                     rangelength: "密码应该在3-10位数之间！"
+                                },
+                                MobilePhone: {
+                                    remote:"该手机号已存在！"
+                                },
+                                Email: {
+                                    email: "请正确填写电子邮件地址"
                                 },
                                 sPassword: {
                                     equalTo: "两次密码输入不一致！"
@@ -272,7 +306,8 @@
                     parent.$('#userPortrait').fileinput('refresh', {
                         initialPreview: [
                             "<img src='" + imgurl + "' class='file-preview-image' alt='头像图片' title='头像图片'>",
-                        ]
+                        ],
+                        initialCaption: model[0].HeadPortrait
                     });
                 }
             
@@ -301,10 +336,27 @@
             }
         });
 
+        //管理员重置密码
+        $("#userResetPwd").click(function () {
+            var cc = table.rows('.selected')
+            if (cc[0].length > 0) {
+                var model = cc.data();
+                parent.layer.confirm("确定要重置该用户的密码吗？", dditConfig.hintLayer, function () {
+                    $.post("/User/ResetUserPWD", { userId: model[0].UserID }, function (data) {
+                        if (data.result) {
+                            parent.layer.close(parent.layer.index);
+                            alertify.success("密码重置成功！");
+                        } 
+                    });
+                });
+            } else {
+                alertify.log("请选择一条操作信息！");
+            }
+
+        });
     })
 
 </script>
-
 
 <div class="margin w100f xoverhide">
     @Html.Hidden("json", (ViewBag.jsonbumen) as string)
@@ -337,7 +389,6 @@
             </li>
         </ul>
     </div>
-
     <table id="userTable" class="table table-bordered table-striped w100f" cellspacing="0"></table>
 </div>
 
@@ -380,6 +431,18 @@
             </div>
         </div>
         <div class="form-group">
+            <label for="MobilePhone" class="col-sm-2 control-label labsty">电话号码&nbsp;&nbsp;</label>
+            <div class="col-sm-10 pad-r20">
+                <input type="text" class="form-control" name="MobilePhone" maxlength="11" placeholder="可作为登录账户" >
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="Email" class="col-sm-2 control-label labsty">电子邮件&nbsp;&nbsp;</label>
+            <div class="col-sm-10 pad-r20">
+                <input type="text" class="form-control" name="Email" maxlength="50" placeholder="消息邮件地址">
+            </div>
+        </div>
+        <div class="form-group">
             <label for="Remark" class="col-sm-2 control-label labsty">备注&nbsp;&nbsp;</label>
             <div class="col-sm-10 pad-r20">
                 <input type="text" class="form-control" name="Remark" maxlength="200" id="Remark">
@@ -390,6 +453,7 @@
             <div class="col-sm-10 pad-r20">
                 <input id="userPortrait" name="Portrait" type="file" class="file-loading">
             </div>
+           @Html.Hidden("HeadPortrait")
         </div>
     </form>
 </div>

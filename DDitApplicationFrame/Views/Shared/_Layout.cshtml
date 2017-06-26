@@ -1,4 +1,4 @@
-﻿@using DDit.Core.Data.SystemEntity.Entity;
+﻿@using DDit.Core.Data.Entity.SystemEntity;
 
 @model User
 
@@ -10,11 +10,14 @@
     <meta name="viewport" content="width=device-width" />
     <meta http-equiv="X-UA-Compatible" content="IE=Edge, Chrome=1" />
     <title>龙图信息开发框架</title>
-    @Styles.Render("~/Scripts/bootstrap/css/1", "~/Scripts/datatables/css/1", "~/Content/1", "~/Scripts/alertjs/themes/1","~/Scripts/select2/css/1","~/Scripts/iconpicker/css/1","~/Scripts/fancyTree/skin-win7/1", "~/Scripts/fileUpload/1")
+    @Styles.Render("~/Scripts/bootstrap/css/1", "~/Scripts/summernote/1", "~/Scripts/datatables/css/1", "~/Content/1", "~/Scripts/alertjs/themes/1", "~/Scripts/select2/css/1", "~/Scripts/iconpicker/css/1", "~/Scripts/fancyTree/skin-lion/1", "~/Scripts/fileUpload/1")
     <link rel="stylesheet" type="text/css" href=@Url.Content("~/Content/css/colora.css") id="color">
     @Scripts.Render("~/bundles/js")
     <script src="~/Scripts/layer/layer.js"></script>
 
+    <link href="~/Scripts/datetimepicker/css/bootstrap-datetimepicker.css" rel="stylesheet" />
+    <script src="~/Scripts/datetimepicker/js/moment-with-locales.js"></script>
+    <script src="~/Scripts/datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
 </head>
 <body onload="daytime()">
     <nav class="navbar navbar-inverse boxbg" id="header">
@@ -30,8 +33,9 @@
             </div>
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav navbar-right">
-                    <li class="btn btn-lg" data-toggle="modal" data-target="#myModals"><span class="huan"></span><a href="#">换肤</a></li>
+                    <li class="btn btn-lg" data-toggle="modal" data-target="#myModals"><span class="huan"></span><a href="#">切换主题</a></li>
                     <li class="btn btn-lg" data-toggle="modal" data-target="#selfInfo"><span class="person"></span><a href="#">个人中心</a></li>
+                    <li class="btn btn-lg" ><span class="message" id="myMes"></span><a href="#">我的消息</a></li>
                     <li class="btn btn-lg " data-toggle="modal">
                         <span class="help"></span>
 
@@ -56,7 +60,7 @@
             <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 xl">
                 <div class="treebox" style="border-top:1px solid #ccc; border-bottom:1px solid #ccc; ">
                     <div class="tree" id="tree">
-                        <div class="aaa"><img src="@( Model.HeadPortrait!=null?"/User/GetPortrait?imgName="+Model.HeadPortrait:"../Images/icon/person.png")"><span>@Model.UserReallyname</span></div>
+                        <div class="aaa"><img src="@("/User/GetPortrait?imgName="+Model.HeadPortrait)"><span>@Model.UserReallyname</span></div>
                         @Html.Action("MenuItem", "Home", null)
                     </div>
                 </div>
@@ -252,6 +256,13 @@
         </div>
     </div>
 
+    <div id="message" style="display:none">
+        <div class="panel" style="width:100%;margin-bottom:0">
+            <!-- List group -->
+            <ul class="list-group" id="messUl">
+            </ul>
+        </div>
+    </div>
 
     @RenderSection("scripts", required: false)
     @*@RenderBody()*@
@@ -259,7 +270,30 @@
     <script type="text/javascript">
 
         $(function () {
-           
+
+            //站内消息
+            $.post("/Message/GetMesByUser", { isAll: false }, function (data) {
+                if (data.length > 0) {
+                    $.each(data, function (i, v) {
+                        if (i == 5) return;
+                        var html = "<li class='list-group-item'  style='white-space: nowrap'>";
+                        html += "<a href='javascript:void(0);' name='layerMes'>" + v.MessageInfo.MessageTitle + "</a>";
+                        html +="</li>"
+                        $("#messUl").append(html);
+                    })
+                    layer.open({
+                        type: 1,
+                        title: "<span class='glyphicon glyphicon-bullhorn' ></span>&nbsp;&nbsp;站内消息<span style='margin-left:20px;font-size:12px'>"+data.length+"条未读</span>",
+                        area: ['350px', '245px'],
+                        offset: 'rb', //具体配置参考：offset参数项
+                        anim: 2,
+                        shade: 0,//不显示遮罩
+                        skin: 'MainlayerStyle',
+                        content: $("#message")
+                    });
+                }
+            })
+
             //验证表单
             $("#modifyPassform").validate({
                 rules: {

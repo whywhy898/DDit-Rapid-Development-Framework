@@ -71,7 +71,7 @@ div>iframe{ border: 0 none; overflow-x:hidden }
 .navbar-inverse .navbar-nav > li span.person{background:url(../Images/icon/person.png) no-repeat;background-position: center 7px;width: 30px;height: 39px;display: block;margin: 0 auto;}
 .navbar-inverse .navbar-nav > li span.off{background:url(../Images/icon/close.png) no-repeat;background-position: center 7px;width: 30px;height: 39px;display: block;margin: 0 auto;}
 .navbar-inverse .navbar-nav > li span.huan{background:url(../Images/icon/fu.png) no-repeat;background-position: center 10px;width: 30px;height: 39px;display: block;margin: 0 auto;}
-
+.navbar-inverse .navbar-nav > li span.message{background:url(../Images/icon/message.png) no-repeat;background-position: center 10px;width: 30px;height: 39px;display: block;margin: 0 auto;}
 .navbar-inverse .navbar-nav > li > a{font-size:9pt;padding:0;text-align: center;color: #fff!important;}
 .footer{color: #ffffff;position: fixed;bottom: 0;width: 100%; line-height: 30px;}
 .syr{margin-top: 5px;}
@@ -286,6 +286,76 @@ tbody tr.even.selected td {
 .layui-layer-shade {
     z-index: 200 !important;
 }
+/*首页消息弹出层样式*/
+.MainlayerStyle {
+    -webkit-animation-duration: 2s !important;
+    animation-duration: 2s !important;
+}
+.MainlayerStyle .layui-layer-title {
+    background-color: #ccc;
+    color: white;
+    font-size: 16px;
+}
+
+/*站内消息模块样式*/
+.select2-selection__rendered {
+    max-height:52px;
+    overflow-y:auto !important;
+}
+.selresult_div_content {
+    padding-top: 4px;
+    padding-bottom: 3px;
+    font-family: ' helvetica neue', helvetica, arial, sans-serif;
+    font-size: 14px;
+    width:500px;
+}
+.selresult_div_img {
+    float: left;
+    width: 60px;
+    margin-right: 10px;
+}
+.selresult_img_img {
+    width: 100%;
+    height: 55px;
+    border-radius: 2px;
+}
+.selresult_div {
+    font-size: 14px;
+    margin-left: 70px;
+}
+.select2-results__option {
+    overflow-x: hidden;
+}
+.selresult_div_name {
+   font-weight: bold;
+   word-wrap: break-word;
+   line-height: 1.1;
+   margin-bottom: 4px;
+}
+.selresult_div_text {
+   font-size: 12px;
+   color:#777;
+}
+.weidu::after {
+    width:32px;
+    height:32px;
+    content:'';
+    display:inline-block;
+    background:url(../Images/wdImg.png) no-repeat 0 0;
+    position:absolute;
+    top:0;
+    right:0;
+}
+.textWrap {
+    color: #999;
+    padding-top: 5px;
+    width: 810px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    height: 45px;
+}
+
 
 /*.layui-layer-btn a {
     margin:0px !important;

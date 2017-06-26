@@ -74,6 +74,7 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity" />
     <Reference Include="System.Runtime.Caching" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -92,6 +93,7 @@
     <Compile Include="Mapping\SystemMapping\DictionaryCategoryMapping.cs" />
     <Compile Include="Mapping\SystemMapping\DictionaryMapping.cs" />
     <Compile Include="Mapping\SystemMapping\LoginLogMapping.cs" />
+    <Compile Include="Mapping\SystemMapping\MassageMapping.cs" />
     <Compile Include="Mapping\SystemMapping\MenuMapping.cs" />
     <Compile Include="Mapping\SystemMapping\MenuMappingButtonMapping.cs" />
     <Compile Include="Mapping\SystemMapping\RoleMapping.cs" />
@@ -99,6 +101,7 @@
     <Compile Include="Mapping\SystemMapping\SystemInfoMapping.cs" />
     <Compile Include="Mapping\SystemMapping\TestMapping.cs" />
     <Compile Include="Mapping\SystemMapping\UserMapping.cs" />
+    <Compile Include="Mapping\SystemMapping\UserMappingMessageMapping.cs" />
     <Compile Include="MysqlDbContext.cs" />
     <Compile Include="OracleDbContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -109,11 +112,13 @@
     <Compile Include="Repositories\SystemRepositories\LoginLogRepository.cs" />
     <Compile Include="Repositories\SystemRepositories\MenuAndBtnRepository.cs" />
     <Compile Include="Repositories\SystemRepositories\MenuRepository.cs" />
+    <Compile Include="Repositories\SystemRepositories\MessageRepository.cs" />
     <Compile Include="Repositories\SystemRepositories\RoleAndBtnRepository.cs" />
     <Compile Include="Repositories\SystemRepositories\RoleRepository.cs" />
     <Compile Include="Repositories\SystemRepositories\SystemInfoRepository.cs" />
     <Compile Include="Repositories\SystemRepositories\TestRepository.cs" />
     <Compile Include="Repositories\SystemRepositories\UserRepository.cs" />
+    <Compile Include="Repositories\SystemRepositories\UserAndMessageRepository.cs" />
     <Compile Include="UnitOfWork.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -131,7 +136,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
+    <None Include="App.config" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>

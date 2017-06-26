@@ -23,6 +23,11 @@ tbody tr.even.selected {
     color:white;
     font-size:16px;
 }
+.MainlayerStyle .layui-layer-title {
+    background-color: #2d4156;
+    color: white;
+    font-size: 16px;
+}
 
 /*用户页面分配角色列表*/
 #roleitme a:hover {

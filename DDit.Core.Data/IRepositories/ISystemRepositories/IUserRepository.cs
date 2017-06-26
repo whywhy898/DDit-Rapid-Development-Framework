@@ -1,13 +1,14 @@
 ﻿using DDit.Component.Data;
 using DDit.Core.Data.Entity;
-using DDit.Core.Data.SystemEntity.Entity;
+using DDit.Core.Data.Entity.SystemEntity;
+using DDit.Core.Data.Entity.SystemEntity.DoEntity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DDit.Core.Data.IRepositories
+namespace DDit.Core.Data.IRepositories.ISystemRepositories
 {
     public interface IUserRepository 
     {
@@ -24,6 +25,10 @@ namespace DDit.Core.Data.IRepositories
         void DeleteUser(User model);
 
         void SetUserInfoRole(int userID, List<int> roleIDList);
+
+        List<AutoUserDo> GetUserInfobyName(string value);
+
+        void ResetUserPWDbyID(int id);
 
     }
 }

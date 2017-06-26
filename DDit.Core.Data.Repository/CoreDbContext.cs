@@ -9,7 +9,7 @@ using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Reflection;
 using DDit.Core.Data.Entity;
 using System.Data.Entity.ModelConfiguration;
-using DDit.Core.Data.SystemEntity.Entity;
+using DDit.Core.Data.Entity.SystemEntity;
 
 namespace DDit.Core.Data.Repository
 {

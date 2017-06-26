@@ -1,6 +1,6 @@
 ﻿using DDit.Core.Data.Entity;
-using DDit.Core.Data.IRepositories;
-using DDit.Core.Data.SystemEntity.Entity;
+using DDit.Core.Data.IRepositories.ISystemRepositories;
+using DDit.Core.Data.Entity.SystemEntity;
 using System;
 using System.Collections.Generic;
 using Autofac;
@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using DDit.Component.Tools;
 
-namespace DDit.Core.Data.Repository.Repositories
+namespace DDit.Core.Data.Repository.Repositories.SystemRepositories
 {
     class MenuAndBtnRepository : IMenuAndBtnRepository
     {

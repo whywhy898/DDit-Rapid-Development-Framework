@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DDit.Core.Data.SystemEntity.Entity
+namespace DDit.Core.Data.Entity.SystemEntity
 {
     public class LoginLog : BaseEntity
     {

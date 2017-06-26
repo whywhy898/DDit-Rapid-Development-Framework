@@ -1,7 +1,6 @@
 ﻿using DDit.Component.Tools;
 using DDit.Core.Data.Entity;
-using DDit.Core.Data.IRepositories;
-using DDit.Core.Data.SystemEntity.Entity;
+using DDit.Core.Data.Entity.SystemEntity;
 using DDitApplicationFrame.Common;
 using System;
 using System.Collections.Generic;
@@ -9,6 +8,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
+using DDit.Core.Data.IRepositories.ISystemRepositories;
 
 namespace DDitApplicationFrame.Service
 {
@@ -41,6 +41,7 @@ namespace DDitApplicationFrame.Service
                     falg = false;
                 }
                 return new Tuple<bool, string, User>(falg, message, User);
+
             }catch(Exception ex){
                 message = "服务器异常，请与管理员联系";
                 falg = false;

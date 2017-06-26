@@ -1,5 +1,4 @@
-﻿using DDit.Core.Data.IRepositories;
-using DDit.Core.Data.Repositories;
+﻿using DDit.Core.Data.IRepositories.ISystemRepositories;
 using DDit.Component.Tools;
 using System;
 using System.Collections.Generic;
@@ -8,7 +7,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
 using Newtonsoft.Json;
-using DDit.Core.Data.SystemEntity.Entity;
+using DDit.Core.Data.Entity.SystemEntity;
 using Autofac;
 using Newtonsoft.Json.Converters;
 using DDit.Core.Data.Entity;
@@ -80,6 +79,10 @@ namespace DDitApplicationFrame.Common
         public IDictionaryCategoryRepository DicCategory { get; set; }
 
         public IDictionaryRepository DicValue { get; set; }
+
+        public IMessageRepository MessageServer { get; set; }
+
+        public IUserAndMessageRepository UserAndMeServer { get; set; }
 
         #endregion
 

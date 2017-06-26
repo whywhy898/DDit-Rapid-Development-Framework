@@ -1,5 +1,5 @@
 ﻿using DDit.Core.Data.Entity;
-using DDit.Core.Data.SystemEntity.Entity;
+using DDit.Core.Data.Entity.SystemEntity;
 using DDitApplicationFrame.Common;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
@@ -30,7 +30,8 @@ namespace DDitApplicationFrame.Areas.SystemSchema.Controllers
             return View();
         }
 
-        public ActionResult ValidUserName(User model) {
+        public ActionResult ValidUserNameOrMobile(User model)
+        {
             var userModel = UserRepository.GetSingle(model);
             if (userModel != null)
             {
@@ -77,12 +78,12 @@ namespace DDitApplicationFrame.Areas.SystemSchema.Controllers
             {
                 userModel.IsEnable = true;
                 userModel.CreateTime = DateTime.Now;
-                userModel.HeadPortrait = fileName;
+                userModel.HeadPortrait = fileName; 
                 this.UserRepository.AddUser(userModel);
             }
             else
             {
-                userModel.HeadPortrait=fileName==""?this.UserRepository.GetbyID(userModel.UserID).HeadPortrait:fileName;
+                userModel.HeadPortrait = fileName == "" ? userModel.HeadPortrait : fileName;
                 userModel.UpdateTime = DateTime.Now;
                 this.UserRepository.ModifyUser(userModel);
             }
@@ -108,9 +109,26 @@ namespace DDitApplicationFrame.Areas.SystemSchema.Controllers
 
         public FilePathResult GetPortrait(string imgName)
         {
+            if (imgName == "" || imgName == "null") imgName = "moren.jpg";
+             
             string filePath = Path.Combine(Server.MapPath("/heardImg"), imgName);
 
             return File(filePath, "image/jpeg");
+        }
+
+        [HttpPost]
+        public ActionResult AutoCompleteUser(string q) {
+
+            var result= this.UserRepository.GetUserInfobyName(q);
+
+            return Json(result); 
+        }
+
+        [HttpPost]
+        public ActionResult ResetUserPWD(int userId) {
+
+            this.UserRepository.ResetUserPWDbyID(userId);
+            return Json(new ResultEntity() { result = true });
         }
 
     }

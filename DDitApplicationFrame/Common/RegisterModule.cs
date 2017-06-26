@@ -1,6 +1,5 @@
 ﻿using Autofac;
 using DDit.Core.Data.IRepositories;
-using DDit.Core.Data.Repositories;
 using DDit.Core.Data.Repository;
 using DDitApplicationFrame.Service;
 using DDitApplicationFrame.Service.Imp;

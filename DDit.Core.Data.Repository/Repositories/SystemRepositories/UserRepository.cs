@@ -1,5 +1,5 @@
 ﻿using DDit.Component.Data;
-using DDit.Core.Data.IRepositories;
+using DDit.Core.Data.IRepositories.ISystemRepositories;
 using DDit.Core.Data.Repository;
 using DDit.Component.Tools;
 using Autofac;
@@ -8,13 +8,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using DDit.Core.Data.Repositories;
 using Z.EntityFramework.Plus;
 using System.Data.Entity;
-using DDit.Core.Data.SystemEntity.Entity;
+using DDit.Core.Data.Entity.SystemEntity;
 using System.Diagnostics;
+using AutoMapper;
+using DDit.Core.Data.Entity.SystemEntity.DoEntity;
 
-namespace DDit.Core.Data.Repositories
+namespace DDit.Core.Data.Repository.Repositories.SystemRepositories
 {
    public class UserRepository : IUserRepository
     { 
@@ -57,11 +58,19 @@ namespace DDit.Core.Data.Repositories
         public User GetSingle(User model)
         {
             using(UnitOfWork dal=BaseInfo._container.Resolve<UnitOfWork>()){
-                var result = dal.GetRepository<User>().Get(filter: a => a.UserName == model.UserName, includeProperties: "RoleList").FirstOrDefault();     
+
+                var conditions = ExpandHelper.True<User>();
+
+                if (!string.IsNullOrEmpty(model.UserName))
+                    conditions = conditions.And( a => a.UserName == model.UserName || a.MobilePhone == model.UserName);
+                if (!string.IsNullOrEmpty(model.MobilePhone))
+                    conditions = conditions.And(a => a.MobilePhone == model.MobilePhone);
+
+
+                var result = dal.GetRepository<User>().Get(conditions).FirstOrDefault();     
                 return result;
             }
         }
-
 
         public User GetbyID(int userID)
         {
@@ -82,7 +91,7 @@ namespace DDit.Core.Data.Repositories
                 return result;
             }
         }
-
+               
         public void AddUser(User model)
         {
             using (UnitOfWork dal = BaseInfo._container.Resolve<UnitOfWork>())
@@ -113,7 +122,6 @@ namespace DDit.Core.Data.Repositories
                dal.Save();
             }
         }
-
 
         /// <summary>
         /// 添加用户角色信息,先删除原有数据,在添加到数据库
@@ -146,6 +154,44 @@ namespace DDit.Core.Data.Repositories
 
                 dal.Save();
             }         
+        }
+
+
+        public List<AutoUserDo> GetUserInfobyName(string value)
+        {
+            Mapper.Initialize(a =>
+            {
+                a.CreateMap<User, AutoUserDo>()
+                 .ForMember(au => au.id, op => { op.MapFrom(user => user.UserID); })
+                 .ForMember(au => au.text, op => { op.MapFrom(user => user.UserReallyname); })
+                 .ForMember(au => au.department, op => { op.MapFrom(user => user.Department.DicValue); });
+                a.CreateMap<Role, roleinfo>();
+            });
+            
+            using (var dal = BaseInfo._container.Resolve<UnitOfWork>()) {
+
+                return dal.GetRepository<User>()
+                          .Get(a => a.UserReallyname.Contains(value) || a.MobilePhone == value, includeProperties: "Department,Role").ProjectToQueryable<AutoUserDo>().ToList();
+                          
+            }
+        }
+
+
+        public void ResetUserPWDbyID(int id)
+        {
+            using (var dal = BaseInfo._container.Resolve<UnitOfWork>())
+            {
+
+                var repository = dal.GetRepository<User>();
+
+                var usermodel = new User()
+                {
+                    UserID = id,
+                    UserPassword = "123456"
+                };
+                repository.UpdateSup(usermodel, new List<string>() { "UserPassword" });
+                dal.Save();
+            }
         }
     }
 }

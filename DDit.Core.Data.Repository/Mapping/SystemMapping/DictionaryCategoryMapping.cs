@@ -1,5 +1,5 @@
 ﻿
-using DDit.Core.Data.SystemEntity.Entity;
+using DDit.Core.Data.Entity.SystemEntity;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity.ModelConfiguration;
@@ -21,7 +21,7 @@ namespace DDit.Core.Data.Repository.Mapping.SystemMapping
             this.Property(a => a.CreateTime).HasColumnName("CREATE_TIME");
             this.Property(a => a.UpdateTime).HasColumnName("UPDATE_TIME");
 
-           
+            
         }
 
     }

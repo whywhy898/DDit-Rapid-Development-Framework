@@ -1,5 +1,5 @@
 ﻿using DDit.Core.Data.Entity;
-using DDit.Core.Data.SystemEntity.Entity;
+using DDit.Core.Data.Entity.SystemEntity;
 using DDitApplicationFrame.Common;
 using DDitApplicationFrame.Service;
 using System;

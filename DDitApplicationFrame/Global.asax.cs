@@ -9,8 +9,6 @@ using System.Web.Optimization;
 using System.Web.Routing;
 using Autofac.Integration.Mvc;
 using System.Reflection;
-using DDit.Core.Data.IRepositories;
-using DDit.Core.Data.Repositories;
 using DDitApplicationFrame.Common;
 using DDitApplicationFrame.Service;
 using DDit.Core.Data;
@@ -20,6 +18,9 @@ using DDitApplicationFrame.Service.Imp;
 using DDit.Core.Data.Repository;
 using System.Data.Entity;
 using System.Web.Compilation;
+using System.Data.Entity.Infrastructure;
+using System.Data.Entity.Core.Mapping;
+using System.Data.Entity.Core.Metadata.Edm;
 
 
 
@@ -32,7 +33,7 @@ namespace DDitApplicationFrame
     {
         protected void Application_Start()
         {
-            //开启MiniProfilerEF6监控 
+            //开启MiniProfilerEF6监控，需要时取消注释
             //StackExchange.Profiling.EntityFramework6.MiniProfilerEF6.Initialize();
 
             #region autofac IOC容器配置
@@ -66,16 +67,26 @@ namespace DDitApplicationFrame
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
+            //log4日志组件注册
             log4net.Config.XmlConfigurator.Configure();
 
+            //注册自定义的模型绑定
             ModelBinders.Binders.Clear();
             ModelBinders.Binders.Add(typeof(PropertyModelBinder), new PropertyModelBinder());
 
+            //.net 内置json序列化的时候阻止深循环
             HttpConfiguration config = GlobalConfiguration.Configuration;
-
             config.Formatters.JsonFormatter
                         .SerializerSettings
                         .ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+
+            //EF预热，手动在内存中加载mapping view
+            using (var unitofwork = container.Resolve<UnitOfWork>())
+            {
+                var objectContext = ((IObjectContextAdapter)unitofwork.context).ObjectContext;
+                var mappingCollection = (StorageMappingItemCollection)objectContext.MetadataWorkspace.GetItemCollection(DataSpace.CSSpace);
+                mappingCollection.GenerateViews(new List<EdmSchemaError>());
+            }
         }
 
         protected void Application_BeginRequest()

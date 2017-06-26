@@ -1,4 +1,4 @@
-﻿using DDit.Core.Data.SystemEntity.Entity;
+﻿using DDit.Core.Data.Entity.SystemEntity;
 using System;
 using System.Collections.Generic;
 using System.Linq;

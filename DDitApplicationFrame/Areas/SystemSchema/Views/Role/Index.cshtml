@@ -2,7 +2,7 @@
     Layout = null;
 }
 
-@using DDit.Core.Data.SystemEntity.Entity;
+@using DDit.Core.Data.Entity.SystemEntity;
 @using DDitApplicationFrame.Common;
 
 @Styles.Render("~/Scripts/bootstrap/css/1", "~/Scripts/datatables/css/1", "~/Content/1", "~/Scripts/alertjs/themes/1", "~/Scripts/select2/css/1", "~/Scripts/iconpicker/css/1", "~/Scripts/fancyTree/skin-win7/1", "~/Scripts/fileUpload/1")
@@ -133,6 +133,7 @@
                                  }
                              },
                              select: function (event, data) {
+                                 console.log("12");
                                  var obj = data.node;
 
                                  var btnObj = $("#distributeRole").data("btnAuth")
@@ -154,40 +155,6 @@
                                     }
                                  }
 
-                                 //if (obj.selected) { //是否选择
-                                 //    if (data.node.folder) {  //是否为父节点
-                                 //        if (obj.children != null && obj.children.length > 0) { //节点数大于O
-                                 //            $.each(obj.children, function (i, v) {
-                                 //                v.setSelected();
-                                 //                if (v.data.btn.length > 0) {
-                                 //                    var btnstr = "";
-                                 //                    $.each(v.data.btn, function (is, vs) {
-                                 //                        btnstr += vs.ButtonID + ","
-                                 //                    })
-                                 //                    $(v.li).attr("data-btnstr", btnstr);
-                                 //                }
-                                 //            });
-                                 //        }
-                                 //    } else {
-                                 //        var btnstr = "";
-                                 //        $.each(obj.data.btn, function (is, vs) {
-                                 //            btnstr += vs.ButtonID + ","
-                                 //        })
-                                 //        $(obj.li).attr("data-btnstr", btnstr);
-        
-                                 //    }
-                                 //} else {
-                                 //    if (data.node.folder) {
-                                 //        if (obj.children != null && obj.children.length > 0) { //节点数大于O
-                                 //            $.each(obj.children, function (i, v) {
-                                 //                $(v.li).removeAttr("data-btnstr");
-                                 //                v.setSelected(false);
-                                 //            })
-                                 //        }
-                                 //    } else {
-                                 //        $(obj.li).removeAttr("data-btnstr");
-                                 //    }
-                                 //}
                              }
                          });
 
@@ -318,9 +285,7 @@
 
         //分配权限按钮
         $("#roleAuthority").click(function () {
-       
             var cc = table.rows('.selected')
-
             if (cc[0].length > 0) {
                 var model = cc.data();
                 $.post("/Button/CurrentRoleBtnAuthority", { RoleID: model[0].RoleID }, function (data) {

@@ -1,0 +1,126 @@
+﻿@{
+    Layout = null;
+}
+
+
+@Styles.Render("~/Scripts/bootstrap/css/1", "~/Scripts/summernote/1", "~/Scripts/datatables/css/1", "~/Content/1", "~/Scripts/alertjs/themes/1", "~/Scripts/select2/css/1", "~/Scripts/iconpicker/css/1", "~/Scripts/fancyTree/skin-win7/1", "~/Scripts/fileUpload/1")
+@Scripts.Render("~/bundles/js")
+
+<style type="text/css">
+    .dataTables_scrollHead {
+      display:none;
+    }
+    .thsty {
+        border-right: 0 !important;
+    }
+</style>
+
+<script type="text/javascript">
+    $(function () {
+        var message = $('#messageTable').custromTable({
+            ajax: {
+                url: "/Message/GetMessagebyUser",
+                data: function (d) {
+                    return JSON.stringify(d);
+                }
+            },
+            columnsClick:false,
+            isNo: false,
+            scrollY: 500,
+            pageLength: 5,
+            order: [[0, 'asc']],
+            columns: [
+                { data: 'IsRead', visible: false },
+                { data: 'MessageInfo.MessageID', visible: false },
+                {
+                    width: 120, className: "thsty", render: function (data, type, row, meta) {
+                        var cla = "";
+                        if (row.IsRead == false) {
+                            cla = 'weidu'
+                        }
+                        var html = "<div class=" + cla + " style='position:relative;width:150px'><img style='width:150px;height:80px'  src='/Images/message.jpg' /></div>"
+                        return html
+                    }
+                },
+                {
+                    data: 'MessageInfo.MessageTitle', render: function (data, type, row, meta) {
+
+                        var html = "<div style='font-weight:bold'>" + data + "</div>"
+                        html += "<div class='textWrap'>" + row.MessageInfo.MessageText + "</div>"
+                        html += "<div>"
+                        html += "<div style='float:left'>发布人:" + row.MessageInfo.SendUserInfo.UserName + "</div>"
+                        html += "<div style='float:right'>发布时间:" + row.MessageInfo.SendTime + "</div>"
+                        html += "</div>"
+                        return html
+                    }
+                },
+            ]
+        });
+
+        message.on('draw.dt', function (e, settings, json) {
+            /*点击表格 添加背景颜色*/
+            $(this).find("tbody tr").on('mouseenter', function () {
+                if ($(this).hasClass('selected')) {
+                    $(this).removeClass('selected');
+                }
+                else {
+                    message.$('tr.selected').removeClass('selected');
+                    $(this).addClass('selected');
+                }
+                $(this).css({ cursor: "pointer" });
+            });
+
+            $(this).find("tbody tr").on('click', function () {
+                var cc = message.rows('.selected');
+                var model = cc.data();
+                $("#mesTitle").text(model[0].MessageInfo.MessageTitle);
+                $("#mesContent").html(model[0].MessageInfo.MessageText);
+                $("#isRead").val(model[0].IsRead);
+                $("#myMesId").val(model[0].ID);
+                mainLayer = parent.layer.open({
+                    type: 1,
+                    title: "<span class='glyphicon glyphicon-envelope' ></span>&nbsp;&nbsp;消息",
+                    area: ['600px', '650px'],
+                    closeBtn: 1,
+                    shadeClose: false,
+                    skin: 'layerStyle',
+                    content: $("#browseMes").html(),
+                    btn: [dditConfig.btn.close],
+                    end: function (index, layero) {
+                        var $isRead = $("#isRead").val();
+                        var $myMesId = $("#myMesId").val();
+                        console.log($myMesId);
+                        if ($isRead == "false") {
+                            $.post("/Message/SetRead", { ID: $myMesId }, function (data) {
+                                if (data.result) {
+                                    message.ajax.reload();
+                                }
+                            });
+                        }
+                    }
+                });
+            });
+
+        });
+
+    });
+</script>
+
+<div style="width:1000px;margin:20px auto;">
+
+<h3 style="height: 35px; border-bottom: 2px solid #d13030;margin-bottom:10px">
+    我的消息
+</h3>
+
+<table id="messageTable" style="border-left:0;border-right:0" class="table table-bordered table-striped w100f" cellspacing="0"></table>
+
+</div>
+
+<div id="browseMes" class="displayn">
+    <div id="mainDiv" style="width:100%">
+        <h3 style="text-align:center;padding:10px" id="mesTitle"></h3>
+        <div id="mesContent" style="text-indent: 25px;padding:20px"></div>
+        @Html.Hidden("isRead")
+        @Html.Hidden("myMesId")
+    </div>
+</div>

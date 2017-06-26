@@ -1,6 +1,7 @@
 ﻿using DDit.Component.Tools;
 using DDit.Core.Data.Entity;
-using DDit.Core.Data.SystemEntity.Entity;
+using DDit.Core.Data.Entity.SystemEntity;
+using DDit.Core.Data.Entity.SystemEntity.DoEntity;
 using DDitApplicationFrame.Common;
 using System;
 using System.Collections.Generic;
@@ -35,9 +36,7 @@ namespace DDitApplicationFrame.Areas.SystemSchema.Controllers
 
             var menulist = this.MenuRepository.GetMenuList(Menumodel);
 
-            var jsonresult = SerializeObject(new ResultEntity { recordsFiltered = menulist.Item1, recordsTotal = menulist.Item1, dataList = menulist.Item2 });
-
-            return Content(jsonresult); 
+            return JsonResult<MenuDo>(menulist); 
         }
 
         [HttpPost]

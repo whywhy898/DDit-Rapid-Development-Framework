@@ -22,6 +22,7 @@ namespace DDitApplicationFrame
 
             bundles.Add(new ScriptBundle("~/bundles/js").Include(
                 "~/Scripts/datatables/js/jquery.js",
+                "~/Scripts/fancyTree/jquery-ui.custom.js",
                 "~/Scripts/js/jquery-ui-1.8.24.js",
                 "~/Scripts/js/json2.js",
                 "~/Scripts/bootstrap/js/bootstrap.js",
@@ -35,11 +36,13 @@ namespace DDitApplicationFrame
                 "~/Scripts/select2/js/select2.js",
                 "~/Scripts/charts/js/echarts.js",
                 "~/Scripts/charts/theme/macarons.js",
-                "~/Scripts/fancyTree/jquery.fancytree-all.js",
+                "~/Scripts/fancyTree/jquery.fancytree.js",
                 "~/Scripts/fileUpload/fileinput.js",
                 "~/Scripts/fileUpload/fileinput_locale_zh.js",
               //  "~/Scripts/layer/layer.js",
                 "~/Scripts/js/jquery.sortable.js",
+                "~/Scripts/summernote/summernote.js",
+                "~/Scripts/summernote/lang/summernote-zh-CN.js",
                 "~/Scripts/js/myJavaScript.js"
             ));
 
@@ -55,9 +58,9 @@ namespace DDitApplicationFrame
             bundles.Add(new StyleBundle("~/Scripts/alertjs/themes/1").Include("~/Scripts/alertjs/themes/alertify.core.css", "~/Scripts/alertjs/themes/alertify.bootstrap.css"));
             bundles.Add(new StyleBundle("~/Scripts/iconpicker/css/1").Include("~/Scripts/iconpicker/css/icon-picker.css"));
             bundles.Add(new StyleBundle("~/Scripts/select2/css/1").Include("~/Scripts/select2/css/select2.css"));
-            bundles.Add(new StyleBundle("~/Scripts/fancyTree/skin-win7/1").Include("~/Scripts/fancyTree/skin-win7/ui.fancytree.css"));
+            bundles.Add(new StyleBundle("~/Scripts/fancyTree/skin-lion/1").Include("~/Scripts/fancyTree/skin-lion/ui.fancytree.css"));
             bundles.Add(new StyleBundle("~/Scripts/fileUpload/1").Include("~/Scripts/fileUpload/fileinput.css"));
-
+            bundles.Add(new StyleBundle("~/Scripts/summernote/1").Include("~/Scripts/summernote/summernote.css"));
 
             bundles.Add(new StyleBundle("~/Content/themes/base/css").Include(
                         "~/Content/themes/base/jquery.ui.core.css",

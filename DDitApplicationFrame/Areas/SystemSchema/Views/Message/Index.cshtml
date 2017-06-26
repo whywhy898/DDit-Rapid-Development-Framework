@@ -1,0 +1,534 @@
+﻿@{
+    Layout = null;
+}
+
+@using DDit.Core.Data.Entity.SystemEntity
+
+@Styles.Render("~/Scripts/bootstrap/css/1", "~/Scripts/datatables/css/1", "~/Content/1", "~/Scripts/alertjs/themes/1", "~/Scripts/select2/css/1", "~/Scripts/iconpicker/css/1", "~/Scripts/fancyTree/skin-win7/1", "~/Scripts/fileUpload/1")
+@Scripts.Render("~/bundles/js")
+
+<link href="~/Scripts/datetimepicker/css/bootstrap-datetimepicker.css" rel="stylesheet" />
+<script src="~/Scripts/datetimepicker/js/moment-with-locales.js"></script>
+<script src="~/Scripts/datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+
+
+<script type="text/javascript">
+    $(function () {
+
+        var messageTable = $('#messageTable').custromTable({
+            ajax: {
+                url: "/Message/GetMessagesInfo",
+                data: function (d) {
+                    d.MessageTitle = $("#mestitle").val()
+                    d.SendTime = $("#sendate").val()
+                    return JSON.stringify(d);
+                }
+            },
+            columns: [
+                { data: 'MessageID', visible: false },
+                { data: 'MessageTitle', title: "消息标题" },
+                { data: 'SendUserName', title: "消息发送人", width: 100 },
+                { data: 'SendTime', title: "发送时间", width: 100 },
+                {
+                    data: 'ExpirationTime', title: "过期时间", width: 100, render: function (data, type, row, meta) {
+                        var et = "";
+                        if (data != null) {
+                            var date = new Date(data);
+                            et = date.getFullYear() + "-" + date.getUTCMonth() + "-" + date.getDate();
+                        }
+                        return et
+                    }
+                },
+                {
+                    data: 'IsSendEmail', title: "是否发送邮件", width:100, render: function (data, type, row, meta) {
+                        return data == true ? "是" : "否";
+                    }
+                },
+                {
+                    data: 'SendEmailState', title: "发送邮件状态", width: 100, render: function (data, type, row, meta) {
+                        var message = "";
+                        var resendbtn = " <button type='button' data-mes='" + row.MessageID + "' class='btn btn-info btn-xs' name='resend'>"
+                        resendbtn += " <span class='glyphicon glyphicon-send' aria-hidden='true'></span> 重发"
+                        resendbtn += " </button>"
+
+                        if (data == 1) {
+                            message = "发送中...";
+                        } else if (data == 2) {
+                            message = "发送成功";
+                        } else if (data == 3) {
+                            message = "发送失败&nbsp;&nbsp;" + resendbtn;
+                        }
+                        return message;
+                }
+        }
+            ]
+        });
+
+        var mesLayer = function () {
+            mainLayer=parent.layer.open({
+                type: 1,
+                title: "新增消息",
+                area: ['750px', '600px'],
+                closeBtn: 1,
+                shadeClose: false,
+                skin: 'layerStyle',
+                content: $("#MesLayer").html(),
+                btn: [dditConfig.btn.close, dditConfig.btn.comfrie],
+                yes: function (index, layero) {
+                    confirmMes(index);
+                },
+                success: function (i, l) {
+                    parent.$("#messageForm").FromEvent(function () {
+                        //新闻内容编辑器初始化
+                        $('#mesContent').summernote({
+                            lang: "zh-CN",
+                            width: "100%",
+                            height: 200,
+                            focus: true,
+                            dialogsInBody: true,
+                            placeholder:"消息内容......",
+                            callbacks: {
+                                //onImageUpload: function (files, editor, $editable) {
+                                //    sendFile(files);
+                                //},
+                                onChange: function (contents, $editable) {
+                                    $("#mesContent").valid();
+                                }
+                            }
+                        });
+
+                        //到期日期插件初始化
+                        $("#expirationTime").datetimepicker({
+                            format: 'YYYY-MM-DD',
+                            widgetPositioning:{
+                                horizontal: 'auto',
+                                vertical: 'top'
+                            }
+                        });
+
+                        //是否发送邮件插件初始化
+                        $("#isSendEmail").select2({
+                            minimumResultsForSearch: Infinity
+                        });
+
+                        //发送人插件初始化
+                        $("#recUser").select2({
+                            placeholder: "搜索名字、手机号.....",
+                            minimumInputLength: 1,
+                            multiple: true,
+                            ajax: {
+                                type:"post",
+                                url: '/User/AutoCompleteUser',
+                                processResults: function (data) {
+                                    return {
+                                        results: data
+                                    };
+                                }
+                            },
+                            escapeMarkup: function (markup) { return markup; },
+                            templateResult: function (repo) {
+                                if (repo.loading) return repo.text;
+                                var rolearry=[];
+                                $.each( repo.RoleList,function(i,v){
+                                    rolearry.push(v.RoleName);
+                                })   
+                                var roles = rolearry.join(",") == "" ? "无" : rolearry.join(",");
+                                var imgurl = "/User/GetPortrait?imgName=" + repo.HeadPortrait;
+                                var markup = "<div class='selresult_div_content'>"
+                                markup +="<div class='selresult_div_img'>"
+                                markup += "<img class='selresult_img_img' src='" + imgurl + "' />"
+                                markup +="</div>"
+                                markup +="<div class='selresult_div'>"
+                                markup += "<div class='selresult_div_name'>" + repo.text + "</div>"
+                                markup += "<div class='selresult_div_text'>部门：" + repo.department + "</div>"
+                                markup += "<div class='selresult_div_text'>角色：" + roles + "</div>"
+                                markup +="</div></div>";               
+                                return markup;
+                            },
+                            cache: true
+                        });
+
+                        //发送人选择事件
+                        $('#recUser').on('select2:select', function (evt) {
+                            var id = evt.params.data.id;
+                            $("#DepartmentUserTree").fancytree("getTree").visit(function (node) {
+                                if (node.data.id == id) node.setSelected(true);
+                            });
+                        });
+                        $('#recUser').on('select2:unselect', function (evt) {
+                            var id = evt.params.data.id;
+                            $(this).find("[value='" + id + "']").remove();
+                            var checkNode = $("#DepartmentUserTree").fancytree("getTree").getSelectedNodes()
+                            $.each(checkNode, function (i,v) {
+                                if (v.data.id == id) {
+                                    v.setSelected(false);
+                                    return false;
+                                }
+                            })  
+                        });
+                        $('#recUser').on("change",function (evt) {
+                            var height = $(".select2-selection__rendered").height()
+                            $("#dudiv").css("height", height > 26 ? "455px" : "430px");
+                            if ($(this).val() != null)
+                                $(this).valid();
+                        });
+                        
+                        //部门用户树初始化
+                        $("#DepartmentUserTree").fancytree({
+                            checkbox: true,
+                            selectMode: 3,
+                            activate: function (event, data) {
+                              
+                            },
+                            select: function (event, data) {
+
+                                var $recUser = $("#recUser");
+                                var cour = $recUser.val();
+                                var $value=[];
+                                if (!data.node.folder) {         //点击节点为子节点 else 父节点
+                                    var $userid = data.node.data.id;
+                                    var $usertext = data.node.title;
+                                    if (data.node.selected) {    //是否选中
+                                        if (cour != null) {
+                                            cour.push($userid);
+                                            $value = cour;
+                                        } else { $value = $userid }
+                                        var $option = $recUser.find("[value='" + $userid + "']");
+                                        if ($option.length == 0)
+                                           $recUser.append("<option value='" + $userid + "'>" + $usertext + "</option>");
+                                    } else {
+                                        if (cour!=null) {
+                                            $.each(cour, function (i, v) {
+                                                if (v == $userid) cour.splice(i, 1);
+                                                $value = cour;
+                                            })
+                                        }
+                                        var $option=$recUser.find("[value='" + $userid + "']");
+                                        if ($option.length > 0) $option.remove();
+                                    }
+                                     $recUser.val($value).trigger("change");
+                                } else {
+                                    var objArry = [];
+                                    if (data.node.selected) {
+                                        $.each(data.node.children, function (i, v) {
+                                            if ($.inArray(v.data.id.toString(), cour) == -1) {
+                                                objArry.push({id:v.data.id,text:v.title});
+                                            }
+                                        })
+                                        $.each(objArry, function (i,v) {
+                                            $recUser.append("<option value='" + v.id + "'>" + v.text + "</option>");
+                                            if (cour == null) {
+                                                $value.push(v.id);
+                                            }
+                                            else {
+                                                cour.push(v.id);
+                                                $value = cour;
+                                            }
+                                        });
+                                    } else {
+                                        var idArray=[]
+                                        $.each(data.node.children,function (i,v) {
+                                            idArray.push(v.data.id);
+                                            var $option = $recUser.find("[value='" + v.data.id + "']");
+                                            if ($option.length > 0) $option.remove();
+                                        })
+
+                                        $value = cour.filter(function (item) {
+                                            return $.inArray( parseInt(item), idArray) == -1
+                                        })
+
+                                    }
+                                    $recUser.val($value).trigger("change");
+                                }
+                            }
+                       });
+
+                        // 验证文本编辑器是否为空
+                        jQuery.validator.addMethod("summernoteEmpty", function (value, element) {
+                            var summernote = $('#mesContent').summernote('isEmpty')
+                            return summernote==true?false:true
+                        }, "必填");
+
+                        //验证表单
+                        $("#messageForm").validate({
+                            ignore:"",
+                            rules: {
+                                MessageTitle: {
+                                    required: true
+                                },
+                                recUser:{
+                                    required: true
+                                },
+                                mesContent: {
+                                    summernoteEmpty: true
+                                }
+                            },
+                            messages: {
+                                MessageTitle: {
+                                    required: "必填"
+                                },
+                                recUser:{
+                                    required: "必填"
+                                }
+                            },
+                            highlight: function (element) {
+                                var type = element.tagName;
+                                if (type == "SELECT") {
+                                    $(element).next("span")
+                                        .children()
+                                        .children()
+                                        .css({ "border-color": "#a94442" })
+                                }
+                                if (type == "TEXTAREA") {
+                                    $(element).next("div").css({ "border-color": "#a94442" });
+                                }
+                                $(element).closest('.form-group').addClass('has-error');
+                            },
+                            success: function (label) {
+                                var element = label.prev();
+                                var type = element[0].tagName;
+                                if (type == "SPAN") {
+                                    element.children().children().css({ "border-color": "" })
+                                }
+                                if (element.is(".note-editor")) {
+                                    element.css({ "border-color": "" });
+                                }
+                      
+                                label.closest('.form-group').removeClass('has-error');
+                                label.remove();
+                            }
+                        });
+
+                    });
+                }
+            })
+        }
+
+        var confirmMes = function (index) {
+            var mesform = parent.$("#messageForm");
+            if (mesform.valid()) {
+                mesform.ajaxSubmit({
+                    data: {
+                        RecUser: parent.$("#recUser").val().join(","),
+                        MessageText: parent.$("#mesContent").summernote('code')
+                    },
+                    success: function (data) {
+                        if (data.result) {
+                            parent.layer.closeAll();
+                            messageTable.ajax.reload();
+                            alertify.success("操作成功！");    //弹出消息日志
+                        }
+                    },
+                    error: function (data) {
+                        var obj = eval('(' + data.responseText + ')');
+                        alertify.error(obj.message);
+                    }
+                });
+            }
+        }
+
+
+        //新增消息
+        $("#messageCreate").click(function () {
+            mesLayer();
+        });
+
+        //编辑消息
+        $("#messageEdit").click(function () {
+            var cc = messageTable.rows('.selected')
+            if (cc[0].length > 0) {
+                var model = cc.data();
+                $.post("/Message/GetSingle", { mesId: model[0].MessageID }, function (data) {
+                    if (data.result) {
+                        var messageInfo = data.Data;
+                        mesLayer();
+                        parent.layer.title("编辑消息", parent.layer.index);
+                        parent.$("#messageForm").setForm(model[0]);
+                        var recUser = messageInfo.RecUser
+                        if (recUser.indexOf(',') == -1) {
+                            parent.$("#DepartmentUserTree").fancytree("getTree").visit(function (node) {
+                                if (recUser == node.data.id) node.setSelected(true);
+                            });
+                        } else {
+                            var cc = recUser.split(',')
+                            $.each(cc, function (i, v) {
+                                parent.$("#DepartmentUserTree").fancytree("getTree").visit(function (node) {
+                                    if (v == node.data.id) node.setSelected(true);
+                                });
+                            })
+                        }
+                        parent.$("#isSendEmail").val(model[0].IsSendEmail.toString()).trigger("change");
+                        parent.$("#mesContent").summernote('code', messageInfo.MessageText);
+                    } else {
+                        alertify.log(data.message);
+                    }
+                })
+            } else {
+                alertify.log("请选择一条操作信息！");
+            }
+        })
+
+        //删除消息
+        $("#messageDelete").click(function () {
+            var cc = messageTable.rows('.selected')
+            if (cc[0].length > 0) {
+                var model = cc.data();
+                parent.layer.confirm("确定要删除该信息吗！", dditConfig.hintLayer, function () {
+                    $.post("/Message/DeleteMessageInfo", { mesId: model[0].MessageID }, function (data) {
+                        if (data.result) {
+                            cc.remove().draw(false);
+                            parent.layer.close(parent.layer.index);
+                            alertify.success(data.message);
+                        } else {
+                            alertify.error(data.message);
+                        }
+                    });
+                });
+
+            } else {
+                alertify.log("请选择一条操作信息！");
+            }
+        });
+
+        //查询条件发送时间初始化
+        $("#datetimepicker").datetimepicker({
+            format: 'YYYY-MM-DD',
+            showClear: true,
+        });
+
+        //查询按钮
+        $("#messageQuery").click(function () {
+            messageTable.ajax.reload();
+        })
+
+        //重发邮件
+        $("#messageTable").on("click", "[name='resend']", function () {
+            var mesId = $(this).data("mes")
+
+            var $resendbtn = $(this);
+
+            parent.layer.confirm("请查看日志错误进行修改再发送，是否继续发送？", dditConfig.hintLayer, function () {
+                $resendbtn.parent("td").text("发送中...");
+                $.post("/Message/AgainSendEmail", { messageId: mesId }, function (data) {
+                    parent.layer.closeAll();
+                });
+            });
+          
+        });
+    })
+</script>
+
+
+<div class="margin w100f  xoverhide">
+    <div class="panel panel-default" style="margin-top: 10px">
+        <ul class="list-group">
+            <li class="list-group-item">
+                <button type="button" class="btn btn-default" id="messageCreate">
+                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增
+                </button>
+
+                <button type="button" class="btn btn-default" id="messageEdit">
+                    <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> 编辑
+                </button>
+
+                <button type="button" class="btn btn-default" id="messageDelete">
+                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> 删除
+                </button>
+            </li>
+            <li class="list-group-item">
+                <form class="form-inline" onsubmit="return false;">
+                    <div class="form-group">
+                        <label for="mestitle">消息标题</label>
+                        <input type="text" class="form-control" id="mestitle" placeholder="messageTitle">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="etime">消息发送时间</label>
+                        <div class='input-group date' id='datetimepicker'>
+                            <input type='text' class="form-control" id="sendate" placeholder="sendDate" />
+                            <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                        </div>
+                    </div>
+
+                    <button type="button" class="btn btn-info " id="messageQuery">
+                        <span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询
+                    </button>
+                </form>
+            </li>
+        </ul>
+    </div>
+
+    <table id="messageTable" class="table table-bordered table-striped w100f" cellspacing="0"></table>
+
+</div>
+
+
+<div id="MesLayer" class="displayn">
+    <form id="messageForm" class="form-horizontal formPadding" method="post" action="/Message/AddAndEditMessage">
+        @Html.Hidden("MessageID")
+        <div style="width:70%;float:left;padding-right:10px">
+            <div class="form-group">
+                <div class="col-sm-12">
+                    <select id="recUser" name="recUsers" style="width:100%;height:100px"></select>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-12">
+                    <input type="text" class="form-control" name="MessageTitle" placeholder="消息标题">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-12">
+                    <textarea id="mesContent" name="mesContent" style="margin-bottom:0"></textarea>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-7">
+                    <div class='input-group date' id='expirationTime'>
+                        <input type='text' class="form-control" name="ExpirationTime" placeholder="过期时间" />
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                </div>
+                <div class="col-sm-5">
+                    <select id="isSendEmail" name="IsSendEmail" style="width:100%">
+                        <option value="false">不发送邮件</option> 
+                        <option value="true">发邮件</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div id="dudiv" style="width: 30%; height: 430px; border: 1px solid #ccc; border-radius: 4px; float: left;overflow:auto ">
+            <div id="selUserheard" style="width: 100%; height: 30px; border-bottom: 1px solid #ccc;line-height:30px;font-size:14px;padding-left:10px">请选择用户</div>
+            <div id="selUserbody">
+                <div id="DepartmentUserTree">
+                    <ul>
+                        @foreach (var item in ViewBag.DepartmentUser as List<Dictionary>)
+                        {
+                            <li class="folder expanded children">
+                                @item.DicValue
+                                @{
+                            if (item.Users.Count > 0)
+                            {
+                                <ul>
+                                    @foreach (var Userinfo in item.Users)
+                                    {
+                                        <li data-id="@Userinfo.UserID">
+                                            @Userinfo.UserReallyname
+                                        </li>
+                                    }
+                                </ul>
+                            }
+                                }
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </form>
+
+</div>

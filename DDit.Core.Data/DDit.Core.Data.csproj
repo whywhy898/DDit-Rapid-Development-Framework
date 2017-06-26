@@ -78,17 +78,22 @@
     <Compile Include="Entity\SystemEntity\Button.cs" />
     <Compile Include="Entity\SystemEntity\Dictionary.cs" />
     <Compile Include="Entity\SystemEntity\DictionaryCategory.cs" />
+    <Compile Include="Entity\SystemEntity\DoEntity\AutoUserDo.cs" />
     <Compile Include="Entity\SystemEntity\DoEntity\MenuDo.cs" />
+    <Compile Include="Entity\SystemEntity\DoEntity\MessageDo.cs" />
     <Compile Include="Entity\SystemEntity\LoginLog.cs" />
+    <Compile Include="Entity\SystemEntity\Message.cs" />
     <Compile Include="Entity\SystemEntity\Menu.cs" />
     <Compile Include="Entity\SystemEntity\MenuMappingButton.cs" />
     <Compile Include="Entity\SystemEntity\RoleMappingButton.cs" />
     <Compile Include="Entity\SystemEntity\Test.cs" />
+    <Compile Include="Entity\SystemEntity\UserMappingMessage.cs" />
     <Compile Include="IRepositories\ICoreRepositories\INewsRepository.cs" />
     <Compile Include="IRepositories\ISystemRepositories\IButtonRepository.cs" />
     <Compile Include="IRepositories\ISystemRepositories\IDictionaryCategoryRepository.cs" />
     <Compile Include="IRepositories\ISystemRepositories\IDictionaryRepository.cs" />
     <Compile Include="IRepositories\ISystemRepositories\IMenuAndBtnRepository.cs" />
+    <Compile Include="IRepositories\ISystemRepositories\IMessageRepository.cs" />
     <Compile Include="IRepositories\ISystemRepositories\IRoleAndBtnRepository.cs" />
     <Compile Include="Entity\ResultEntity.cs" />
     <Compile Include="Entity\SystemEntity\Role.cs" />
@@ -99,11 +104,12 @@
     <Compile Include="IRepositories\ISystemRepositories\IRoleRepository.cs" />
     <Compile Include="IRepositories\ISystemRepositories\ISystemInfoRepository.cs" />
     <Compile Include="IRepositories\ISystemRepositories\ITestRepository.cs" />
+    <Compile Include="IRepositories\ISystemRepositories\IUserAndMessageRepository.cs" />
     <Compile Include="IRepositories\ISystemRepositories\IUserRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
+    <None Include="App.config" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>

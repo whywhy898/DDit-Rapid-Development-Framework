@@ -1,6 +1,6 @@
 ﻿using DDit.Core.Data.Entity;
-using DDit.Core.Data.IRepositories;
-using DDit.Core.Data.SystemEntity.Entity;
+using DDit.Core.Data.IRepositories.ISystemRepositories;
+using DDit.Core.Data.Entity.SystemEntity;
 using DDit.Component.Tools;
 using Autofac;
 using System;
@@ -10,7 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DDit.Core.Data.Repository.Repositories
+namespace DDit.Core.Data.Repository.Repositories.SystemRepositories
 {
     class RoleRepository : IRoleRepository
     {

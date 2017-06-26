@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using DDit.Core.Data.Entity;
 
-namespace DDit.Core.Data.SystemEntity.Entity
+namespace DDit.Core.Data.Entity.SystemEntity
 {
     public class Role : BaseEntity
     {

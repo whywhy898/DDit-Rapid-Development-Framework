@@ -110,14 +110,17 @@
     $.fn.extend({
         "custromTable": function (options) {
             if (options.columns == undefined) return;
-            options.columns.splice(0, 0, {
-                title: "序号", width: 30, className: "taC", render: function (data, type, row, meta) {
-                    var set = meta.settings
-                    var api = new $.fn.dataTable.Api(set);
-                    var page = api.rows({ page: 'current' }).data().page();
-                    return (meta.row + 1) + (page * 10);
-                }
-            });
+
+            if (options.isNo == undefined || options.isNo == true) {
+                options.columns.splice(0, 0, {
+                    title: "序号", width: 30, className: "taC", render: function (data, type, row, meta) {
+                        var set = meta.settings
+                        var api = new $.fn.dataTable.Api(set);
+                        var page = api.rows({ page: 'current' }).data().page();
+                        return (meta.row + 1) + (page * 10);
+                    }
+                });
+            }
      
             options.ajax = $.extend({},{
                 url: "",
@@ -131,18 +134,23 @@
 
             var opts = $.extend({}, tableDefault, options);
 
-            var table = this.DataTable(opts).on('draw.dt', function (e, settings, json) {
-                /*点击表格 添加背景颜色*/
-                $(this).find("tbody tr").on('click',function () {
-                    if ($(this).hasClass('selected')) {
-                        $(this).removeClass('selected');
-                    }
-                    else {
-                        table.$('tr.selected').removeClass('selected');
-                        $(this).addClass('selected');
-                    }
+            var table = this.DataTable(opts)
+
+            if (options.columnsClick == undefined || options.columnsClick == true) {
+                table.on('draw.dt', function (e, settings, json) {
+                    /*点击表格 添加背景颜色*/
+                    $(this).find("tbody tr").on('click', function () {
+                        if ($(this).hasClass('selected')) {
+                            $(this).removeClass('selected');
+                        }
+                        else {
+                            table.$('tr.selected').removeClass('selected');
+                            $(this).addClass('selected');
+                        }
+                    });
                 });
-            });
+            }
+
             return table
         }
     });

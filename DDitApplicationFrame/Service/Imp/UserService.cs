@@ -1,12 +1,12 @@
 ﻿using DDit.Core.Data.Entity;
-using DDit.Core.Data.IRepositories;
-using DDit.Core.Data.SystemEntity.Entity;
+using DDit.Core.Data.Entity.SystemEntity;
 using DDitApplicationFrame.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using DDit.Component.Tools;
+using DDit.Core.Data.IRepositories.ISystemRepositories;
 
 
 namespace DDitApplicationFrame.Service.Imp

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DDit.Core.Data.SystemEntity.Entity
+namespace DDit.Core.Data.Entity.SystemEntity
 {
     public class Dictionary : BaseEntity
     {
@@ -22,5 +22,8 @@ namespace DDit.Core.Data.SystemEntity.Entity
        public DateTime? UpdateTime { get; set; }
 
        public DictionaryCategory DicCategory { get; set; }
+
+       //部门关联人实体
+       public List<User> Users { get; set; }
     }
 }
