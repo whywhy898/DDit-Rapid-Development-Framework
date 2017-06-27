@@ -18,7 +18,7 @@ namespace DDit.Core.Data.Repository
               //取消EF的延迟加载
               this.Configuration.ProxyCreationEnabled = false;
               this.Configuration.LazyLoadingEnabled=false;
-              Database.SetInitializer<CoreDbContext>(null);
+              Database.SetInitializer<MysqlDbContext>(null);
         }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
