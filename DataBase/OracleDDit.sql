@@ -1,6 +1,76 @@
 --------------------------------------------------------
---  文件已创建 - 星期五-六月-02-2017   
+--  文件已创建 - 星期二-六月-27-2017   
 --------------------------------------------------------
+--------------------------------------------------------
+--  DDL for Sequence BUTTON_BUTTON_ID_SEQ
+--------------------------------------------------------
+
+   CREATE SEQUENCE  "BASE_DDIT"."BUTTON_BUTTON_ID_SEQ"  MINVALUE 1 MAXVALUE 999999999999999999999999 INCREMENT BY 1 START WITH 1 CACHE 20 NOORDER  NOCYCLE ;
+--------------------------------------------------------
+--  DDL for Sequence DICTIONARYCATEGORY_ID_SEQ
+--------------------------------------------------------
+
+   CREATE SEQUENCE  "BASE_DDIT"."DICTIONARYCATEGORY_ID_SEQ"  MINVALUE 1 MAXVALUE 999999999999999999999999 INCREMENT BY 1 START WITH 1 CACHE 20 NOORDER  NOCYCLE ;
+--------------------------------------------------------
+--  DDL for Sequence DICTIONARY_ID_SEQ
+--------------------------------------------------------
+
+   CREATE SEQUENCE  "BASE_DDIT"."DICTIONARY_ID_SEQ"  MINVALUE 1 MAXVALUE 999999999999999999999999 INCREMENT BY 1 START WITH 1 CACHE 20 NOORDER  NOCYCLE ;
+--------------------------------------------------------
+--  DDL for Sequence LOGINLOG_LOGIN_ID_SEQ
+--------------------------------------------------------
+
+   CREATE SEQUENCE  "BASE_DDIT"."LOGINLOG_LOGIN_ID_SEQ"  MINVALUE 1 MAXVALUE 999999999999999999999999 INCREMENT BY 1 START WITH 701 CACHE 20 NOORDER  NOCYCLE ;
+--------------------------------------------------------
+--  DDL for Sequence MENU_BUTTON_ID_SEQ
+--------------------------------------------------------
+
+   CREATE SEQUENCE  "BASE_DDIT"."MENU_BUTTON_ID_SEQ"  MINVALUE 1 MAXVALUE 999999999999999999999999 INCREMENT BY 1 START WITH 1 CACHE 20 NOORDER  NOCYCLE ;
+--------------------------------------------------------
+--  DDL for Sequence MENU_MENU_ID_SEQ
+--------------------------------------------------------
+
+   CREATE SEQUENCE  "BASE_DDIT"."MENU_MENU_ID_SEQ"  MINVALUE 1 MAXVALUE 999999999999999999999999 INCREMENT BY 1 START WITH 1 CACHE 20 NOORDER  NOCYCLE ;
+--------------------------------------------------------
+--  DDL for Sequence MESSAGE_MESSAGEID_SEQ
+--------------------------------------------------------
+
+   CREATE SEQUENCE  "BASE_DDIT"."MESSAGE_MESSAGEID_SEQ"  MINVALUE 1 MAXVALUE 999999999999999999999999 INCREMENT BY 1 START WITH 21 CACHE 20 NOORDER  NOCYCLE ;
+--------------------------------------------------------
+--  DDL for Sequence ROLE_BUTTON_ID_SEQ
+--------------------------------------------------------
+
+   CREATE SEQUENCE  "BASE_DDIT"."ROLE_BUTTON_ID_SEQ"  MINVALUE 1 MAXVALUE 999999999999999999999999 INCREMENT BY 1 START WITH 1 CACHE 20 NOORDER  NOCYCLE ;
+--------------------------------------------------------
+--  DDL for Sequence ROLE_MENU_ROLEMENU_ID_SEQ
+--------------------------------------------------------
+
+   CREATE SEQUENCE  "BASE_DDIT"."ROLE_MENU_ROLEMENU_ID_SEQ"  MINVALUE 1 MAXVALUE 999999999999999999999999 INCREMENT BY 1 START WITH 1 CACHE 20 NOORDER  NOCYCLE ;
+--------------------------------------------------------
+--  DDL for Sequence ROLE_ROLE_ID_SEQ
+--------------------------------------------------------
+
+   CREATE SEQUENCE  "BASE_DDIT"."ROLE_ROLE_ID_SEQ"  MINVALUE 1 MAXVALUE 999999999999999999999999 INCREMENT BY 1 START WITH 1 CACHE 20 NOORDER  NOCYCLE ;
+--------------------------------------------------------
+--  DDL for Sequence SYSTEMINFO_SYSTEM_ID_SEQ
+--------------------------------------------------------
+
+   CREATE SEQUENCE  "BASE_DDIT"."SYSTEMINFO_SYSTEM_ID_SEQ"  MINVALUE 1 MAXVALUE 999999999999999999999999 INCREMENT BY 1 START WITH 1 CACHE 20 NOORDER  NOCYCLE ;
+--------------------------------------------------------
+--  DDL for Sequence USERINFOMATION_USER_ID_SEQ
+--------------------------------------------------------
+
+   CREATE SEQUENCE  "BASE_DDIT"."USERINFOMATION_USER_ID_SEQ"  MINVALUE 1 MAXVALUE 999999999999999999999999 INCREMENT BY 1 START WITH 1 CACHE 20 NOORDER  NOCYCLE ;
+--------------------------------------------------------
+--  DDL for Sequence USER_MESSAGE_ID_SEQ
+--------------------------------------------------------
+
+   CREATE SEQUENCE  "BASE_DDIT"."USER_MESSAGE_ID_SEQ"  MINVALUE 1 MAXVALUE 999999999999999999999999 INCREMENT BY 1 START WITH 61 CACHE 20 NOORDER  NOCYCLE ;
+--------------------------------------------------------
+--  DDL for Sequence USER_ROLE_ID_SEQ
+--------------------------------------------------------
+
+   CREATE SEQUENCE  "BASE_DDIT"."USER_ROLE_ID_SEQ"  MINVALUE 1 MAXVALUE 999999999999999999999999 INCREMENT BY 1 START WITH 1 CACHE 20 NOORDER  NOCYCLE ;
 --------------------------------------------------------
 --  DDL for Table BUTTON
 --------------------------------------------------------
@@ -93,6 +163,24 @@
   PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1 BUFFER_POOL DEFAULT)
   TABLESPACE "USERS" ;
 --------------------------------------------------------
+--  DDL for Table MESSAGE
+--------------------------------------------------------
+
+  CREATE TABLE "BASE_DDIT"."MESSAGE" 
+   (	"MESSAGEID" NUMBER(10,0), 
+	"MESSAGETITLE" VARCHAR2(200 CHAR), 
+	"SENDUSER" NUMBER(10,0), 
+	"SENDTIME" DATE, 
+	"EXPIRATIONTIME" DATE, 
+	"ISSENDEMAIL" NUMBER(1,0), 
+	"SENDEMAILSTATE" NUMBER(10,0), 
+	"MESSAGETEXT" VARCHAR2(4000 BYTE), 
+	"RECUSER" VARCHAR2(4000 BYTE)
+   ) PCTFREE 10 PCTUSED 40 INITRANS 1 MAXTRANS 255 NOCOMPRESS LOGGING
+  STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
+  PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1 BUFFER_POOL DEFAULT)
+  TABLESPACE "USERS" ;
+--------------------------------------------------------
 --  DDL for Table ROLE
 --------------------------------------------------------
 
@@ -151,7 +239,7 @@
 
   CREATE TABLE "BASE_DDIT"."TEST" 
    (	"ID" NUMBER(38,0), 
-	"NAME" VARCHAR2(100 BYTE), 
+	"NAME" VARCHAR2(50 BYTE), 
 	"AGE" NUMBER(38,0)
    ) PCTFREE 10 PCTUSED 40 INITRANS 1 MAXTRANS 255 NOCOMPRESS LOGGING
   STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
@@ -166,12 +254,27 @@
 	"USER_NAME" NVARCHAR2(100), 
 	"USER_PASSWORD" NVARCHAR2(100), 
 	"USER_REALLYNAME" NVARCHAR2(50), 
+	"MOBILEPHONE" VARCHAR2(20 CHAR), 
+	"EMAIL" VARCHAR2(50 CHAR), 
 	"HEADPORTRAIT" NVARCHAR2(500), 
 	"DEPARTMENT_ID" NUMBER(10,0), 
 	"ISENABLE" NUMBER(1,0) DEFAULT (1), 
 	"CREATE_TIME" DATE, 
 	"UPDATE_TIME" DATE, 
 	"REMARK" NVARCHAR2(500)
+   ) PCTFREE 10 PCTUSED 40 INITRANS 1 MAXTRANS 255 NOCOMPRESS LOGGING
+  STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
+  PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1 BUFFER_POOL DEFAULT)
+  TABLESPACE "USERS" ;
+--------------------------------------------------------
+--  DDL for Table USER_MESSAGE
+--------------------------------------------------------
+
+  CREATE TABLE "BASE_DDIT"."USER_MESSAGE" 
+   (	"ID" NUMBER(10,0), 
+	"MESSAGEID" NUMBER(10,0), 
+	"USERID" NUMBER(10,0), 
+	"ISREAD" NUMBER(1,0)
    ) PCTFREE 10 PCTUSED 40 INITRANS 1 MAXTRANS 255 NOCOMPRESS LOGGING
   STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
   PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1 BUFFER_POOL DEFAULT)
@@ -199,39 +302,77 @@ Insert into BASE_DDIT.BUTTON (BUTTON_ID,BUTTON_OPID,BUTTON_NAME,BUTTON_OPERATION
 Insert into BASE_DDIT.BUTTON (BUTTON_ID,BUTTON_OPID,BUTTON_NAME,BUTTON_OPERATION,BUTTON_MAGIC,BUTTON_DESCRIBE,CREATE_TIME,UPDATE_TIME) values (10,'distributionRole','分配角色',null,'glyphicon glyphicon-user',null,to_date('14-4月 -16','DD-MON-RR'),null);
 Insert into BASE_DDIT.BUTTON (BUTTON_ID,BUTTON_OPID,BUTTON_NAME,BUTTON_OPERATION,BUTTON_MAGIC,BUTTON_DESCRIBE,CREATE_TIME,UPDATE_TIME) values (11,'Disabled','禁用',null,'glyphicon glyphicon-ban-circle','不删除修改状态',to_date('15-4月 -16','DD-MON-RR'),to_date('06-5月 -16','DD-MON-RR'));
 Insert into BASE_DDIT.BUTTON (BUTTON_ID,BUTTON_OPID,BUTTON_NAME,BUTTON_OPERATION,BUTTON_MAGIC,BUTTON_DESCRIBE,CREATE_TIME,UPDATE_TIME) values (5,'UpLoad','上传',null,'glyphicon glyphicon-upload','用户上传文件',to_date('25-3月 -16','DD-MON-RR'),null);
+Insert into BASE_DDIT.BUTTON (BUTTON_ID,BUTTON_OPID,BUTTON_NAME,BUTTON_OPERATION,BUTTON_MAGIC,BUTTON_DESCRIBE,CREATE_TIME,UPDATE_TIME) values (14,'ResetPwd','重置密码',null,'glyphicon glyphicon-lock','管理员专用重置密码',to_date('26-6月 -17','DD-MON-RR'),to_date('26-6月 -17','DD-MON-RR'));
 REM INSERTING into BASE_DDIT.DICTIONARY
 SET DEFINE OFF;
-Insert into BASE_DDIT.DICTIONARY (ID,DICCATEGORYID,DICVALUE,ENABLED,CREATE_TIME,UPDATE_TIME) values (19,22,'啊',1,to_date('01-6月 -17','DD-MON-RR'),null);
 Insert into BASE_DDIT.DICTIONARY (ID,DICCATEGORYID,DICVALUE,ENABLED,CREATE_TIME,UPDATE_TIME) values (1,1,'市场部',1,to_date('21-4月 -16','DD-MON-RR'),to_date('04-5月 -17','DD-MON-RR'));
-Insert into BASE_DDIT.DICTIONARY (ID,DICCATEGORYID,DICVALUE,ENABLED,CREATE_TIME,UPDATE_TIME) values (2,1,'技术部',0,to_date('21-4月 -16','DD-MON-RR'),to_date('04-5月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.DICTIONARY (ID,DICCATEGORYID,DICVALUE,ENABLED,CREATE_TIME,UPDATE_TIME) values (2,1,'技术部',1,to_date('21-4月 -16','DD-MON-RR'),to_date('15-6月 -17','DD-MON-RR'));
 Insert into BASE_DDIT.DICTIONARY (ID,DICCATEGORYID,DICVALUE,ENABLED,CREATE_TIME,UPDATE_TIME) values (3,1,'客服部',1,to_date('22-4月 -16','DD-MON-RR'),null);
 Insert into BASE_DDIT.DICTIONARY (ID,DICCATEGORYID,DICVALUE,ENABLED,CREATE_TIME,UPDATE_TIME) values (4,1,'服务部',1,to_date('23-4月 -16','DD-MON-RR'),to_date('29-4月 -16','DD-MON-RR'));
-Insert into BASE_DDIT.DICTIONARY (ID,DICCATEGORYID,DICVALUE,ENABLED,CREATE_TIME,UPDATE_TIME) values (12,16,'测试1',1,to_date('03-5月 -17','DD-MON-RR'),null);
-Insert into BASE_DDIT.DICTIONARY (ID,DICCATEGORYID,DICVALUE,ENABLED,CREATE_TIME,UPDATE_TIME) values (13,16,'测试3',1,to_date('03-5月 -17','DD-MON-RR'),to_date('03-5月 -17','DD-MON-RR'));
-Insert into BASE_DDIT.DICTIONARY (ID,DICCATEGORYID,DICVALUE,ENABLED,CREATE_TIME,UPDATE_TIME) values (14,16,'测试4',0,to_date('03-5月 -17','DD-MON-RR'),to_date('03-5月 -17','DD-MON-RR'));
-Insert into BASE_DDIT.DICTIONARY (ID,DICCATEGORYID,DICVALUE,ENABLED,CREATE_TIME,UPDATE_TIME) values (15,16,'测试2',1,to_date('03-5月 -17','DD-MON-RR'),null);
-Insert into BASE_DDIT.DICTIONARY (ID,DICCATEGORYID,DICVALUE,ENABLED,CREATE_TIME,UPDATE_TIME) values (16,16,'测试2',1,to_date('03-5月 -17','DD-MON-RR'),null);
-Insert into BASE_DDIT.DICTIONARY (ID,DICCATEGORYID,DICVALUE,ENABLED,CREATE_TIME,UPDATE_TIME) values (17,16,'测试3',1,to_date('03-5月 -17','DD-MON-RR'),null);
-Insert into BASE_DDIT.DICTIONARY (ID,DICCATEGORYID,DICVALUE,ENABLED,CREATE_TIME,UPDATE_TIME) values (18,16,'测试3',1,to_date('03-5月 -17','DD-MON-RR'),null);
 REM INSERTING into BASE_DDIT.DICTIONARYCATEGORY
 SET DEFINE OFF;
-Insert into BASE_DDIT.DICTIONARYCATEGORY (ID,CATEGORY,ENABLED,CREATE_TIME,UPDATE_TIME) values (18,'我就要测试',1,to_date('01-6月 -17','DD-MON-RR'),null);
-Insert into BASE_DDIT.DICTIONARYCATEGORY (ID,CATEGORY,ENABLED,CREATE_TIME,UPDATE_TIME) values (17,'继续测试',1,to_date('01-6月 -17','DD-MON-RR'),null);
-Insert into BASE_DDIT.DICTIONARYCATEGORY (ID,CATEGORY,ENABLED,CREATE_TIME,UPDATE_TIME) values (19,'分类1',1,to_date('01-6月 -17','DD-MON-RR'),null);
-Insert into BASE_DDIT.DICTIONARYCATEGORY (ID,CATEGORY,ENABLED,CREATE_TIME,UPDATE_TIME) values (21,'asd',1,to_date('01-6月 -17','DD-MON-RR'),null);
-Insert into BASE_DDIT.DICTIONARYCATEGORY (ID,CATEGORY,ENABLED,CREATE_TIME,UPDATE_TIME) values (22,'这次肯定好用',1,to_date('01-6月 -17','DD-MON-RR'),null);
 Insert into BASE_DDIT.DICTIONARYCATEGORY (ID,CATEGORY,ENABLED,CREATE_TIME,UPDATE_TIME) values (1,'部门',1,to_date('21-4月 -16','DD-MON-RR'),to_date('03-5月 -17','DD-MON-RR'));
-Insert into BASE_DDIT.DICTIONARYCATEGORY (ID,CATEGORY,ENABLED,CREATE_TIME,UPDATE_TIME) values (16,'测试用的',1,to_date('03-5月 -17','DD-MON-RR'),null);
-Insert into BASE_DDIT.DICTIONARYCATEGORY (ID,CATEGORY,ENABLED,CREATE_TIME,UPDATE_TIME) values (20,'fghf',1,to_date('01-6月 -17','DD-MON-RR'),null);
 REM INSERTING into BASE_DDIT.LOGINLOG
 SET DEFINE OFF;
-Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (426,'admin','超级管理员','::1',to_date('31-5月 -17','DD-MON-RR'));
-Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (427,'admin','超级管理员','192.168.40.35',to_date('31-5月 -17','DD-MON-RR'));
-Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (428,'admin','超级管理员','192.168.40.35',to_date('31-5月 -17','DD-MON-RR'));
-Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (432,'admin','超级管理员','::1',to_date('31-5月 -17','DD-MON-RR'));
-Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (446,'admin','超级管理员','::1',to_date('01-6月 -17','DD-MON-RR'));
-Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (430,'admin','超级管理员','::1',to_date('31-5月 -17','DD-MON-RR'));
-Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (431,'admin','超级管理员','::1',to_date('31-5月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (460,'admin','超级管理员','::1',to_date('12-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (461,'admin','超级管理员','::1',to_date('12-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (462,'admin','超级管理员','::1',to_date('12-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (463,'admin','超级管理员','::1',to_date('12-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (466,'admin','超级管理员','::1',to_date('12-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (467,'admin','超级管理员','::1',to_date('12-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (470,'admin','超级管理员','::1',to_date('13-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (473,'admin','超级管理员','::1',to_date('13-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (482,'admin','超级管理员','::1',to_date('14-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (498,'admin','超级管理员','::1',to_date('16-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (502,'admin','超级管理员','::1',to_date('16-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (507,'admin','超级管理员','::1',to_date('16-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (515,'admin','超级管理员','::1',to_date('16-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (516,'admin','超级管理员','::1',to_date('16-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (517,'admin','超级管理员','::1',to_date('16-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (518,'admin','超级管理员','::1',to_date('16-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (519,'admin','超级管理员','::1',to_date('16-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (520,'admin','超级管理员','::1',to_date('16-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (521,'admin','超级管理员','::1',to_date('16-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (522,'admin','超级管理员','::1',to_date('16-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (523,'admin','超级管理员','::1',to_date('16-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (524,'admin','超级管理员','::1',to_date('16-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (525,'admin','超级管理员','::1',to_date('16-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (526,'admin','超级管理员','::1',to_date('16-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (527,'admin','超级管理员','::1',to_date('16-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (528,'admin','超级管理员','::1',to_date('16-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (529,'admin','超级管理员','::1',to_date('16-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (530,'admin','超级管理员','::1',to_date('16-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (531,'admin','超级管理员','::1',to_date('16-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (532,'admin','超级管理员','::1',to_date('16-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (533,'admin','超级管理员','::1',to_date('16-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (534,'admin','超级管理员','::1',to_date('16-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (535,'admin','超级管理员','::1',to_date('16-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (536,'admin','超级管理员','::1',to_date('16-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (537,'admin','超级管理员','::1',to_date('16-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (538,'admin','超级管理员','::1',to_date('16-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (539,'admin','超级管理员','::1',to_date('16-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (540,'admin','超级管理员','::1',to_date('16-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (541,'admin','超级管理员','::1',to_date('16-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (542,'admin','超级管理员','::1',to_date('16-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (543,'admin','超级管理员','::1',to_date('16-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (544,'admin','超级管理员','::1',to_date('16-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (545,'admin','超级管理员','::1',to_date('16-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (546,'admin','超级管理员','::1',to_date('16-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (547,'admin','超级管理员','::1',to_date('16-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (554,'admin','超级管理员','::1',to_date('16-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (562,'admin','超级管理员','::1',to_date('16-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (571,'admin','超级管理员','::1',to_date('19-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (586,'admin','超级管理员','::1',to_date('20-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (591,'admin','超级管理员','::1',to_date('20-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (592,'admin','超级管理员','::1',to_date('20-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (595,'admin','超级管理员','::1',to_date('20-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (599,'admin','超级管理员','::1',to_date('21-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (641,'admin','超级管理员','::1',to_date('22-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (643,'admin','超级管理员','::1',to_date('23-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (649,'admin','超级管理员','::1',to_date('23-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (680,'admin','超级管理员','::1',to_date('27-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (681,'admin','超级管理员','::1',to_date('27-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (682,'admin','超级管理员','::1',to_date('27-6月 -17','DD-MON-RR'));
 Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (122,'admin','王洪洋','192.168.40.23',to_date('13-4月 -16','DD-MON-RR'));
 Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (123,'admin','王洪洋','192.168.40.23',to_date('13-4月 -16','DD-MON-RR'));
 Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (3,'whywhy898','王洪洋','::1',to_date('02-3月 -16','DD-MON-RR'));
@@ -584,6 +725,70 @@ Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_
 Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (420,'admin','超级管理员','::1',to_date('25-5月 -17','DD-MON-RR'));
 Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (423,'admin','超级管理员','::1',to_date('26-5月 -17','DD-MON-RR'));
 Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (425,'admin','超级管理员','::1',to_date('26-5月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (426,'admin','超级管理员','::1',to_date('27-5月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (427,'admin','超级管理员','::1',to_date('27-5月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (428,'admin','超级管理员','::1',to_date('31-5月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (429,'admin','超级管理员','::1',to_date('01-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (430,'admin','超级管理员','::1',to_date('01-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (431,'admin','超级管理员','::1',to_date('01-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (432,'admin','超级管理员','::1',to_date('01-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (433,'admin','超级管理员','::1',to_date('01-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (434,'admin','超级管理员','::1',to_date('01-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (435,'admin','超级管理员','::1',to_date('01-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (436,'admin','超级管理员','::1',to_date('01-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (437,'admin','超级管理员','::1',to_date('01-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (439,'admin','超级管理员','::1',to_date('01-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (440,'admin','超级管理员','::1',to_date('01-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (441,'admin','超级管理员','::1',to_date('01-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (442,'admin','超级管理员','::1',to_date('01-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (443,'admin','超级管理员','::1',to_date('01-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (444,'admin','超级管理员','::1',to_date('01-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (445,'admin','超级管理员','::1',to_date('02-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (446,'admin','超级管理员','::1',to_date('02-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (447,'admin','超级管理员','::1',to_date('02-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (449,'admin','超级管理员','::1',to_date('05-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (452,'admin','超级管理员','::1',to_date('06-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (453,'admin','超级管理员','::1',to_date('07-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (454,'admin','超级管理员','::1',to_date('08-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (456,'admin','超级管理员','::1',to_date('12-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (457,'admin','超级管理员','::1',to_date('12-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (458,'admin','超级管理员','::1',to_date('12-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (459,'admin','超级管理员','::1',to_date('12-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (464,'admin','超级管理员','::1',to_date('12-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (468,'admin','超级管理员','::1',to_date('12-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (469,'admin','超级管理员','::1',to_date('13-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (471,'admin','超级管理员','::1',to_date('13-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (474,'admin','超级管理员','::1',to_date('13-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (475,'admin','超级管理员','::1',to_date('13-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (476,'admin','超级管理员','::1',to_date('13-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (477,'admin','超级管理员','::1',to_date('13-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (478,'admin','超级管理员','::1',to_date('13-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (479,'admin','超级管理员','::1',to_date('14-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (480,'admin','超级管理员','::1',to_date('14-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (483,'admin','超级管理员','::1',to_date('14-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (484,'admin','超级管理员','::1',to_date('14-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (485,'admin','超级管理员','::1',to_date('14-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (486,'admin','超级管理员','::1',to_date('14-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (487,'admin','超级管理员','::1',to_date('14-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (491,'admin','超级管理员','::1',to_date('15-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (492,'admin','超级管理员','::1',to_date('15-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (493,'admin','超级管理员','::1',to_date('15-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (494,'admin','超级管理员','::1',to_date('15-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (496,'admin','超级管理员','::1',to_date('16-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (500,'admin','超级管理员','::1',to_date('16-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (501,'admin','超级管理员','::1',to_date('16-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (503,'admin','超级管理员','::1',to_date('16-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (505,'admin','超级管理员','::1',to_date('16-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (506,'admin','超级管理员','::1',to_date('16-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (508,'admin','超级管理员','::1',to_date('16-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (509,'admin','超级管理员','::1',to_date('16-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (510,'admin','超级管理员','::1',to_date('16-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (511,'admin','超级管理员','::1',to_date('16-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (512,'admin','超级管理员','::1',to_date('16-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (513,'admin','超级管理员','::1',to_date('16-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (514,'admin','超级管理员','::1',to_date('16-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (550,'admin','超级管理员','::1',to_date('16-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (551,'admin','超级管理员','::1',to_date('16-6月 -17','DD-MON-RR'));
 Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (196,'admin','超级管理员','::1',to_date('15-7月 -16','DD-MON-RR'));
 Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (197,'admin','超级管理员','::1',to_date('15-7月 -16','DD-MON-RR'));
 Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (204,'admin','超级管理员','::1',to_date('18-7月 -16','DD-MON-RR'));
@@ -603,6 +808,95 @@ Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_
 Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (331,'admin','超级管理员','::1',to_date('04-5月 -17','DD-MON-RR'));
 Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (333,'admin','超级管理员','::1',to_date('04-5月 -17','DD-MON-RR'));
 Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (335,'admin','超级管理员','::1',to_date('05-5月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (438,'admin','超级管理员','::1',to_date('01-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (465,'admin','超级管理员','::1',to_date('12-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (472,'admin','超级管理员','::1',to_date('13-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (481,'admin','超级管理员','::1',to_date('14-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (495,'admin','超级管理员','::1',to_date('15-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (497,'admin','超级管理员','::1',to_date('16-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (499,'admin','超级管理员','::1',to_date('16-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (552,'admin','超级管理员','::1',to_date('16-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (557,'admin','超级管理员','::1',to_date('16-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (558,'admin','超级管理员','::1',to_date('16-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (559,'admin','超级管理员','::1',to_date('16-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (560,'admin','超级管理员','::1',to_date('16-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (561,'admin','超级管理员','::1',to_date('16-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (563,'admin','超级管理员','::1',to_date('19-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (564,'admin','超级管理员','::1',to_date('19-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (565,'admin','超级管理员','::1',to_date('19-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (566,'admin','超级管理员','::1',to_date('19-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (567,'admin','超级管理员','::1',to_date('19-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (568,'admin','超级管理员','::1',to_date('19-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (569,'admin','超级管理员','::1',to_date('19-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (570,'admin','超级管理员','::1',to_date('19-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (572,'admin','超级管理员','::1',to_date('19-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (573,'admin','超级管理员','::1',to_date('19-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (574,'admin','超级管理员','::1',to_date('19-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (575,'admin','超级管理员','::1',to_date('19-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (576,'admin','超级管理员','::1',to_date('19-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (577,'admin','超级管理员','::1',to_date('19-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (578,'admin','超级管理员','::1',to_date('19-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (579,'admin','超级管理员','::1',to_date('19-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (580,'admin','超级管理员','::1',to_date('20-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (581,'admin','超级管理员','::1',to_date('20-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (582,'admin','超级管理员','::1',to_date('20-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (583,'admin','超级管理员','::1',to_date('20-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (584,'admin','超级管理员','::1',to_date('20-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (585,'admin','超级管理员','::1',to_date('20-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (587,'admin','超级管理员','::1',to_date('20-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (588,'admin','超级管理员','::1',to_date('20-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (589,'admin','超级管理员','::1',to_date('20-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (590,'admin','超级管理员','::1',to_date('20-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (593,'admin','超级管理员','::1',to_date('20-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (594,'admin','超级管理员','::1',to_date('20-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (596,'admin','超级管理员','::1',to_date('21-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (597,'admin','超级管理员','::1',to_date('21-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (598,'admin','超级管理员','::1',to_date('21-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (600,'admin','超级管理员','::1',to_date('21-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (601,'admin','超级管理员','::1',to_date('21-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (602,'admin','超级管理员','::1',to_date('21-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (603,'admin','超级管理员','::1',to_date('21-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (604,'admin','超级管理员','::1',to_date('21-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (605,'admin','超级管理员','::1',to_date('21-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (606,'admin','超级管理员','::1',to_date('21-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (607,'admin','超级管理员','::1',to_date('21-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (608,'admin','超级管理员','::1',to_date('21-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (609,'admin','超级管理员','::1',to_date('21-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (610,'admin','超级管理员','::1',to_date('21-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (611,'admin','超级管理员','::1',to_date('21-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (612,'admin','超级管理员','::1',to_date('21-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (613,'admin','超级管理员','::1',to_date('21-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (614,'admin','超级管理员','::1',to_date('21-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (615,'admin','超级管理员','::1',to_date('21-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (618,'admin','超级管理员','::1',to_date('21-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (623,'admin','超级管理员','::1',to_date('21-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (624,'admin','超级管理员','::1',to_date('21-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (625,'admin','超级管理员','::1',to_date('21-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (626,'admin','超级管理员','::1',to_date('21-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (627,'admin','超级管理员','::1',to_date('21-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (628,'admin','超级管理员','::1',to_date('22-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (629,'admin','超级管理员','::1',to_date('22-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (630,'admin','超级管理员','::1',to_date('22-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (631,'admin','超级管理员','::1',to_date('22-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (632,'admin','超级管理员','::1',to_date('22-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (633,'admin','超级管理员','::1',to_date('22-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (634,'admin','超级管理员','::1',to_date('22-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (635,'admin','超级管理员','::1',to_date('22-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (636,'admin','超级管理员','::1',to_date('22-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (637,'admin','超级管理员','::1',to_date('22-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (638,'admin','超级管理员','::1',to_date('22-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (639,'admin','超级管理员','::1',to_date('22-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (642,'admin','超级管理员','::1',to_date('23-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (644,'admin','超级管理员','::1',to_date('23-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (645,'admin','超级管理员','::1',to_date('23-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (646,'admin','超级管理员','::1',to_date('23-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (648,'admin','超级管理员','::1',to_date('23-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (650,'admin','超级管理员','::1',to_date('23-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (666,'admin','超级管理员','::1',to_date('23-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (667,'admin','超级管理员','::1',to_date('26-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (668,'admin','超级管理员','::1',to_date('26-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (678,'admin','超级管理员','::1',to_date('26-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (679,'admin','超级管理员','::1',to_date('27-6月 -17','DD-MON-RR'));
 Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (214,'admin','超级管理员','::1',to_date('19-7月 -16','DD-MON-RR'));
 Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (215,'admin','超级管理员','127.0.0.1',to_date('19-7月 -16','DD-MON-RR'));
 Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (343,'admin','超级管理员','::1',to_date('12-5月 -17','DD-MON-RR'));
@@ -614,18 +908,48 @@ Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_
 Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (411,'admin','超级管理员','::1',to_date('24-5月 -17','DD-MON-RR'));
 Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (412,'admin','超级管理员','::1',to_date('24-5月 -17','DD-MON-RR'));
 Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (424,'admin','超级管理员','::1',to_date('26-5月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (640,'admin','超级管理员','::1',to_date('22-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (647,'admin','超级管理员','::1',to_date('23-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (662,'admin','超级管理员','::1',to_date('23-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (663,'admin','超级管理员','::1',to_date('23-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (664,'admin','超级管理员','::1',to_date('23-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (665,'admin','超级管理员','::1',to_date('23-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (669,'admin','超级管理员','::1',to_date('26-6月 -17','DD-MON-RR'));
 Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (244,'admin','超级管理员','::1',to_date('17-8月 -16','DD-MON-RR'));
 Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (416,'admin','超级管理员','::1',to_date('25-5月 -17','DD-MON-RR'));
 Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (419,'admin','超级管理员','::1',to_date('25-5月 -17','DD-MON-RR'));
 Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (421,'admin','超级管理员','::1',to_date('25-5月 -17','DD-MON-RR'));
 Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (422,'admin','超级管理员','::1',to_date('25-5月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (504,'admin','超级管理员','::1',to_date('16-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (670,'admin','超级管理员','::1',to_date('26-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (671,'admin','超级管理员','::1',to_date('26-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (672,'layer2','弹出层2','::1',to_date('26-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (673,'whywhy898','小红红','::1',to_date('26-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (674,'whywhy898','小红红','::1',to_date('26-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (675,'admin','超级管理员','::1',to_date('26-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (676,'whywhy898','小红红','::1',to_date('26-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (677,'admin','超级管理员','::1',to_date('26-6月 -17','DD-MON-RR'));
 Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (257,'admin','超级管理员','::1',to_date('08-2月 -17','DD-MON-RR'));
 Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (258,'admin','超级管理员','::1',to_date('08-2月 -17','DD-MON-RR'));
 Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (259,'admin','超级管理员','::1',to_date('08-2月 -17','DD-MON-RR'));
 Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (260,'admin','超级管理员','::1',to_date('08-2月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (654,'admin','超级管理员','::1',to_date('23-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (655,'admin','超级管理员','::1',to_date('23-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (658,'admin','超级管理员','::1',to_date('23-6月 -17','DD-MON-RR'));
 Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (276,'admin','超级管理员','::1',to_date('21-4月 -17','DD-MON-RR'));
 Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (417,'admin','超级管理员','::1',to_date('25-5月 -17','DD-MON-RR'));
 Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (418,'admin','超级管理员','::1',to_date('25-5月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (448,'admin','超级管理员','::1',to_date('02-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (451,'admin','超级管理员','::1',to_date('05-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (455,'admin','超级管理员','::1',to_date('08-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (488,'admin','超级管理员','::1',to_date('14-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (489,'admin','超级管理员','::1',to_date('14-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (490,'admin','超级管理员','::1',to_date('14-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (548,'admin','超级管理员','::1',to_date('16-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (549,'admin','超级管理员','::1',to_date('16-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (553,'admin','超级管理员','::1',to_date('16-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (555,'admin','超级管理员','::1',to_date('16-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (556,'niumo','牛魔','::1',to_date('16-6月 -17','DD-MON-RR'));
 Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (285,'admin','超级管理员','127.0.0.1',to_date('25-4月 -17','DD-MON-RR'));
 Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (286,'admin','超级管理员','127.0.0.1',to_date('25-4月 -17','DD-MON-RR'));
 Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (287,'admin','超级管理员','127.0.0.1',to_date('25-4月 -17','DD-MON-RR'));
@@ -637,6 +961,20 @@ Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_
 Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (316,'admin','超级管理员','::1',to_date('02-5月 -17','DD-MON-RR'));
 Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (319,'admin','超级管理员','::1',to_date('02-5月 -17','DD-MON-RR'));
 Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (329,'admin','超级管理员','::1',to_date('03-5月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (616,'admin','超级管理员','::1',to_date('21-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (617,'admin','超级管理员','::1',to_date('21-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (619,'admin','超级管理员','::1',to_date('21-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (620,'admin','超级管理员','::1',to_date('21-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (621,'admin','超级管理员','::1',to_date('21-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (622,'admin1','管理员1','::1',to_date('21-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (651,'niumo','牛魔','::1',to_date('23-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (652,'admin','超级管理员','::1',to_date('23-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (653,'admin','超级管理员','::1',to_date('23-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (656,'admin','超级管理员','::1',to_date('23-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (657,'admin','超级管理员','::1',to_date('23-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (659,'admin','超级管理员','::1',to_date('23-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (660,'admin','超级管理员','::1',to_date('23-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (661,'admin','超级管理员','::1',to_date('23-6月 -17','DD-MON-RR'));
 Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (357,'admin','超级管理员','::1',to_date('15-5月 -17','DD-MON-RR'));
 Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (358,'admin','超级管理员','::1',to_date('15-5月 -17','DD-MON-RR'));
 Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (363,'admin','超级管理员','::1',to_date('16-5月 -17','DD-MON-RR'));
@@ -655,33 +993,22 @@ Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_
 Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (382,'admin','超级管理员','192.168.40.35',to_date('17-5月 -17','DD-MON-RR'));
 Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (406,'admin','超级管理员','::1',to_date('23-5月 -17','DD-MON-RR'));
 Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (407,'admin','超级管理员','::1',to_date('23-5月 -17','DD-MON-RR'));
-Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (429,'admin','超级管理员','::1',to_date('31-5月 -17','DD-MON-RR'));
-Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (441,'admin','超级管理员','::1',to_date('01-6月 -17','DD-MON-RR'));
-Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (442,'admin','超级管理员','::1',to_date('01-6月 -17','DD-MON-RR'));
-Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (443,'admin','超级管理员','::1',to_date('01-6月 -17','DD-MON-RR'));
-Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (444,'admin','超级管理员','::1',to_date('01-6月 -17','DD-MON-RR'));
-Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (445,'admin','超级管理员','::1',to_date('01-6月 -17','DD-MON-RR'));
-Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (461,'admin','超级管理员','::1',to_date('02-6月 -17','DD-MON-RR'));
-Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (462,'admin','超级管理员','::1',to_date('02-6月 -17','DD-MON-RR'));
-Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (463,'admin','超级管理员','::1',to_date('02-6月 -17','DD-MON-RR'));
+Insert into BASE_DDIT.LOGINLOG (LOGIN_ID,LOGIN_NAME,LOGIN_NICKER,LOGIN_IP,LOGIN_TIME) values (450,'admin','超级管理员','::1',to_date('05-6月 -17','DD-MON-RR'));
 REM INSERTING into BASE_DDIT.MENU
 SET DEFINE OFF;
 Insert into BASE_DDIT.MENU (MENU_ID,MENU_NAME,MENU_URL,MENU_PARENTID,MENU_ORDER,MENU_ICON,ISVISIBLE,CREATE_TIME,UPDATE_TIME) values (1,'系统设置','youare',null,1,'glyphicon glyphicon-text59',1,to_date('21-3月 -16','DD-MON-RR'),null);
-Insert into BASE_DDIT.MENU (MENU_ID,MENU_NAME,MENU_URL,MENU_PARENTID,MENU_ORDER,MENU_ICON,ISVISIBLE,CREATE_TIME,UPDATE_TIME) values (4,'用户管理','/User/Index',1,1,'glyphicon glyphicon-text57',1,to_date('21-3月 -16','DD-MON-RR'),null);
+Insert into BASE_DDIT.MENU (MENU_ID,MENU_NAME,MENU_URL,MENU_PARENTID,MENU_ORDER,MENU_ICON,ISVISIBLE,CREATE_TIME,UPDATE_TIME) values (4,'用户管理','/User/Index',1,1,'glyphicon glyphicon-text20',0,to_date('26-6月 -17','DD-MON-RR'),null);
 Insert into BASE_DDIT.MENU (MENU_ID,MENU_NAME,MENU_URL,MENU_PARENTID,MENU_ORDER,MENU_ICON,ISVISIBLE,CREATE_TIME,UPDATE_TIME) values (5,'角色管理','/Role/Index',1,2,'glyphicon glyphicon-text57',1,to_date('21-3月 -16','DD-MON-RR'),null);
 Insert into BASE_DDIT.MENU (MENU_ID,MENU_NAME,MENU_URL,MENU_PARENTID,MENU_ORDER,MENU_ICON,ISVISIBLE,CREATE_TIME,UPDATE_TIME) values (9,'菜单管理','/Menu/Index',1,4,'glyphicon glyphicon-text58',1,to_date('21-3月 -16','DD-MON-RR'),null);
 Insert into BASE_DDIT.MENU (MENU_ID,MENU_NAME,MENU_URL,MENU_PARENTID,MENU_ORDER,MENU_ICON,ISVISIBLE,CREATE_TIME,UPDATE_TIME) values (28,'按钮管理','/Button/Index',1,5,'glyphicon glyphicon-text2',0,to_date('23-3月 -16','DD-MON-RR'),null);
-Insert into BASE_DDIT.MENU (MENU_ID,MENU_NAME,MENU_URL,MENU_PARENTID,MENU_ORDER,MENU_ICON,ISVISIBLE,CREATE_TIME,UPDATE_TIME) values (29,'统计报表',' ',null,2,'glyphicon glyphicon-text23',0,to_date('23-3月 -16','DD-MON-RR'),null);
 Insert into BASE_DDIT.MENU (MENU_ID,MENU_NAME,MENU_URL,MENU_PARENTID,MENU_ORDER,MENU_ICON,ISVISIBLE,CREATE_TIME,UPDATE_TIME) values (30,'日志管理','/Log/Index',1,7,'glyphicon glyphicon-text27',0,to_date('23-3月 -16','DD-MON-RR'),null);
 Insert into BASE_DDIT.MENU (MENU_ID,MENU_NAME,MENU_URL,MENU_PARENTID,MENU_ORDER,MENU_ICON,ISVISIBLE,CREATE_TIME,UPDATE_TIME) values (31,'核心业务',' ',null,3,'glyphicon glyphicon-text16',0,to_date('23-3月 -16','DD-MON-RR'),null);
-Insert into BASE_DDIT.MENU (MENU_ID,MENU_NAME,MENU_URL,MENU_PARENTID,MENU_ORDER,MENU_ICON,ISVISIBLE,CREATE_TIME,UPDATE_TIME) values (32,'组织结构',' ',29,6,'glyphicon glyphicon-text5',0,to_date('23-3月 -16','DD-MON-RR'),null);
 Insert into BASE_DDIT.MENU (MENU_ID,MENU_NAME,MENU_URL,MENU_PARENTID,MENU_ORDER,MENU_ICON,ISVISIBLE,CREATE_TIME,UPDATE_TIME) values (33,'数据字典','/Dictionary/Index',1,6,'glyphicon glyphicon-text',0,to_date('23-3月 -16','DD-MON-RR'),null);
 Insert into BASE_DDIT.MENU (MENU_ID,MENU_NAME,MENU_URL,MENU_PARENTID,MENU_ORDER,MENU_ICON,ISVISIBLE,CREATE_TIME,UPDATE_TIME) values (45,'业务管理',' ',null,4,'glyphicon glyphicon-text23',0,to_date('24-5月 -17','DD-MON-RR'),null);
 Insert into BASE_DDIT.MENU (MENU_ID,MENU_NAME,MENU_URL,MENU_PARENTID,MENU_ORDER,MENU_ICON,ISVISIBLE,CREATE_TIME,UPDATE_TIME) values (46,'新闻列表','/News/Index',45,1,'glyphicon glyphicon-text23',0,to_date('24-5月 -17','DD-MON-RR'),null);
+Insert into BASE_DDIT.MENU (MENU_ID,MENU_NAME,MENU_URL,MENU_PARENTID,MENU_ORDER,MENU_ICON,ISVISIBLE,CREATE_TIME,UPDATE_TIME) values (47,'站内消息','/Message/Index',1,6,'glyphicon glyphicon-text16',0,to_date('12-6月 -17','DD-MON-RR'),null);
 REM INSERTING into BASE_DDIT.MENU_BUTTON
 SET DEFINE OFF;
-Insert into BASE_DDIT.MENU_BUTTON (ID,MENU_ID,BUTTON_ID,ORDERBY) values (59,46,1,1);
-Insert into BASE_DDIT.MENU_BUTTON (ID,MENU_ID,BUTTON_ID,ORDERBY) values (60,46,7,2);
 Insert into BASE_DDIT.MENU_BUTTON (ID,MENU_ID,BUTTON_ID,ORDERBY) values (22,35,3,1);
 Insert into BASE_DDIT.MENU_BUTTON (ID,MENU_ID,BUTTON_ID,ORDERBY) values (23,35,1,2);
 Insert into BASE_DDIT.MENU_BUTTON (ID,MENU_ID,BUTTON_ID,ORDERBY) values (24,35,4,3);
@@ -689,10 +1016,10 @@ Insert into BASE_DDIT.MENU_BUTTON (ID,MENU_ID,BUTTON_ID,ORDERBY) values (25,35,2
 Insert into BASE_DDIT.MENU_BUTTON (ID,MENU_ID,BUTTON_ID,ORDERBY) values (26,32,1,1);
 Insert into BASE_DDIT.MENU_BUTTON (ID,MENU_ID,BUTTON_ID,ORDERBY) values (27,32,2,2);
 Insert into BASE_DDIT.MENU_BUTTON (ID,MENU_ID,BUTTON_ID,ORDERBY) values (28,32,3,3);
-Insert into BASE_DDIT.MENU_BUTTON (ID,MENU_ID,BUTTON_ID,ORDERBY) values (36,4,1,1);
-Insert into BASE_DDIT.MENU_BUTTON (ID,MENU_ID,BUTTON_ID,ORDERBY) values (37,4,2,2);
-Insert into BASE_DDIT.MENU_BUTTON (ID,MENU_ID,BUTTON_ID,ORDERBY) values (38,4,11,3);
-Insert into BASE_DDIT.MENU_BUTTON (ID,MENU_ID,BUTTON_ID,ORDERBY) values (39,4,10,4);
+Insert into BASE_DDIT.MENU_BUTTON (ID,MENU_ID,BUTTON_ID,ORDERBY) values (58,4,1,1);
+Insert into BASE_DDIT.MENU_BUTTON (ID,MENU_ID,BUTTON_ID,ORDERBY) values (59,4,2,2);
+Insert into BASE_DDIT.MENU_BUTTON (ID,MENU_ID,BUTTON_ID,ORDERBY) values (60,4,11,3);
+Insert into BASE_DDIT.MENU_BUTTON (ID,MENU_ID,BUTTON_ID,ORDERBY) values (61,4,10,4);
 Insert into BASE_DDIT.MENU_BUTTON (ID,MENU_ID,BUTTON_ID,ORDERBY) values (10,33,1,1);
 Insert into BASE_DDIT.MENU_BUTTON (ID,MENU_ID,BUTTON_ID,ORDERBY) values (11,33,2,2);
 Insert into BASE_DDIT.MENU_BUTTON (ID,MENU_ID,BUTTON_ID,ORDERBY) values (12,33,3,3);
@@ -702,28 +1029,36 @@ Insert into BASE_DDIT.MENU_BUTTON (ID,MENU_ID,BUTTON_ID,ORDERBY) values (51,43,2
 Insert into BASE_DDIT.MENU_BUTTON (ID,MENU_ID,BUTTON_ID,ORDERBY) values (52,43,3,3);
 Insert into BASE_DDIT.MENU_BUTTON (ID,MENU_ID,BUTTON_ID,ORDERBY) values (53,5,9,1);
 Insert into BASE_DDIT.MENU_BUTTON (ID,MENU_ID,BUTTON_ID,ORDERBY) values (54,5,10,2);
+Insert into BASE_DDIT.MENU_BUTTON (ID,MENU_ID,BUTTON_ID,ORDERBY) values (55,46,1,1);
+Insert into BASE_DDIT.MENU_BUTTON (ID,MENU_ID,BUTTON_ID,ORDERBY) values (56,46,7,2);
+Insert into BASE_DDIT.MENU_BUTTON (ID,MENU_ID,BUTTON_ID,ORDERBY) values (57,46,5,3);
+Insert into BASE_DDIT.MENU_BUTTON (ID,MENU_ID,BUTTON_ID,ORDERBY) values (62,4,14,5);
+REM INSERTING into BASE_DDIT.MESSAGE
+SET DEFINE OFF;
+Insert into BASE_DDIT.MESSAGE (MESSAGEID,MESSAGETITLE,SENDUSER,SENDTIME,EXPIRATIONTIME,ISSENDEMAIL,SENDEMAILSTATE,MESSAGETEXT,RECUSER) values (1,'oracle 测试',1,to_date('27-6月 -17','DD-MON-RR'),to_date('27-6月 -17','DD-MON-RR'),0,0,'最大只能输入4000个字符,entity 怎么处理 colb字段类型<br><p><br></p>','41,27,2,28,1,30,31');
 REM INSERTING into BASE_DDIT.ROLE
 SET DEFINE OFF;
-Insert into BASE_DDIT.ROLE (ROLE_ID,ROLE_NAME,ROLE_DESCRIPTION,CREATE_TIME,UPDATE_TIME) values (5,'客服管理员','客服的老大',to_date('31-5月 -17','DD-MON-RR'),null);
 Insert into BASE_DDIT.ROLE (ROLE_ID,ROLE_NAME,ROLE_DESCRIPTION,CREATE_TIME,UPDATE_TIME) values (1,'管理员','超级管理员',to_date('03-3月 -16','DD-MON-RR'),null);
 Insert into BASE_DDIT.ROLE (ROLE_ID,ROLE_NAME,ROLE_DESCRIPTION,CREATE_TIME,UPDATE_TIME) values (2,'操作员','处理申请单的',to_date('03-3月 -16','DD-MON-RR'),null);
 Insert into BASE_DDIT.ROLE (ROLE_ID,ROLE_NAME,ROLE_DESCRIPTION,CREATE_TIME,UPDATE_TIME) values (3,'部门经理','管理者',to_date('04-3月 -16','DD-MON-RR'),null);
+Insert into BASE_DDIT.ROLE (ROLE_ID,ROLE_NAME,ROLE_DESCRIPTION,CREATE_TIME,UPDATE_TIME) values (7,'客服经理','客服老大',to_date('01-6月 -17','DD-MON-RR'),null);
 REM INSERTING into BASE_DDIT.ROLE_BUTTON
 SET DEFINE OFF;
 Insert into BASE_DDIT.ROLE_BUTTON (ID,ROLE_ID,MENU_ID,BUTTON_ID) values (152,3,4,1);
 Insert into BASE_DDIT.ROLE_BUTTON (ID,ROLE_ID,MENU_ID,BUTTON_ID) values (153,3,4,2);
 Insert into BASE_DDIT.ROLE_BUTTON (ID,ROLE_ID,MENU_ID,BUTTON_ID) values (154,3,4,11);
-Insert into BASE_DDIT.ROLE_BUTTON (ID,ROLE_ID,MENU_ID,BUTTON_ID) values (174,1,4,1);
-Insert into BASE_DDIT.ROLE_BUTTON (ID,ROLE_ID,MENU_ID,BUTTON_ID) values (175,1,4,2);
-Insert into BASE_DDIT.ROLE_BUTTON (ID,ROLE_ID,MENU_ID,BUTTON_ID) values (176,1,4,11);
-Insert into BASE_DDIT.ROLE_BUTTON (ID,ROLE_ID,MENU_ID,BUTTON_ID) values (177,1,4,10);
+Insert into BASE_DDIT.ROLE_BUTTON (ID,ROLE_ID,MENU_ID,BUTTON_ID) values (201,1,4,1);
+Insert into BASE_DDIT.ROLE_BUTTON (ID,ROLE_ID,MENU_ID,BUTTON_ID) values (202,1,4,2);
+Insert into BASE_DDIT.ROLE_BUTTON (ID,ROLE_ID,MENU_ID,BUTTON_ID) values (203,1,4,11);
+Insert into BASE_DDIT.ROLE_BUTTON (ID,ROLE_ID,MENU_ID,BUTTON_ID) values (204,1,4,10);
 Insert into BASE_DDIT.ROLE_BUTTON (ID,ROLE_ID,MENU_ID,BUTTON_ID) values (155,3,4,10);
-Insert into BASE_DDIT.ROLE_BUTTON (ID,ROLE_ID,MENU_ID,BUTTON_ID) values (178,1,33,1);
-Insert into BASE_DDIT.ROLE_BUTTON (ID,ROLE_ID,MENU_ID,BUTTON_ID) values (179,1,33,2);
-Insert into BASE_DDIT.ROLE_BUTTON (ID,ROLE_ID,MENU_ID,BUTTON_ID) values (180,1,33,3);
-Insert into BASE_DDIT.ROLE_BUTTON (ID,ROLE_ID,MENU_ID,BUTTON_ID) values (181,1,33,4);
+Insert into BASE_DDIT.ROLE_BUTTON (ID,ROLE_ID,MENU_ID,BUTTON_ID) values (205,1,4,14);
+Insert into BASE_DDIT.ROLE_BUTTON (ID,ROLE_ID,MENU_ID,BUTTON_ID) values (206,1,33,1);
+Insert into BASE_DDIT.ROLE_BUTTON (ID,ROLE_ID,MENU_ID,BUTTON_ID) values (207,1,33,2);
+Insert into BASE_DDIT.ROLE_BUTTON (ID,ROLE_ID,MENU_ID,BUTTON_ID) values (208,1,33,3);
 Insert into BASE_DDIT.ROLE_BUTTON (ID,ROLE_ID,MENU_ID,BUTTON_ID) values (173,2,46,1);
-Insert into BASE_DDIT.ROLE_BUTTON (ID,ROLE_ID,MENU_ID,BUTTON_ID) values (182,1,46,7);
+Insert into BASE_DDIT.ROLE_BUTTON (ID,ROLE_ID,MENU_ID,BUTTON_ID) values (209,1,33,4);
+Insert into BASE_DDIT.ROLE_BUTTON (ID,ROLE_ID,MENU_ID,BUTTON_ID) values (210,1,46,7);
 REM INSERTING into BASE_DDIT.ROLE_MENU
 SET DEFINE OFF;
 Insert into BASE_DDIT.ROLE_MENU (ROLEMENU_ID,ROLE_ID,MENU_ID) values (24,1,34);
@@ -752,59 +1087,58 @@ Insert into BASE_DDIT.ROLE_MENU (ROLEMENU_ID,ROLE_ID,MENU_ID) values (35,1,45);
 Insert into BASE_DDIT.ROLE_MENU (ROLEMENU_ID,ROLE_ID,MENU_ID) values (36,1,46);
 Insert into BASE_DDIT.ROLE_MENU (ROLEMENU_ID,ROLE_ID,MENU_ID) values (37,2,45);
 Insert into BASE_DDIT.ROLE_MENU (ROLEMENU_ID,ROLE_ID,MENU_ID) values (38,2,46);
-Insert into BASE_DDIT.ROLE_MENU (ROLEMENU_ID,ROLE_ID,MENU_ID) values (39,5,45);
-Insert into BASE_DDIT.ROLE_MENU (ROLEMENU_ID,ROLE_ID,MENU_ID) values (40,5,46);
+Insert into BASE_DDIT.ROLE_MENU (ROLEMENU_ID,ROLE_ID,MENU_ID) values (39,1,29);
+Insert into BASE_DDIT.ROLE_MENU (ROLEMENU_ID,ROLE_ID,MENU_ID) values (40,1,32);
+Insert into BASE_DDIT.ROLE_MENU (ROLEMENU_ID,ROLE_ID,MENU_ID) values (61,7,1);
+Insert into BASE_DDIT.ROLE_MENU (ROLEMENU_ID,ROLE_ID,MENU_ID) values (62,7,4);
+Insert into BASE_DDIT.ROLE_MENU (ROLEMENU_ID,ROLE_ID,MENU_ID) values (55,7,29);
+Insert into BASE_DDIT.ROLE_MENU (ROLEMENU_ID,ROLE_ID,MENU_ID) values (56,7,32);
+Insert into BASE_DDIT.ROLE_MENU (ROLEMENU_ID,ROLE_ID,MENU_ID) values (57,7,31);
+Insert into BASE_DDIT.ROLE_MENU (ROLEMENU_ID,ROLE_ID,MENU_ID) values (63,7,5);
+Insert into BASE_DDIT.ROLE_MENU (ROLEMENU_ID,ROLE_ID,MENU_ID) values (64,7,9);
+Insert into BASE_DDIT.ROLE_MENU (ROLEMENU_ID,ROLE_ID,MENU_ID) values (65,7,28);
+Insert into BASE_DDIT.ROLE_MENU (ROLEMENU_ID,ROLE_ID,MENU_ID) values (66,7,30);
+Insert into BASE_DDIT.ROLE_MENU (ROLEMENU_ID,ROLE_ID,MENU_ID) values (67,7,33);
+Insert into BASE_DDIT.ROLE_MENU (ROLEMENU_ID,ROLE_ID,MENU_ID) values (70,1,47);
 REM INSERTING into BASE_DDIT.SYSTEMINFO
 SET DEFINE OFF;
 REM INSERTING into BASE_DDIT.TEST
 SET DEFINE OFF;
 REM INSERTING into BASE_DDIT.USERINFOMATION
 SET DEFINE OFF;
-Insert into BASE_DDIT.USERINFOMATION (USER_ID,USER_NAME,USER_PASSWORD,USER_REALLYNAME,HEADPORTRAIT,DEPARTMENT_ID,ISENABLE,CREATE_TIME,UPDATE_TIME,REMARK) values (45,'niumo','123456','牛魔王111','20170531-u=1454003603,3098128463fm=11gp=0.jpg',1,0,to_date('31-5月 -17','DD-MON-RR'),to_date('31-5月 -17','DD-MON-RR'),'没有输出，单纯辅助');
-Insert into BASE_DDIT.USERINFOMATION (USER_ID,USER_NAME,USER_PASSWORD,USER_REALLYNAME,HEADPORTRAIT,DEPARTMENT_ID,ISENABLE,CREATE_TIME,UPDATE_TIME,REMARK) values (1,'admin','123456','超级管理员','20160423heel.jpg',1,1,to_date('12-12月-16','DD-MON-RR'),to_date('12-12月-16','DD-MON-RR'),'好皇帝');
-Insert into BASE_DDIT.USERINFOMATION (USER_ID,USER_NAME,USER_PASSWORD,USER_REALLYNAME,HEADPORTRAIT,DEPARTMENT_ID,ISENABLE,CREATE_TIME,UPDATE_TIME,REMARK) values (2,'admin1','123456','管理员1',null,1,1,to_date('14-3月 -16','DD-MON-RR'),to_date('14-3月 -16','DD-MON-RR'),'内阁总管');
-Insert into BASE_DDIT.USERINFOMATION (USER_ID,USER_NAME,USER_PASSWORD,USER_REALLYNAME,HEADPORTRAIT,DEPARTMENT_ID,ISENABLE,CREATE_TIME,UPDATE_TIME,REMARK) values (3,'admin2','123456','管理员2',null,1,1,to_date('14-3月 -16','DD-MON-RR'),to_date('14-3月 -16','DD-MON-RR'),'内阁总管');
-Insert into BASE_DDIT.USERINFOMATION (USER_ID,USER_NAME,USER_PASSWORD,USER_REALLYNAME,HEADPORTRAIT,DEPARTMENT_ID,ISENABLE,CREATE_TIME,UPDATE_TIME,REMARK) values (4,'admin3','123456','管理员3',null,1,1,to_date('14-3月 -16','DD-MON-RR'),to_date('14-3月 -16','DD-MON-RR'),'内阁总管');
-Insert into BASE_DDIT.USERINFOMATION (USER_ID,USER_NAME,USER_PASSWORD,USER_REALLYNAME,HEADPORTRAIT,DEPARTMENT_ID,ISENABLE,CREATE_TIME,UPDATE_TIME,REMARK) values (5,'admin4','123456','管理员4',null,1,1,to_date('14-3月 -16','DD-MON-RR'),to_date('14-3月 -16','DD-MON-RR'),'内阁总管');
-Insert into BASE_DDIT.USERINFOMATION (USER_ID,USER_NAME,USER_PASSWORD,USER_REALLYNAME,HEADPORTRAIT,DEPARTMENT_ID,ISENABLE,CREATE_TIME,UPDATE_TIME,REMARK) values (6,'admin5','123456','管理员5',null,1,1,to_date('14-3月 -16','DD-MON-RR'),to_date('14-3月 -16','DD-MON-RR'),'内阁总管');
-Insert into BASE_DDIT.USERINFOMATION (USER_ID,USER_NAME,USER_PASSWORD,USER_REALLYNAME,HEADPORTRAIT,DEPARTMENT_ID,ISENABLE,CREATE_TIME,UPDATE_TIME,REMARK) values (7,'admin6','123456','管理员6',null,1,1,to_date('14-3月 -16','DD-MON-RR'),to_date('14-3月 -16','DD-MON-RR'),'内阁总管');
-Insert into BASE_DDIT.USERINFOMATION (USER_ID,USER_NAME,USER_PASSWORD,USER_REALLYNAME,HEADPORTRAIT,DEPARTMENT_ID,ISENABLE,CREATE_TIME,UPDATE_TIME,REMARK) values (8,'admin7','123456','管理员7',null,1,1,to_date('14-3月 -16','DD-MON-RR'),to_date('14-3月 -16','DD-MON-RR'),'内阁总管');
-Insert into BASE_DDIT.USERINFOMATION (USER_ID,USER_NAME,USER_PASSWORD,USER_REALLYNAME,HEADPORTRAIT,DEPARTMENT_ID,ISENABLE,CREATE_TIME,UPDATE_TIME,REMARK) values (9,'admin8','123456','管理员8',null,1,1,to_date('14-3月 -16','DD-MON-RR'),to_date('14-3月 -16','DD-MON-RR'),'内阁总管');
-Insert into BASE_DDIT.USERINFOMATION (USER_ID,USER_NAME,USER_PASSWORD,USER_REALLYNAME,HEADPORTRAIT,DEPARTMENT_ID,ISENABLE,CREATE_TIME,UPDATE_TIME,REMARK) values (10,'admin9','123456','管理员9',null,1,1,to_date('14-3月 -16','DD-MON-RR'),to_date('14-3月 -16','DD-MON-RR'),'内阁总管');
-Insert into BASE_DDIT.USERINFOMATION (USER_ID,USER_NAME,USER_PASSWORD,USER_REALLYNAME,HEADPORTRAIT,DEPARTMENT_ID,ISENABLE,CREATE_TIME,UPDATE_TIME,REMARK) values (11,'admin10','123456','管理员10',null,2,1,to_date('14-3月 -16','DD-MON-RR'),to_date('14-3月 -16','DD-MON-RR'),'内阁总管');
-Insert into BASE_DDIT.USERINFOMATION (USER_ID,USER_NAME,USER_PASSWORD,USER_REALLYNAME,HEADPORTRAIT,DEPARTMENT_ID,ISENABLE,CREATE_TIME,UPDATE_TIME,REMARK) values (12,'admin11','123456','管理员11',null,2,1,to_date('14-3月 -16','DD-MON-RR'),to_date('14-3月 -16','DD-MON-RR'),'内阁总管');
-Insert into BASE_DDIT.USERINFOMATION (USER_ID,USER_NAME,USER_PASSWORD,USER_REALLYNAME,HEADPORTRAIT,DEPARTMENT_ID,ISENABLE,CREATE_TIME,UPDATE_TIME,REMARK) values (13,'admin12','123456','管理员12',null,2,1,to_date('14-3月 -16','DD-MON-RR'),to_date('14-3月 -16','DD-MON-RR'),'内阁总管');
-Insert into BASE_DDIT.USERINFOMATION (USER_ID,USER_NAME,USER_PASSWORD,USER_REALLYNAME,HEADPORTRAIT,DEPARTMENT_ID,ISENABLE,CREATE_TIME,UPDATE_TIME,REMARK) values (14,'admin13','123456','管理员13',null,1,1,to_date('14-3月 -16','DD-MON-RR'),to_date('14-3月 -16','DD-MON-RR'),'内阁总管');
-Insert into BASE_DDIT.USERINFOMATION (USER_ID,USER_NAME,USER_PASSWORD,USER_REALLYNAME,HEADPORTRAIT,DEPARTMENT_ID,ISENABLE,CREATE_TIME,UPDATE_TIME,REMARK) values (15,'admin14','123456','管理员14',null,1,1,to_date('14-3月 -16','DD-MON-RR'),to_date('14-3月 -16','DD-MON-RR'),'内阁总管');
-Insert into BASE_DDIT.USERINFOMATION (USER_ID,USER_NAME,USER_PASSWORD,USER_REALLYNAME,HEADPORTRAIT,DEPARTMENT_ID,ISENABLE,CREATE_TIME,UPDATE_TIME,REMARK) values (16,'admin15','123456','管理员15',null,1,1,to_date('14-3月 -16','DD-MON-RR'),to_date('14-3月 -16','DD-MON-RR'),'内阁总管');
-Insert into BASE_DDIT.USERINFOMATION (USER_ID,USER_NAME,USER_PASSWORD,USER_REALLYNAME,HEADPORTRAIT,DEPARTMENT_ID,ISENABLE,CREATE_TIME,UPDATE_TIME,REMARK) values (17,'admin16','123456','管理员16',null,1,1,to_date('14-3月 -16','DD-MON-RR'),to_date('14-3月 -16','DD-MON-RR'),'内阁总管');
-Insert into BASE_DDIT.USERINFOMATION (USER_ID,USER_NAME,USER_PASSWORD,USER_REALLYNAME,HEADPORTRAIT,DEPARTMENT_ID,ISENABLE,CREATE_TIME,UPDATE_TIME,REMARK) values (18,'moon1','123456','第五种族',null,2,0,to_date('14-3月 -16','DD-MON-RR'),to_date('06-5月 -16','DD-MON-RR'),null);
-Insert into BASE_DDIT.USERINFOMATION (USER_ID,USER_NAME,USER_PASSWORD,USER_REALLYNAME,HEADPORTRAIT,DEPARTMENT_ID,ISENABLE,CREATE_TIME,UPDATE_TIME,REMARK) values (19,'admin18','123456','管理员18',null,1,0,to_date('14-3月 -16','DD-MON-RR'),to_date('14-3月 -16','DD-MON-RR'),'内阁总管');
-Insert into BASE_DDIT.USERINFOMATION (USER_ID,USER_NAME,USER_PASSWORD,USER_REALLYNAME,HEADPORTRAIT,DEPARTMENT_ID,ISENABLE,CREATE_TIME,UPDATE_TIME,REMARK) values (20,'admin19','123456','管理员19',null,1,1,to_date('14-3月 -16','DD-MON-RR'),to_date('14-3月 -16','DD-MON-RR'),'内阁总管');
-Insert into BASE_DDIT.USERINFOMATION (USER_ID,USER_NAME,USER_PASSWORD,USER_REALLYNAME,HEADPORTRAIT,DEPARTMENT_ID,ISENABLE,CREATE_TIME,UPDATE_TIME,REMARK) values (21,'admin20','123456','管理员20',null,1,1,to_date('14-3月 -16','DD-MON-RR'),to_date('14-3月 -16','DD-MON-RR'),'内阁总管');
-Insert into BASE_DDIT.USERINFOMATION (USER_ID,USER_NAME,USER_PASSWORD,USER_REALLYNAME,HEADPORTRAIT,DEPARTMENT_ID,ISENABLE,CREATE_TIME,UPDATE_TIME,REMARK) values (22,'admin21','123456','管理员21',null,1,1,to_date('14-3月 -16','DD-MON-RR'),to_date('14-3月 -16','DD-MON-RR'),'内阁总管');
-Insert into BASE_DDIT.USERINFOMATION (USER_ID,USER_NAME,USER_PASSWORD,USER_REALLYNAME,HEADPORTRAIT,DEPARTMENT_ID,ISENABLE,CREATE_TIME,UPDATE_TIME,REMARK) values (23,'admin22','123456','管理员22',null,1,1,to_date('14-3月 -16','DD-MON-RR'),to_date('14-3月 -16','DD-MON-RR'),'内阁总管');
-Insert into BASE_DDIT.USERINFOMATION (USER_ID,USER_NAME,USER_PASSWORD,USER_REALLYNAME,HEADPORTRAIT,DEPARTMENT_ID,ISENABLE,CREATE_TIME,UPDATE_TIME,REMARK) values (24,'admin23','123456','管理员23',null,1,1,to_date('14-3月 -16','DD-MON-RR'),to_date('14-3月 -16','DD-MON-RR'),'内阁总管');
-Insert into BASE_DDIT.USERINFOMATION (USER_ID,USER_NAME,USER_PASSWORD,USER_REALLYNAME,HEADPORTRAIT,DEPARTMENT_ID,ISENABLE,CREATE_TIME,UPDATE_TIME,REMARK) values (25,'admin24','123456','管理员24',null,1,1,to_date('14-3月 -16','DD-MON-RR'),to_date('14-3月 -16','DD-MON-RR'),'内阁总管');
-Insert into BASE_DDIT.USERINFOMATION (USER_ID,USER_NAME,USER_PASSWORD,USER_REALLYNAME,HEADPORTRAIT,DEPARTMENT_ID,ISENABLE,CREATE_TIME,UPDATE_TIME,REMARK) values (26,'admin25','123456','管理员25',null,1,1,to_date('14-3月 -16','DD-MON-RR'),to_date('14-3月 -16','DD-MON-RR'),'内阁总管');
-Insert into BASE_DDIT.USERINFOMATION (USER_ID,USER_NAME,USER_PASSWORD,USER_REALLYNAME,HEADPORTRAIT,DEPARTMENT_ID,ISENABLE,CREATE_TIME,UPDATE_TIME,REMARK) values (27,'whywhy898','123456','小红红',null,1,1,to_date('16-3月 -16','DD-MON-RR'),null,'也许吧');
-Insert into BASE_DDIT.USERINFOMATION (USER_ID,USER_NAME,USER_PASSWORD,USER_REALLYNAME,HEADPORTRAIT,DEPARTMENT_ID,ISENABLE,CREATE_TIME,UPDATE_TIME,REMARK) values (28,'whywhy999','123456','小绿绿',null,1,0,to_date('16-3月 -16','DD-MON-RR'),null,'你好');
-Insert into BASE_DDIT.USERINFOMATION (USER_ID,USER_NAME,USER_PASSWORD,USER_REALLYNAME,HEADPORTRAIT,DEPARTMENT_ID,ISENABLE,CREATE_TIME,UPDATE_TIME,REMARK) values (29,'laoWang','123456','老王',null,2,1,to_date('16-3月 -16','DD-MON-RR'),to_date('14-4月 -16','DD-MON-RR'),'老虎来了');
-Insert into BASE_DDIT.USERINFOMATION (USER_ID,USER_NAME,USER_PASSWORD,USER_REALLYNAME,HEADPORTRAIT,DEPARTMENT_ID,ISENABLE,CREATE_TIME,UPDATE_TIME,REMARK) values (30,'xiaoniu','123456','大妞',null,1,1,to_date('17-3月 -16','DD-MON-RR'),to_date('17-3月 -16','DD-MON-RR'),'这是我的大妞谁都别动！~');
-Insert into BASE_DDIT.USERINFOMATION (USER_ID,USER_NAME,USER_PASSWORD,USER_REALLYNAME,HEADPORTRAIT,DEPARTMENT_ID,ISENABLE,CREATE_TIME,UPDATE_TIME,REMARK) values (31,'nana','123456','娜就是神','20160423-nana.jpg',1,0,to_date('15-4月 -16','DD-MON-RR'),to_date('23-4月 -16','DD-MON-RR'),'我去恶趣味');
-Insert into BASE_DDIT.USERINFOMATION (USER_ID,USER_NAME,USER_PASSWORD,USER_REALLYNAME,HEADPORTRAIT,DEPARTMENT_ID,ISENABLE,CREATE_TIME,UPDATE_TIME,REMARK) values (32,'jimi','123456','吉米1','20160423-fd7bc8df93a2c6b56cd328e7b968c6f9.jpg',2,1,to_date('23-4月 -16','DD-MON-RR'),to_date('23-4月 -16','DD-MON-RR'),'吉米小子里面的主角');
-Insert into BASE_DDIT.USERINFOMATION (USER_ID,USER_NAME,USER_PASSWORD,USER_REALLYNAME,HEADPORTRAIT,DEPARTMENT_ID,ISENABLE,CREATE_TIME,UPDATE_TIME,REMARK) values (33,'Envrioment','123456','环境',' ',2,0,to_date('06-5月 -16','DD-MON-RR'),null,null);
-Insert into BASE_DDIT.USERINFOMATION (USER_ID,USER_NAME,USER_PASSWORD,USER_REALLYNAME,HEADPORTRAIT,DEPARTMENT_ID,ISENABLE,CREATE_TIME,UPDATE_TIME,REMARK) values (34,'sky','123123','天王',' ',2,0,to_date('06-5月 -16','DD-MON-RR'),null,null);
-Insert into BASE_DDIT.USERINFOMATION (USER_ID,USER_NAME,USER_PASSWORD,USER_REALLYNAME,HEADPORTRAIT,DEPARTMENT_ID,ISENABLE,CREATE_TIME,UPDATE_TIME,REMARK) values (35,'why778','123456','小杰',' ',3,1,to_date('07-4月 -17','DD-MON-RR'),null,'只是个天才');
-Insert into BASE_DDIT.USERINFOMATION (USER_ID,USER_NAME,USER_PASSWORD,USER_REALLYNAME,HEADPORTRAIT,DEPARTMENT_ID,ISENABLE,CREATE_TIME,UPDATE_TIME,REMARK) values (36,'layer1','123456','弹出层','20170425-u=2264996490,553047999&fm=23&gp=0.jpg',3,1,to_date('25-4月 -17','DD-MON-RR'),to_date('10-5月 -17','DD-MON-RR'),'第一次请求');
-Insert into BASE_DDIT.USERINFOMATION (USER_ID,USER_NAME,USER_PASSWORD,USER_REALLYNAME,HEADPORTRAIT,DEPARTMENT_ID,ISENABLE,CREATE_TIME,UPDATE_TIME,REMARK) values (37,'layer2','123456','弹出层2','20170425-u=1278896632,2852512441&fm=11&gp=0.jpg',3,1,to_date('25-4月 -17','DD-MON-RR'),null,'123123123123');
-Insert into BASE_DDIT.USERINFOMATION (USER_ID,USER_NAME,USER_PASSWORD,USER_REALLYNAME,HEADPORTRAIT,DEPARTMENT_ID,ISENABLE,CREATE_TIME,UPDATE_TIME,REMARK) values (38,'layer3','123456','adawd',' ',3,0,to_date('25-4月 -17','DD-MON-RR'),null,null);
-Insert into BASE_DDIT.USERINFOMATION (USER_ID,USER_NAME,USER_PASSWORD,USER_REALLYNAME,HEADPORTRAIT,DEPARTMENT_ID,ISENABLE,CREATE_TIME,UPDATE_TIME,REMARK) values (39,'layer4','123456','小鳄鱼1','20170426-u=1628747648,1114534703fm=23gp=0.jpg',3,0,to_date('26-4月 -17','DD-MON-RR'),to_date('26-4月 -17','DD-MON-RR'),'我是一只鳄鱼王1');
-Insert into BASE_DDIT.USERINFOMATION (USER_ID,USER_NAME,USER_PASSWORD,USER_REALLYNAME,HEADPORTRAIT,DEPARTMENT_ID,ISENABLE,CREATE_TIME,UPDATE_TIME,REMARK) values (40,'layer5','123456','关羽','20170426-u=3022300017,1716944448fm=11gp=0.jpg.png',3,0,to_date('26-4月 -17','DD-MON-RR'),to_date('11-5月 -17','DD-MON-RR'),'阿斯达是大势');
-Insert into BASE_DDIT.USERINFOMATION (USER_ID,USER_NAME,USER_PASSWORD,USER_REALLYNAME,HEADPORTRAIT,DEPARTMENT_ID,ISENABLE,CREATE_TIME,UPDATE_TIME,REMARK) values (41,'liubang','123456','刘邦101','20170512-u=2264996490,553047999fm=23gp=0.jpg',1,0,to_date('12-5月 -17','DD-MON-RR'),to_date('12-5月 -17','DD-MON-RR'),'刘邦牛逼');
-Insert into BASE_DDIT.USERINFOMATION (USER_ID,USER_NAME,USER_PASSWORD,USER_REALLYNAME,HEADPORTRAIT,DEPARTMENT_ID,ISENABLE,CREATE_TIME,UPDATE_TIME,REMARK) values (42,'NONGYAO','123456','农药',null,1,1,to_date('30-5月 -17','DD-MON-RR'),null,null);
-Insert into BASE_DDIT.USERINFOMATION (USER_ID,USER_NAME,USER_PASSWORD,USER_REALLYNAME,HEADPORTRAIT,DEPARTMENT_ID,ISENABLE,CREATE_TIME,UPDATE_TIME,REMARK) values (43,'NONGYAO','123456','农药',null,1,1,to_date('30-5月 -17','DD-MON-RR'),null,null);
-Insert into BASE_DDIT.USERINFOMATION (USER_ID,USER_NAME,USER_PASSWORD,USER_REALLYNAME,HEADPORTRAIT,DEPARTMENT_ID,ISENABLE,CREATE_TIME,UPDATE_TIME,REMARK) values (44,'NONGYAO','123456','农药',null,1,1,to_date('30-5月 -17','DD-MON-RR'),null,null);
+Insert into BASE_DDIT.USERINFOMATION (USER_ID,USER_NAME,USER_PASSWORD,USER_REALLYNAME,MOBILEPHONE,EMAIL,HEADPORTRAIT,DEPARTMENT_ID,ISENABLE,CREATE_TIME,UPDATE_TIME,REMARK) values (1,'admin','123456','超级管理员','13889606227',null,'20160423heel.jpg',1,1,to_date('12-12月-16','DD-MON-RR'),to_date('12-12月-16','DD-MON-RR'),'好皇帝');
+Insert into BASE_DDIT.USERINFOMATION (USER_ID,USER_NAME,USER_PASSWORD,USER_REALLYNAME,MOBILEPHONE,EMAIL,HEADPORTRAIT,DEPARTMENT_ID,ISENABLE,CREATE_TIME,UPDATE_TIME,REMARK) values (2,'admin1','123456','管理员1',null,null,null,1,1,to_date('14-3月 -16','DD-MON-RR'),to_date('14-3月 -16','DD-MON-RR'),'内阁总管');
+Insert into BASE_DDIT.USERINFOMATION (USER_ID,USER_NAME,USER_PASSWORD,USER_REALLYNAME,MOBILEPHONE,EMAIL,HEADPORTRAIT,DEPARTMENT_ID,ISENABLE,CREATE_TIME,UPDATE_TIME,REMARK) values (27,'whywhy898','123456','小红红',null,null,null,1,1,to_date('16-3月 -16','DD-MON-RR'),null,'也许吧');
+Insert into BASE_DDIT.USERINFOMATION (USER_ID,USER_NAME,USER_PASSWORD,USER_REALLYNAME,MOBILEPHONE,EMAIL,HEADPORTRAIT,DEPARTMENT_ID,ISENABLE,CREATE_TIME,UPDATE_TIME,REMARK) values (28,'whywhy999','123456','小绿绿',null,null,null,1,0,to_date('16-3月 -16','DD-MON-RR'),null,'你好');
+Insert into BASE_DDIT.USERINFOMATION (USER_ID,USER_NAME,USER_PASSWORD,USER_REALLYNAME,MOBILEPHONE,EMAIL,HEADPORTRAIT,DEPARTMENT_ID,ISENABLE,CREATE_TIME,UPDATE_TIME,REMARK) values (29,'laoWang','123456','老王',null,null,null,2,1,to_date('16-3月 -16','DD-MON-RR'),to_date('14-4月 -16','DD-MON-RR'),'老虎来了');
+Insert into BASE_DDIT.USERINFOMATION (USER_ID,USER_NAME,USER_PASSWORD,USER_REALLYNAME,MOBILEPHONE,EMAIL,HEADPORTRAIT,DEPARTMENT_ID,ISENABLE,CREATE_TIME,UPDATE_TIME,REMARK) values (30,'xiaoniu','123456','大妞',null,null,null,1,1,to_date('17-3月 -16','DD-MON-RR'),to_date('17-3月 -16','DD-MON-RR'),'这是我的大妞谁都别动！~');
+Insert into BASE_DDIT.USERINFOMATION (USER_ID,USER_NAME,USER_PASSWORD,USER_REALLYNAME,MOBILEPHONE,EMAIL,HEADPORTRAIT,DEPARTMENT_ID,ISENABLE,CREATE_TIME,UPDATE_TIME,REMARK) values (31,'nana','123456','娜就是神',null,null,'20160423-nana.jpg',1,0,to_date('15-4月 -16','DD-MON-RR'),to_date('23-4月 -16','DD-MON-RR'),'我去恶趣味');
+Insert into BASE_DDIT.USERINFOMATION (USER_ID,USER_NAME,USER_PASSWORD,USER_REALLYNAME,MOBILEPHONE,EMAIL,HEADPORTRAIT,DEPARTMENT_ID,ISENABLE,CREATE_TIME,UPDATE_TIME,REMARK) values (32,'jimi','123456','吉米1',null,null,'20160423-fd7bc8df93a2c6b56cd328e7b968c6f9.jpg',2,1,to_date('23-4月 -16','DD-MON-RR'),to_date('23-4月 -16','DD-MON-RR'),'吉米小子里面的主角');
+Insert into BASE_DDIT.USERINFOMATION (USER_ID,USER_NAME,USER_PASSWORD,USER_REALLYNAME,MOBILEPHONE,EMAIL,HEADPORTRAIT,DEPARTMENT_ID,ISENABLE,CREATE_TIME,UPDATE_TIME,REMARK) values (33,'Envrioment','123456','环境',null,null,' ',2,0,to_date('06-5月 -16','DD-MON-RR'),null,null);
+Insert into BASE_DDIT.USERINFOMATION (USER_ID,USER_NAME,USER_PASSWORD,USER_REALLYNAME,MOBILEPHONE,EMAIL,HEADPORTRAIT,DEPARTMENT_ID,ISENABLE,CREATE_TIME,UPDATE_TIME,REMARK) values (34,'sky','123123','天王',null,null,' ',2,0,to_date('06-5月 -16','DD-MON-RR'),null,null);
+Insert into BASE_DDIT.USERINFOMATION (USER_ID,USER_NAME,USER_PASSWORD,USER_REALLYNAME,MOBILEPHONE,EMAIL,HEADPORTRAIT,DEPARTMENT_ID,ISENABLE,CREATE_TIME,UPDATE_TIME,REMARK) values (35,'why778','123456','小杰',null,null,' ',3,1,to_date('07-4月 -17','DD-MON-RR'),null,'只是个天才');
+Insert into BASE_DDIT.USERINFOMATION (USER_ID,USER_NAME,USER_PASSWORD,USER_REALLYNAME,MOBILEPHONE,EMAIL,HEADPORTRAIT,DEPARTMENT_ID,ISENABLE,CREATE_TIME,UPDATE_TIME,REMARK) values (36,'layer1','123456','弹出层',null,null,'20170616-u=3906554852,53157484fm=11gp=0.jpg',3,1,to_date('25-4月 -17','DD-MON-RR'),to_date('16-6月 -17','DD-MON-RR'),'第一次请求');
+Insert into BASE_DDIT.USERINFOMATION (USER_ID,USER_NAME,USER_PASSWORD,USER_REALLYNAME,MOBILEPHONE,EMAIL,HEADPORTRAIT,DEPARTMENT_ID,ISENABLE,CREATE_TIME,UPDATE_TIME,REMARK) values (37,'layer2','123456','弹出层2',null,null,'20170616-u=1278896632,2852512441fm=11gp=0.jpg',3,1,to_date('25-4月 -17','DD-MON-RR'),to_date('16-6月 -17','DD-MON-RR'),'123123123123');
+Insert into BASE_DDIT.USERINFOMATION (USER_ID,USER_NAME,USER_PASSWORD,USER_REALLYNAME,MOBILEPHONE,EMAIL,HEADPORTRAIT,DEPARTMENT_ID,ISENABLE,CREATE_TIME,UPDATE_TIME,REMARK) values (38,'layer3','123456','adawd',null,null,' ',3,0,to_date('25-4月 -17','DD-MON-RR'),null,null);
+Insert into BASE_DDIT.USERINFOMATION (USER_ID,USER_NAME,USER_PASSWORD,USER_REALLYNAME,MOBILEPHONE,EMAIL,HEADPORTRAIT,DEPARTMENT_ID,ISENABLE,CREATE_TIME,UPDATE_TIME,REMARK) values (39,'layer4','123456','小鳄鱼1',null,null,'20170426-u=1628747648,1114534703fm=23gp=0.jpg',3,0,to_date('26-4月 -17','DD-MON-RR'),to_date('26-4月 -17','DD-MON-RR'),'我是一只鳄鱼王1');
+Insert into BASE_DDIT.USERINFOMATION (USER_ID,USER_NAME,USER_PASSWORD,USER_REALLYNAME,MOBILEPHONE,EMAIL,HEADPORTRAIT,DEPARTMENT_ID,ISENABLE,CREATE_TIME,UPDATE_TIME,REMARK) values (40,'layer5','123456','关羽',null,null,'20170426-u=3022300017,1716944448fm=11gp=0.jpg.png',3,0,to_date('26-4月 -17','DD-MON-RR'),to_date('11-5月 -17','DD-MON-RR'),'阿斯达是大势');
+Insert into BASE_DDIT.USERINFOMATION (USER_ID,USER_NAME,USER_PASSWORD,USER_REALLYNAME,MOBILEPHONE,EMAIL,HEADPORTRAIT,DEPARTMENT_ID,ISENABLE,CREATE_TIME,UPDATE_TIME,REMARK) values (41,'liubang','123456','刘邦',null,'whywhy898@163.com','20170616-timg.jpg',1,0,to_date('12-5月 -17','DD-MON-RR'),to_date('19-6月 -17','DD-MON-RR'),'刘邦牛逼');
+Insert into BASE_DDIT.USERINFOMATION (USER_ID,USER_NAME,USER_PASSWORD,USER_REALLYNAME,MOBILEPHONE,EMAIL,HEADPORTRAIT,DEPARTMENT_ID,ISENABLE,CREATE_TIME,UPDATE_TIME,REMARK) values (42,'niumo','123456','牛魔','15132173250','wanghy@taxrefund.com.cn','20170616-niumo.png',2,1,to_date('15-6月 -17','DD-MON-RR'),to_date('23-6月 -17','DD-MON-RR'),'人傻钱多');
+Insert into BASE_DDIT.USERINFOMATION (USER_ID,USER_NAME,USER_PASSWORD,USER_REALLYNAME,MOBILEPHONE,EMAIL,HEADPORTRAIT,DEPARTMENT_ID,ISENABLE,CREATE_TIME,UPDATE_TIME,REMARK) values (43,'liyuanf','123456','李元芳','15132173251','whywhy898@163.com','20170616-liyuanf.jpg',2,1,to_date('16-6月 -17','DD-MON-RR'),to_date('23-6月 -17','DD-MON-RR'),'asdasdas');
+REM INSERTING into BASE_DDIT.USER_MESSAGE
+SET DEFINE OFF;
+Insert into BASE_DDIT.USER_MESSAGE (ID,MESSAGEID,USERID,ISREAD) values (47,1,1,1);
+Insert into BASE_DDIT.USER_MESSAGE (ID,MESSAGEID,USERID,ISREAD) values (36,11,1,1);
+Insert into BASE_DDIT.USER_MESSAGE (ID,MESSAGEID,USERID,ISREAD) values (37,12,1,1);
+Insert into BASE_DDIT.USER_MESSAGE (ID,MESSAGEID,USERID,ISREAD) values (43,16,1,1);
+Insert into BASE_DDIT.USER_MESSAGE (ID,MESSAGEID,USERID,ISREAD) values (44,15,1,1);
+Insert into BASE_DDIT.USER_MESSAGE (ID,MESSAGEID,USERID,ISREAD) values (45,18,1,1);
+Insert into BASE_DDIT.USER_MESSAGE (ID,MESSAGEID,USERID,ISREAD) values (46,14,27,0);
+Insert into BASE_DDIT.USER_MESSAGE (ID,MESSAGEID,USERID,ISREAD) values (38,13,1,1);
+Insert into BASE_DDIT.USER_MESSAGE (ID,MESSAGEID,USERID,ISREAD) values (39,14,1,1);
+Insert into BASE_DDIT.USER_MESSAGE (ID,MESSAGEID,USERID,ISREAD) values (40,11,2,1);
+Insert into BASE_DDIT.USER_MESSAGE (ID,MESSAGEID,USERID,ISREAD) values (41,12,2,0);
+Insert into BASE_DDIT.USER_MESSAGE (ID,MESSAGEID,USERID,ISREAD) values (42,14,2,0);
 REM INSERTING into BASE_DDIT.USER_ROLE
 SET DEFINE OFF;
 Insert into BASE_DDIT.USER_ROLE (ID,USER_ID,ROLE_ID) values (33,31,2);
@@ -819,47 +1153,33 @@ Insert into BASE_DDIT.USER_ROLE (ID,USER_ID,ROLE_ID) values (36,39,1);
 Insert into BASE_DDIT.USER_ROLE (ID,USER_ID,ROLE_ID) values (41,41,3);
 Insert into BASE_DDIT.USER_ROLE (ID,USER_ID,ROLE_ID) values (39,38,1);
 Insert into BASE_DDIT.USER_ROLE (ID,USER_ID,ROLE_ID) values (40,38,2);
-Insert into BASE_DDIT.USER_ROLE (ID,USER_ID,ROLE_ID) values (42,45,2);
 --------------------------------------------------------
---  DDL for Index USER__PK
+--  DDL for Index USERINFOMATION_PK
 --------------------------------------------------------
 
-  CREATE UNIQUE INDEX "BASE_DDIT"."USER__PK" ON "BASE_DDIT"."USERINFOMATION" ("USER_ID") 
+  CREATE UNIQUE INDEX "BASE_DDIT"."USERINFOMATION_PK" ON "BASE_DDIT"."USERINFOMATION" ("USER_ID") 
   PCTFREE 10 INITRANS 2 MAXTRANS 255 COMPUTE STATISTICS 
   STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
   PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1 BUFFER_POOL DEFAULT)
   TABLESPACE "USERS" ;
 --------------------------------------------------------
---  Constraints for Table BUTTON
+--  Constraints for Table MENU
 --------------------------------------------------------
 
-  ALTER TABLE "BASE_DDIT"."BUTTON" MODIFY ("BUTTON_ID" NOT NULL ENABLE);
+  ALTER TABLE "BASE_DDIT"."MENU" MODIFY ("MENU_ID" NOT NULL ENABLE);
  
-  ALTER TABLE "BASE_DDIT"."BUTTON" MODIFY ("BUTTON_NAME" NOT NULL ENABLE);
+  ALTER TABLE "BASE_DDIT"."MENU" MODIFY ("MENU_NAME" NOT NULL ENABLE);
+ 
+  ALTER TABLE "BASE_DDIT"."MENU" MODIFY ("MENU_ORDER" NOT NULL ENABLE);
 --------------------------------------------------------
---  Constraints for Table DICTIONARY
---------------------------------------------------------
-
-  ALTER TABLE "BASE_DDIT"."DICTIONARY" MODIFY ("ID" NOT NULL ENABLE);
- 
-  ALTER TABLE "BASE_DDIT"."DICTIONARY" MODIFY ("DICCATEGORYID" NOT NULL ENABLE);
- 
-  ALTER TABLE "BASE_DDIT"."DICTIONARY" MODIFY ("DICVALUE" NOT NULL ENABLE);
- 
-  ALTER TABLE "BASE_DDIT"."DICTIONARY" MODIFY ("ENABLED" NOT NULL ENABLE);
- 
-  ALTER TABLE "BASE_DDIT"."DICTIONARY" MODIFY ("CREATE_TIME" NOT NULL ENABLE);
---------------------------------------------------------
---  Constraints for Table DICTIONARYCATEGORY
+--  Constraints for Table USER_ROLE
 --------------------------------------------------------
 
-  ALTER TABLE "BASE_DDIT"."DICTIONARYCATEGORY" MODIFY ("ID" NOT NULL ENABLE);
+  ALTER TABLE "BASE_DDIT"."USER_ROLE" MODIFY ("ID" NOT NULL ENABLE);
  
-  ALTER TABLE "BASE_DDIT"."DICTIONARYCATEGORY" MODIFY ("CATEGORY" NOT NULL ENABLE);
+  ALTER TABLE "BASE_DDIT"."USER_ROLE" MODIFY ("USER_ID" NOT NULL ENABLE);
  
-  ALTER TABLE "BASE_DDIT"."DICTIONARYCATEGORY" MODIFY ("ENABLED" NOT NULL ENABLE);
- 
-  ALTER TABLE "BASE_DDIT"."DICTIONARYCATEGORY" MODIFY ("CREATE_TIME" NOT NULL ENABLE);
+  ALTER TABLE "BASE_DDIT"."USER_ROLE" MODIFY ("ROLE_ID" NOT NULL ENABLE);
 --------------------------------------------------------
 --  Constraints for Table LOGINLOG
 --------------------------------------------------------
@@ -873,53 +1193,6 @@ Insert into BASE_DDIT.USER_ROLE (ID,USER_ID,ROLE_ID) values (42,45,2);
   ALTER TABLE "BASE_DDIT"."LOGINLOG" MODIFY ("LOGIN_IP" NOT NULL ENABLE);
  
   ALTER TABLE "BASE_DDIT"."LOGINLOG" MODIFY ("LOGIN_TIME" NOT NULL ENABLE);
---------------------------------------------------------
---  Constraints for Table MENU
---------------------------------------------------------
-
-  ALTER TABLE "BASE_DDIT"."MENU" MODIFY ("MENU_ID" NOT NULL ENABLE);
- 
-  ALTER TABLE "BASE_DDIT"."MENU" MODIFY ("MENU_NAME" NOT NULL ENABLE);
- 
-  ALTER TABLE "BASE_DDIT"."MENU" MODIFY ("MENU_ORDER" NOT NULL ENABLE);
---------------------------------------------------------
---  Constraints for Table MENU_BUTTON
---------------------------------------------------------
-
-  ALTER TABLE "BASE_DDIT"."MENU_BUTTON" MODIFY ("ID" NOT NULL ENABLE);
---------------------------------------------------------
---  Constraints for Table ROLE
---------------------------------------------------------
-
-  ALTER TABLE "BASE_DDIT"."ROLE" MODIFY ("ROLE_ID" NOT NULL ENABLE);
- 
-  ALTER TABLE "BASE_DDIT"."ROLE" MODIFY ("ROLE_NAME" NOT NULL ENABLE);
- 
-  ALTER TABLE "BASE_DDIT"."ROLE" MODIFY ("CREATE_TIME" NOT NULL ENABLE);
---------------------------------------------------------
---  Constraints for Table ROLE_BUTTON
---------------------------------------------------------
-
-  ALTER TABLE "BASE_DDIT"."ROLE_BUTTON" MODIFY ("ID" NOT NULL ENABLE);
---------------------------------------------------------
---  Constraints for Table ROLE_MENU
---------------------------------------------------------
-
-  ALTER TABLE "BASE_DDIT"."ROLE_MENU" MODIFY ("ROLEMENU_ID" NOT NULL ENABLE);
- 
-  ALTER TABLE "BASE_DDIT"."ROLE_MENU" MODIFY ("ROLE_ID" NOT NULL ENABLE);
- 
-  ALTER TABLE "BASE_DDIT"."ROLE_MENU" MODIFY ("MENU_ID" NOT NULL ENABLE);
---------------------------------------------------------
---  Constraints for Table SYSTEMINFO
---------------------------------------------------------
-
-  ALTER TABLE "BASE_DDIT"."SYSTEMINFO" MODIFY ("SYSTEM_ID" NOT NULL ENABLE);
---------------------------------------------------------
---  Constraints for Table TEST
---------------------------------------------------------
-
-  ALTER TABLE "BASE_DDIT"."TEST" MODIFY ("ID" NOT NULL ENABLE);
 --------------------------------------------------------
 --  Constraints for Table USERINFOMATION
 --------------------------------------------------------
@@ -938,20 +1211,101 @@ Insert into BASE_DDIT.USER_ROLE (ID,USER_ID,ROLE_ID) values (42,45,2);
  
   ALTER TABLE "BASE_DDIT"."USERINFOMATION" MODIFY ("CREATE_TIME" NOT NULL ENABLE);
  
-  ALTER TABLE "BASE_DDIT"."USERINFOMATION" ADD CONSTRAINT "USER__PK" PRIMARY KEY ("USER_ID")
+  ALTER TABLE "BASE_DDIT"."USERINFOMATION" ADD CONSTRAINT "USERINFOMATION_PK" PRIMARY KEY ("USER_ID")
   USING INDEX PCTFREE 10 INITRANS 2 MAXTRANS 255 COMPUTE STATISTICS 
   STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
   PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1 BUFFER_POOL DEFAULT)
   TABLESPACE "USERS"  ENABLE;
 --------------------------------------------------------
---  Constraints for Table USER_ROLE
+--  Constraints for Table USER_MESSAGE
 --------------------------------------------------------
 
-  ALTER TABLE "BASE_DDIT"."USER_ROLE" MODIFY ("ID" NOT NULL ENABLE);
+  ALTER TABLE "BASE_DDIT"."USER_MESSAGE" MODIFY ("ID" NOT NULL ENABLE);
  
-  ALTER TABLE "BASE_DDIT"."USER_ROLE" MODIFY ("USER_ID" NOT NULL ENABLE);
+  ALTER TABLE "BASE_DDIT"."USER_MESSAGE" MODIFY ("MESSAGEID" NOT NULL ENABLE);
  
-  ALTER TABLE "BASE_DDIT"."USER_ROLE" MODIFY ("ROLE_ID" NOT NULL ENABLE);
+  ALTER TABLE "BASE_DDIT"."USER_MESSAGE" MODIFY ("USERID" NOT NULL ENABLE);
+ 
+  ALTER TABLE "BASE_DDIT"."USER_MESSAGE" MODIFY ("ISREAD" NOT NULL ENABLE);
+--------------------------------------------------------
+--  Constraints for Table DICTIONARY
+--------------------------------------------------------
+
+  ALTER TABLE "BASE_DDIT"."DICTIONARY" MODIFY ("ID" NOT NULL ENABLE);
+ 
+  ALTER TABLE "BASE_DDIT"."DICTIONARY" MODIFY ("DICCATEGORYID" NOT NULL ENABLE);
+ 
+  ALTER TABLE "BASE_DDIT"."DICTIONARY" MODIFY ("DICVALUE" NOT NULL ENABLE);
+ 
+  ALTER TABLE "BASE_DDIT"."DICTIONARY" MODIFY ("ENABLED" NOT NULL ENABLE);
+ 
+  ALTER TABLE "BASE_DDIT"."DICTIONARY" MODIFY ("CREATE_TIME" NOT NULL ENABLE);
+--------------------------------------------------------
+--  Constraints for Table ROLE
+--------------------------------------------------------
+
+  ALTER TABLE "BASE_DDIT"."ROLE" MODIFY ("ROLE_ID" NOT NULL ENABLE);
+ 
+  ALTER TABLE "BASE_DDIT"."ROLE" MODIFY ("ROLE_NAME" NOT NULL ENABLE);
+ 
+  ALTER TABLE "BASE_DDIT"."ROLE" MODIFY ("CREATE_TIME" NOT NULL ENABLE);
+--------------------------------------------------------
+--  Constraints for Table MENU_BUTTON
+--------------------------------------------------------
+
+  ALTER TABLE "BASE_DDIT"."MENU_BUTTON" MODIFY ("ID" NOT NULL ENABLE);
+--------------------------------------------------------
+--  Constraints for Table MESSAGE
+--------------------------------------------------------
+
+  ALTER TABLE "BASE_DDIT"."MESSAGE" MODIFY ("MESSAGEID" NOT NULL ENABLE);
+ 
+  ALTER TABLE "BASE_DDIT"."MESSAGE" MODIFY ("MESSAGETITLE" NOT NULL ENABLE);
+ 
+  ALTER TABLE "BASE_DDIT"."MESSAGE" MODIFY ("SENDUSER" NOT NULL ENABLE);
+ 
+  ALTER TABLE "BASE_DDIT"."MESSAGE" MODIFY ("SENDTIME" NOT NULL ENABLE);
+ 
+  ALTER TABLE "BASE_DDIT"."MESSAGE" MODIFY ("ISSENDEMAIL" NOT NULL ENABLE);
+ 
+  ALTER TABLE "BASE_DDIT"."MESSAGE" MODIFY ("MESSAGETEXT" NOT NULL ENABLE);
+--------------------------------------------------------
+--  Constraints for Table ROLE_BUTTON
+--------------------------------------------------------
+
+  ALTER TABLE "BASE_DDIT"."ROLE_BUTTON" MODIFY ("ID" NOT NULL ENABLE);
+--------------------------------------------------------
+--  Constraints for Table SYSTEMINFO
+--------------------------------------------------------
+
+  ALTER TABLE "BASE_DDIT"."SYSTEMINFO" MODIFY ("SYSTEM_ID" NOT NULL ENABLE);
+--------------------------------------------------------
+--  Constraints for Table BUTTON
+--------------------------------------------------------
+
+  ALTER TABLE "BASE_DDIT"."BUTTON" MODIFY ("BUTTON_ID" NOT NULL ENABLE);
+ 
+  ALTER TABLE "BASE_DDIT"."BUTTON" MODIFY ("BUTTON_NAME" NOT NULL ENABLE);
+--------------------------------------------------------
+--  Constraints for Table DICTIONARYCATEGORY
+--------------------------------------------------------
+
+  ALTER TABLE "BASE_DDIT"."DICTIONARYCATEGORY" MODIFY ("ID" NOT NULL ENABLE);
+ 
+  ALTER TABLE "BASE_DDIT"."DICTIONARYCATEGORY" MODIFY ("CATEGORY" NOT NULL ENABLE);
+ 
+  ALTER TABLE "BASE_DDIT"."DICTIONARYCATEGORY" MODIFY ("ENABLED" NOT NULL ENABLE);
+ 
+  ALTER TABLE "BASE_DDIT"."DICTIONARYCATEGORY" MODIFY ("CREATE_TIME" NOT NULL ENABLE);
+--------------------------------------------------------
+--  Constraints for Table ROLE_MENU
+--------------------------------------------------------
+
+  ALTER TABLE "BASE_DDIT"."ROLE_MENU" MODIFY ("ROLEMENU_ID" NOT NULL ENABLE);
+ 
+  ALTER TABLE "BASE_DDIT"."ROLE_MENU" MODIFY ("ROLE_ID" NOT NULL ENABLE);
+ 
+  ALTER TABLE "BASE_DDIT"."ROLE_MENU" MODIFY ("MENU_ID" NOT NULL ENABLE);
 --------------------------------------------------------
 --  DDL for Trigger BUTTON_BUTTON_ID_TRG
 --------------------------------------------------------
@@ -984,37 +1338,6 @@ END;
 /
 ALTER TRIGGER "BASE_DDIT"."BUTTON_BUTTON_ID_TRG" ENABLE;
 --------------------------------------------------------
---  DDL for Trigger DICTIONARY_ID_TRG
---------------------------------------------------------
-
-  CREATE OR REPLACE TRIGGER "BASE_DDIT"."DICTIONARY_ID_TRG" BEFORE INSERT ON Dictionary
-FOR EACH ROW
-DECLARE 
-v_newVal NUMBER(12) := 0;
-v_incval NUMBER(12) := 0;
-BEGIN
-  IF INSERTING AND :new.ID IS NULL THEN
-    SELECT  Dictionary_ID_SEQ.NEXTVAL INTO v_newVal FROM DUAL;
-    -- If this is the first time this table have been inserted into (sequence == 1)
-    IF v_newVal = 1 THEN 
-      --get the max indentity value from the table
-      SELECT NVL(max(ID),0) INTO v_newVal FROM Dictionary;
-      v_newVal := v_newVal + 1;
-      --set the sequence to that value
-      LOOP
-           EXIT WHEN v_incval>=v_newVal;
-           SELECT Dictionary_ID_SEQ.nextval INTO v_incval FROM dual;
-      END LOOP;
-    END IF;
-  -- save this to emulate @@identity
-  utils.identity_value := v_newVal; 
-   -- assign the value from the sequence to emulate the identity column
-   :new.ID := v_newVal;
-  END IF;
-END;
-/
-ALTER TRIGGER "BASE_DDIT"."DICTIONARY_ID_TRG" ENABLE;
---------------------------------------------------------
 --  DDL for Trigger DICTIONARYCATEGORY_ID_TRG
 --------------------------------------------------------
 
@@ -1045,6 +1368,37 @@ BEGIN
 END;
 /
 ALTER TRIGGER "BASE_DDIT"."DICTIONARYCATEGORY_ID_TRG" ENABLE;
+--------------------------------------------------------
+--  DDL for Trigger DICTIONARY_ID_TRG
+--------------------------------------------------------
+
+  CREATE OR REPLACE TRIGGER "BASE_DDIT"."DICTIONARY_ID_TRG" BEFORE INSERT ON Dictionary
+FOR EACH ROW
+DECLARE 
+v_newVal NUMBER(12) := 0;
+v_incval NUMBER(12) := 0;
+BEGIN
+  IF INSERTING AND :new.ID IS NULL THEN
+    SELECT  Dictionary_ID_SEQ.NEXTVAL INTO v_newVal FROM DUAL;
+    -- If this is the first time this table have been inserted into (sequence == 1)
+    IF v_newVal = 1 THEN 
+      --get the max indentity value from the table
+      SELECT NVL(max(ID),0) INTO v_newVal FROM Dictionary;
+      v_newVal := v_newVal + 1;
+      --set the sequence to that value
+      LOOP
+           EXIT WHEN v_incval>=v_newVal;
+           SELECT Dictionary_ID_SEQ.nextval INTO v_incval FROM dual;
+      END LOOP;
+    END IF;
+  -- save this to emulate @@identity
+  utils.identity_value := v_newVal; 
+   -- assign the value from the sequence to emulate the identity column
+   :new.ID := v_newVal;
+  END IF;
+END;
+/
+ALTER TRIGGER "BASE_DDIT"."DICTIONARY_ID_TRG" ENABLE;
 --------------------------------------------------------
 --  DDL for Trigger LOGINLOG_LOGIN_ID_TRG
 --------------------------------------------------------
@@ -1077,37 +1431,6 @@ END;
 /
 ALTER TRIGGER "BASE_DDIT"."LOGINLOG_LOGIN_ID_TRG" ENABLE;
 --------------------------------------------------------
---  DDL for Trigger MENU_MENU_ID_TRG
---------------------------------------------------------
-
-  CREATE OR REPLACE TRIGGER "BASE_DDIT"."MENU_MENU_ID_TRG" BEFORE INSERT ON Menu
-FOR EACH ROW
-DECLARE 
-v_newVal NUMBER(12) := 0;
-v_incval NUMBER(12) := 0;
-BEGIN
-  IF INSERTING AND :new.Menu_ID IS NULL THEN
-    SELECT  Menu_Menu_ID_SEQ.NEXTVAL INTO v_newVal FROM DUAL;
-    -- If this is the first time this table have been inserted into (sequence == 1)
-    IF v_newVal = 1 THEN 
-      --get the max indentity value from the table
-      SELECT NVL(max(Menu_ID),0) INTO v_newVal FROM Menu;
-      v_newVal := v_newVal + 1;
-      --set the sequence to that value
-      LOOP
-           EXIT WHEN v_incval>=v_newVal;
-           SELECT Menu_Menu_ID_SEQ.nextval INTO v_incval FROM dual;
-      END LOOP;
-    END IF;
-  -- save this to emulate @@identity
-  utils.identity_value := v_newVal; 
-   -- assign the value from the sequence to emulate the identity column
-   :new.Menu_ID := v_newVal;
-  END IF;
-END;
-/
-ALTER TRIGGER "BASE_DDIT"."MENU_MENU_ID_TRG" ENABLE;
---------------------------------------------------------
 --  DDL for Trigger MENU_BUTTON_ID_TRG
 --------------------------------------------------------
 
@@ -1139,36 +1462,67 @@ END;
 /
 ALTER TRIGGER "BASE_DDIT"."MENU_BUTTON_ID_TRG" ENABLE;
 --------------------------------------------------------
---  DDL for Trigger ROLE_ROLE_ID_TRG
+--  DDL for Trigger MENU_MENU_ID_TRG
 --------------------------------------------------------
 
-  CREATE OR REPLACE TRIGGER "BASE_DDIT"."ROLE_ROLE_ID_TRG" BEFORE INSERT ON Role
+  CREATE OR REPLACE TRIGGER "BASE_DDIT"."MENU_MENU_ID_TRG" BEFORE INSERT ON Menu
 FOR EACH ROW
 DECLARE 
 v_newVal NUMBER(12) := 0;
 v_incval NUMBER(12) := 0;
 BEGIN
-  IF INSERTING AND :new.Role_ID IS NULL THEN
-    SELECT  Role_Role_ID_SEQ.NEXTVAL INTO v_newVal FROM DUAL;
+  IF INSERTING AND :new.Menu_ID IS NULL THEN
+    SELECT  Menu_Menu_ID_SEQ.NEXTVAL INTO v_newVal FROM DUAL;
     -- If this is the first time this table have been inserted into (sequence == 1)
     IF v_newVal = 1 THEN 
       --get the max indentity value from the table
-      SELECT NVL(max(Role_ID),0) INTO v_newVal FROM Role;
+      SELECT NVL(max(Menu_ID),0) INTO v_newVal FROM Menu;
       v_newVal := v_newVal + 1;
       --set the sequence to that value
       LOOP
            EXIT WHEN v_incval>=v_newVal;
-           SELECT Role_Role_ID_SEQ.nextval INTO v_incval FROM dual;
+           SELECT Menu_Menu_ID_SEQ.nextval INTO v_incval FROM dual;
       END LOOP;
     END IF;
   -- save this to emulate @@identity
   utils.identity_value := v_newVal; 
    -- assign the value from the sequence to emulate the identity column
-   :new.Role_ID := v_newVal;
+   :new.Menu_ID := v_newVal;
   END IF;
 END;
 /
-ALTER TRIGGER "BASE_DDIT"."ROLE_ROLE_ID_TRG" ENABLE;
+ALTER TRIGGER "BASE_DDIT"."MENU_MENU_ID_TRG" ENABLE;
+--------------------------------------------------------
+--  DDL for Trigger MESSAGE_MESSAGEID_TRG
+--------------------------------------------------------
+
+  CREATE OR REPLACE TRIGGER "BASE_DDIT"."MESSAGE_MESSAGEID_TRG" BEFORE INSERT ON Message
+FOR EACH ROW
+DECLARE 
+v_newVal NUMBER(12) := 0;
+v_incval NUMBER(12) := 0;
+BEGIN
+  IF INSERTING AND :new.MessageID IS NULL THEN
+    SELECT  Message_MessageID_SEQ.NEXTVAL INTO v_newVal FROM DUAL;
+    -- If this is the first time this table have been inserted into (sequence == 1)
+    IF v_newVal = 1 THEN 
+      --get the max indentity value from the table
+      SELECT NVL(max(MessageID),0) INTO v_newVal FROM Message;
+      v_newVal := v_newVal + 1;
+      --set the sequence to that value
+      LOOP
+           EXIT WHEN v_incval>=v_newVal;
+           SELECT Message_MessageID_SEQ.nextval INTO v_incval FROM dual;
+      END LOOP;
+    END IF;
+  -- save this to emulate @@identity
+  utils.identity_value := v_newVal; 
+   -- assign the value from the sequence to emulate the identity column
+   :new.MessageID := v_newVal;
+  END IF;
+END;
+/
+ALTER TRIGGER "BASE_DDIT"."MESSAGE_MESSAGEID_TRG" ENABLE;
 --------------------------------------------------------
 --  DDL for Trigger ROLE_BUTTON_ID_TRG
 --------------------------------------------------------
@@ -1232,6 +1586,37 @@ END;
 /
 ALTER TRIGGER "BASE_DDIT"."ROLE_MENU_ROLEMENU_ID_TRG" ENABLE;
 --------------------------------------------------------
+--  DDL for Trigger ROLE_ROLE_ID_TRG
+--------------------------------------------------------
+
+  CREATE OR REPLACE TRIGGER "BASE_DDIT"."ROLE_ROLE_ID_TRG" BEFORE INSERT ON Role
+FOR EACH ROW
+DECLARE 
+v_newVal NUMBER(12) := 0;
+v_incval NUMBER(12) := 0;
+BEGIN
+  IF INSERTING AND :new.Role_ID IS NULL THEN
+    SELECT  Role_Role_ID_SEQ.NEXTVAL INTO v_newVal FROM DUAL;
+    -- If this is the first time this table have been inserted into (sequence == 1)
+    IF v_newVal = 1 THEN 
+      --get the max indentity value from the table
+      SELECT NVL(max(Role_ID),0) INTO v_newVal FROM Role;
+      v_newVal := v_newVal + 1;
+      --set the sequence to that value
+      LOOP
+           EXIT WHEN v_incval>=v_newVal;
+           SELECT Role_Role_ID_SEQ.nextval INTO v_incval FROM dual;
+      END LOOP;
+    END IF;
+  -- save this to emulate @@identity
+  utils.identity_value := v_newVal; 
+   -- assign the value from the sequence to emulate the identity column
+   :new.Role_ID := v_newVal;
+  END IF;
+END;
+/
+ALTER TRIGGER "BASE_DDIT"."ROLE_ROLE_ID_TRG" ENABLE;
+--------------------------------------------------------
 --  DDL for Trigger SYSTEMINFO_SYSTEM_ID_TRG
 --------------------------------------------------------
 
@@ -1263,26 +1648,26 @@ END;
 /
 ALTER TRIGGER "BASE_DDIT"."SYSTEMINFO_SYSTEM_ID_TRG" ENABLE;
 --------------------------------------------------------
---  DDL for Trigger USER__USER_ID_TRG
+--  DDL for Trigger USERINFOMATION_USER_ID_TRG
 --------------------------------------------------------
 
-  CREATE OR REPLACE TRIGGER "BASE_DDIT"."USER__USER_ID_TRG" BEFORE INSERT ON USERINFOMATION
+  CREATE OR REPLACE TRIGGER "BASE_DDIT"."USERINFOMATION_USER_ID_TRG" BEFORE INSERT ON UserInfomation
 FOR EACH ROW
 DECLARE 
 v_newVal NUMBER(12) := 0;
 v_incval NUMBER(12) := 0;
 BEGIN
   IF INSERTING AND :new.User_ID IS NULL THEN
-    SELECT  User__User_ID_SEQ.NEXTVAL INTO v_newVal FROM DUAL;
+    SELECT  UserInfomation_User_ID_SEQ.NEXTVAL INTO v_newVal FROM DUAL;
     -- If this is the first time this table have been inserted into (sequence == 1)
     IF v_newVal = 1 THEN 
       --get the max indentity value from the table
-      SELECT NVL(max(User_ID),0) INTO v_newVal FROM User_;
+      SELECT NVL(max(User_ID),0) INTO v_newVal FROM UserInfomation;
       v_newVal := v_newVal + 1;
       --set the sequence to that value
       LOOP
            EXIT WHEN v_incval>=v_newVal;
-           SELECT User__User_ID_SEQ.nextval INTO v_incval FROM dual;
+           SELECT UserInfomation_User_ID_SEQ.nextval INTO v_incval FROM dual;
       END LOOP;
     END IF;
   -- save this to emulate @@identity
@@ -1292,17 +1677,38 @@ BEGIN
   END IF;
 END;
 /
-ALTER TRIGGER "BASE_DDIT"."USER__USER_ID_TRG" ENABLE;
+ALTER TRIGGER "BASE_DDIT"."USERINFOMATION_USER_ID_TRG" ENABLE;
 --------------------------------------------------------
---  DDL for Trigger TG_AUTOINCREMENT
+--  DDL for Trigger USER_MESSAGE_ID_TRG
 --------------------------------------------------------
 
-  CREATE OR REPLACE TRIGGER "BASE_DDIT"."TG_AUTOINCREMENT" 
-BEFORE INSERT ON USERINFOMATION FOR EACH ROW  WHEN (new.USER_ID is null) begin
-select AUTOINCREMENT.nextval into:new.USER_ID from dual;
-end;
+  CREATE OR REPLACE TRIGGER "BASE_DDIT"."USER_MESSAGE_ID_TRG" BEFORE INSERT ON User_Message
+FOR EACH ROW
+DECLARE 
+v_newVal NUMBER(12) := 0;
+v_incval NUMBER(12) := 0;
+BEGIN
+  IF INSERTING AND :new.ID IS NULL THEN
+    SELECT  User_Message_ID_SEQ.NEXTVAL INTO v_newVal FROM DUAL;
+    -- If this is the first time this table have been inserted into (sequence == 1)
+    IF v_newVal = 1 THEN 
+      --get the max indentity value from the table
+      SELECT NVL(max(ID),0) INTO v_newVal FROM User_Message;
+      v_newVal := v_newVal + 1;
+      --set the sequence to that value
+      LOOP
+           EXIT WHEN v_incval>=v_newVal;
+           SELECT User_Message_ID_SEQ.nextval INTO v_incval FROM dual;
+      END LOOP;
+    END IF;
+  -- save this to emulate @@identity
+  utils.identity_value := v_newVal; 
+   -- assign the value from the sequence to emulate the identity column
+   :new.ID := v_newVal;
+  END IF;
+END;
 /
-ALTER TRIGGER "BASE_DDIT"."TG_AUTOINCREMENT" ENABLE;
+ALTER TRIGGER "BASE_DDIT"."USER_MESSAGE_ID_TRG" ENABLE;
 --------------------------------------------------------
 --  DDL for Trigger USER_ROLE_ID_TRG
 --------------------------------------------------------
@@ -1334,3 +1740,8 @@ BEGIN
 END;
 /
 ALTER TRIGGER "BASE_DDIT"."USER_ROLE_ID_TRG" ENABLE;
+--------------------------------------------------------
+--  DDL for Synonymn UTILS
+--------------------------------------------------------
+
+  CREATE OR REPLACE SYNONYM "BASE_DDIT"."UTILS" FOR "EMULATION"."UTILS";
