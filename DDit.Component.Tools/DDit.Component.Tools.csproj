@@ -106,7 +106,9 @@
   <ItemGroup>
     <Compile Include="BaseInfo.cs" />
     <Compile Include="CacheHelp.cs" />
+    <Compile Include="CommonHelper.cs" />
     <Compile Include="CustomModelBind.cs" />
+    <Compile Include="DbHelperSQL.cs" />
     <Compile Include="DynamicJson.cs" />
     <Compile Include="EmailHelper.cs" />
     <Compile Include="ExpandHelper.cs" />

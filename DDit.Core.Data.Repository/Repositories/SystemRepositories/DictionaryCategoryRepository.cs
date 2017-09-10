@@ -50,5 +50,28 @@ namespace DDit.Core.Data.Repository.Repositories.SystemRepositories
                 dal.Save();
             }
         }
+
+
+        public List<dynamic> GetDictionaryByCategory(DictionaryCategory model)
+        {
+            using (UnitOfWork dal = BaseInfo._container.Resolve<UnitOfWork>())
+            {
+
+                var conditions = ExpandHelper.True<DictionaryCategory>().And(a =>a.Enabled == true);
+                if (model.ID!=0)
+                    conditions = conditions.And(a => a.ID==model.ID);
+                if(!string.IsNullOrEmpty(model.Category))
+                     conditions = conditions.And(a => a.Category==model.Category);
+
+                var dc = dal.GetRepository<DictionaryCategory>().Get(filter: conditions, includeProperties: "DicValueList").FirstOrDefault();
+               
+                var diction=dc.DicValueList.Select(a=>new {
+                      id=a.ID,
+                      text=a.DicValue
+                }).ToList<dynamic>();
+
+                return diction;
+            }
+        }
     }
 }

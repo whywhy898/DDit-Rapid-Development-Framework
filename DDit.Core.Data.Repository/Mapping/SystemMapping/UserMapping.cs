@@ -16,7 +16,7 @@ namespace DDit.Core.Data.Repository.Mapping.SystemMapping
 
             this.HasKey(a => a.UserID);
 
-            this.ToTable("USERINFOMATION", "Base");
+            this.ToTable("USERINFOMATION", "BASE");
             this.Property(a => a.UserID).HasColumnName("USER_ID");
             this.Property(a => a.UserPassword).HasColumnName("USER_PASSWORD");
             this.Property(a => a.UserName).HasColumnName("USER_NAME");
@@ -33,7 +33,7 @@ namespace DDit.Core.Data.Repository.Mapping.SystemMapping
             HasMany(u => u.RoleList)
                 .WithMany(p => p.UserList)
                 .Map(m => {
-                    m.ToTable("USER_ROLE", "Base");
+                    m.ToTable("USER_ROLE", "BASE");
                    m.MapLeftKey("USER_ID");
                    m.MapRightKey("ROLE_ID");
             });

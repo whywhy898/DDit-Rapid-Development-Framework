@@ -87,5 +87,21 @@ namespace DDit.Core.Data.Repository.Repositories.SystemRepositories
             }
         }
 
+
+        public List<Button> GetBtnByMenuId(int menuId)
+        {
+            using (UnitOfWork dal = BaseInfo._container.Resolve<UnitOfWork>())
+            {
+                var menuBtn = dal.GetRepository<MenuMappingButton>().Get(a => a.MenuID == menuId, includeProperties: "ButtonModel").ToList();
+
+                var btnList=new List<Button>();
+
+                menuBtn.ForEach(a=>{
+                   btnList.Add(a.ButtonModel);
+                });
+
+                return btnList;
+            }
+        }
     }
 }

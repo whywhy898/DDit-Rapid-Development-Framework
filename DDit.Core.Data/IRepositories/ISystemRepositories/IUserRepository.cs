@@ -14,6 +14,8 @@ namespace DDit.Core.Data.IRepositories.ISystemRepositories
     {
         Tuple<int,List<User>> GetList(User model);
 
+        List<User> GetUserInfos();
+
         User GetSingle(User model);
 
         User GetbyID(int userID);

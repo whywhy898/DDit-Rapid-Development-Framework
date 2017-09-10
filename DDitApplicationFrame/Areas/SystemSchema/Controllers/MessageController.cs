@@ -26,9 +26,8 @@ namespace DDitApplicationFrame.Areas.SystemSchema.Controllers
         } 
 
         [HttpPost]
-        public ActionResult GetMessagesInfo(Message model, string SendTime)
+        public ActionResult GetMessagesInfo([ModelBinder(typeof(CustomModelBind))]Message model)
         {
-            model.SendTime = string.IsNullOrEmpty(SendTime) ? null : (DateTime?)DateTime.Parse(SendTime);
             var result = this.MessageServer.GetMessageList(model);
             return JsonResult<MessageDo>(result);
         }

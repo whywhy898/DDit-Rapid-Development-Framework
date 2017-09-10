@@ -10,71 +10,82 @@ namespace DDitApplicationFrame
         public static void RegisterBundles(BundleCollection bundles)
         {
 
-            bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
-                        "~/Scripts/jquery-{version}.js"));
-
-            bundles.Add(new ScriptBundle("~/bundles/jqueryui").Include(
-                        "~/Scripts/jquery-ui-{version}.js"));
-
-            bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
-                        "~/Scripts/jquery.unobtrusive*",
-                        "~/Scripts/jquery.validate*"));
+            //日期控件 日志用
+            bundles.Add(new ScriptBundle("~/Scripts/calendar").Include(
+                        "~/Scripts/calendar/moment.min.js",
+                        "~/Scripts/calendar/fullcalendar.js",
+                        "~/Scripts/calendar/locale/zh-cn.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/js").Include(
+                //jquery
                 "~/Scripts/datatables/js/jquery.js",
                 "~/Scripts/fancyTree/jquery-ui.custom.js",
-                "~/Scripts/js/jquery-ui-1.8.24.js",
+                "~/Scripts/js/jquery-ui.js",
+                //json
                 "~/Scripts/js/json2.js",
+                //bootstap库
                 "~/Scripts/bootstrap/js/bootstrap.js",
+                //表格控件
                 "~/Scripts/datatables/js/jquery.dataTables.js",
                 "~/Scripts/datatables/js/dataTables.bootstrap.js",
+                //jquery验证
                 "~/Scripts/js/jquery.validate.js",
+                //ajax表单提交
                 "~/Scripts/js/jquery.form.js",
+                //弹出框控件
                 "~/Scripts/alertjs/src/alertify.js",
+                //icon图标控件
                 "~/Scripts/js/jquery.contextmenu.r2.js",
                 "~/Scripts/iconpicker/js/iconPicker.js",
+                //下拉框
                 "~/Scripts/select2/js/select2.js",
+                "~/Scripts/select2/js/i18n/zh-CN.js",
+                //图标控件
                 "~/Scripts/charts/js/echarts.js",
                 "~/Scripts/charts/theme/macarons.js",
+                //树形控件
                 "~/Scripts/fancyTree/jquery.fancytree.js",
+                //上传控件
                 "~/Scripts/fileUpload/fileinput.js",
                 "~/Scripts/fileUpload/fileinput_locale_zh.js",
-              //  "~/Scripts/layer/layer.js",
+                //拖拽控件
                 "~/Scripts/js/jquery.sortable.js",
+                //富文本编辑器
                 "~/Scripts/summernote/summernote.js",
                 "~/Scripts/summernote/lang/summernote-zh-CN.js",
+                //时间控件
+                "~/Scripts/datetimepicker/js/moment-with-locales.js",
+                "~/Scripts/datetimepicker/js/bootstrap-datetimepicker.js",
+                //gooflow
+                "~/Scripts/gooflow/GooFunc.js",
+                "~/Scripts/gooflow/GooFlow.js",
+                "~/Scripts/gooflow/GooFlow_color.js",
+                //自定义JS库
                 "~/Scripts/js/myJavaScript.js"
             ));
 
             // 使用要用于开发和学习的 Modernizr 的开发版本。然后，当你做好
             // 生产准备时，请使用 http://modernizr.com 上的生成工具来仅选择所需的测试。
-            bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
-                        "~/Scripts/modernizr-*"));
 
-            bundles.Add(new StyleBundle("~/Scripts/bootstrap/css/1").Include(
-                                                         "~/Scripts/bootstrap/css/bootstrap.css"));
-            bundles.Add(new StyleBundle("~/Scripts/datatables/css/1").Include("~/Scripts/datatables/css/dataTables.bootstrap.css"));
-            bundles.Add(new StyleBundle("~/Content/1").Include("~/Content/MainStyle.css", "~/Content/learunui-accordion.css", "~/Content/AssistStyle.css"));
-            bundles.Add(new StyleBundle("~/Scripts/alertjs/themes/1").Include("~/Scripts/alertjs/themes/alertify.core.css", "~/Scripts/alertjs/themes/alertify.bootstrap.css"));
-            bundles.Add(new StyleBundle("~/Scripts/iconpicker/css/1").Include("~/Scripts/iconpicker/css/icon-picker.css"));
-            bundles.Add(new StyleBundle("~/Scripts/select2/css/1").Include("~/Scripts/select2/css/select2.css"));
-            bundles.Add(new StyleBundle("~/Scripts/fancyTree/skin-lion/1").Include("~/Scripts/fancyTree/skin-lion/ui.fancytree.css"));
-            bundles.Add(new StyleBundle("~/Scripts/fileUpload/1").Include("~/Scripts/fileUpload/fileinput.css"));
-            bundles.Add(new StyleBundle("~/Scripts/summernote/1").Include("~/Scripts/summernote/summernote.css"));
-
-            bundles.Add(new StyleBundle("~/Content/themes/base/css").Include(
-                        "~/Content/themes/base/jquery.ui.core.css",
-                        "~/Content/themes/base/jquery.ui.resizable.css",
-                        "~/Content/themes/base/jquery.ui.selectable.css",
-                        "~/Content/themes/base/jquery.ui.accordion.css",
-                        "~/Content/themes/base/jquery.ui.autocomplete.css",
-                        "~/Content/themes/base/jquery.ui.button.css",
-                        "~/Content/themes/base/jquery.ui.dialog.css",
-                        "~/Content/themes/base/jquery.ui.slider.css",
-                        "~/Content/themes/base/jquery.ui.tabs.css",
-                        "~/Content/themes/base/jquery.ui.datepicker.css",
-                        "~/Content/themes/base/jquery.ui.progressbar.css",
-                        "~/Content/themes/base/jquery.ui.theme.css"));
+            bundles.Add(new StyleBundle("~/Content").Include("~/Content/MainStyle.css", "~/Content/AssistStyle.css"));
+          
+            bundles.Add(new StyleBundle("~/Scripts").Include(
+                        "~/Scripts/bootstrap/css/bootstrap.css",
+                        "~/Scripts/datatables/css/dataTables.bootstrap.css",
+                        "~/Scripts/alertjs/themes/alertify.core.css",
+                        "~/Scripts/alertjs/themes/alertify.bootstrap.css",
+                        "~/Scripts/iconpicker/css/icon-picker.css",
+                        "~/Scripts/select2/css/select2.css",
+                        "~/Scripts/fancyTree/skin-lion/ui.fancytree.css",
+                        "~/Scripts/fileUpload/fileinput.css",
+                        "~/Scripts/summernote/summernote.css",
+                        "~/Scripts/calendar/fullcalendar.css",
+                        "~/Scripts/datetimepicker/css/bootstrap-datetimepicker.css",
+                        "~/Scripts/gooflow/fonts/iconflow.css",
+                        "~/Scripts/gooflow/GooFlow.css",
+                        "~/Scripts/cheack/font-awesome.css",
+                        "~/Scripts/cheack/build.css"
+                        ));
         }
     }
 }

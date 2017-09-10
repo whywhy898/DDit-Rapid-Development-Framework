@@ -20,7 +20,7 @@ namespace DDit.Core.Data.Repository.Repositories.SystemRepositories
    public class UserRepository : IUserRepository
     { 
 
-       public Tuple<int, List<User>> GetList(User model)
+        public Tuple<int, List<User>> GetList(User model)
         {
             using (UnitOfWork dal=BaseInfo._container.Resolve<UnitOfWork>())
             {
@@ -77,7 +77,7 @@ namespace DDit.Core.Data.Repository.Repositories.SystemRepositories
             using (UnitOfWork dal = BaseInfo._container.Resolve<UnitOfWork>())
             {
                
-                // var result = dal.GetRepository<User>().Get(filter: a => a.UserID == userID, includeProperties: "RoleList.MenuList,RoleList.rbList").AsNoTracking().FirstOrDefault();
+              //  var result = dal.GetRepository<User>().Get(filter: a => a.UserID == userID, includeProperties: "RoleList.MenuList,RoleList.rbList").AsNoTracking().FirstOrDefault();
 
                 var result = dal.GetRepository<User>().Get(filter: a => a.UserID == userID,includeProperties: "RoleList").FirstOrDefault();
 
@@ -183,7 +183,6 @@ namespace DDit.Core.Data.Repository.Repositories.SystemRepositories
             {
 
                 var repository = dal.GetRepository<User>();
-
                 var usermodel = new User()
                 {
                     UserID = id,
@@ -191,6 +190,15 @@ namespace DDit.Core.Data.Repository.Repositories.SystemRepositories
                 };
                 repository.UpdateSup(usermodel, new List<string>() { "UserPassword" });
                 dal.Save();
+            }
+        }
+
+
+        public List<User> GetUserInfos()
+        {
+            using (var dal = BaseInfo._container.Resolve<UnitOfWork>())
+            {
+                return dal.GetRepository<User>().Get().ToList();
             }
         }
     }

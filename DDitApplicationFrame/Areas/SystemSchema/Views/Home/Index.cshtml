@@ -2,95 +2,132 @@
     ViewBag.Title = "Index";
 }
 
-@section scripts{
-    <script type="text/javascript">
-        $(function () {
-            $('#example').dataTable({
-               // serverSide: true, //开启服务端模式
-                processing: true,
-                pagingType: "full_numbers", // 分页显示形式 首 上 下 末
-                lengthChange: false,   //隐藏选择分页
-                searching: false,        //隐藏搜索
-                oLanguage: {
-                    "sLengthMenu": "每页 _MENU_ 条记录",
-                    "sZeroRecords": "没有检索到数据",
-                    "sInfo": "第 _START_ 到第 _END_ 条数据；共有 _TOTAL_ 条记录",
-                    "sInfoEmtpy": "没有数据",
-                    "sProcessing": "正在加载数据...请耐心等待...",
-                    "oPaginate": {
-                        "sFirst": "首页",
-                        "sPrevious": "前页",
-                        "sNext": "后页",
-                        "sLast": "尾页"
+<link href="~/Content/lstyle.css" rel="stylesheet" />
+<script type="text/javascript">
+    $(function () {
+
+        var myChart = echarts.init(document.getElementById('main'), "macarons");
+        myChart.setOption({
+            title: {
+                text: '用户访问来源',
+                subtext: '纯属虚构',
+                x: 'center'
+            },
+            tooltip: {
+                trigger: 'item',
+                formatter: "{a} <br/>{b} : {c} ({d}%)"
+            },
+            legend: {
+                orient: 'vertical',
+                left: 'left',
+                data: ['直接访问', '邮件营销', '联盟广告', '视频广告', '搜索引擎']
+            },
+            series: [
+                {
+                    name: '访问来源',
+                    type: 'pie',
+                    radius: '55%',
+                    center: ['50%', '60%'],
+                    data: [
+                        { value: 335, name: '直接访问' },
+                        { value: 310, name: '邮件营销' },
+                        { value: 234, name: '联盟广告' },
+                        { value: 135, name: '视频广告' },
+                        { value: 1548, name: '搜索引擎' }
+                    ],
+                    itemStyle: {
+                        emphasis: {
+                            shadowBlur: 10,
+                            shadowOffsetX: 0,
+                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
                     }
-                },
-                scrollY: 375,
-                scrollCollapse: false,
-                ajax:{
-                    url: "/User/GetUserList",
-                    contentType: "application/json",
-                    type: "POST",
-                    dataSrc: "dataList",
-                    data: function (d) {
-                        return JSON.stringify(d);
-                    }
-                },
-                columns: [
-                    { data: 'UserName' },
-                    { data: 'UserReallyname' },
-                    { data: 'DepartmentID' },
-                    { data: 'IsEnable' },
-                    { data: 'CreateTime' },
-                    { data: 'Remark' }
-                ]
-            });
-
-        })
-    </script>  
-}
-
-<div style="width:1000px;margin:0 auto">
-
-    <div class="panel panel-default">
-        <ul class="list-group">
-            <li class="list-group-item">
-                <button type="button" class="btn btn-default">
-                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增
-                </button>
-
-                <button type="button" class="btn btn-default ">
-                    <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> 编辑
-                </button>
-
-                <button type="button" class="btn btn-default ">
-                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> 删除
-                </button>
-
-                <button type="button" class="btn btn-default ">
-                    <span class="glyphicon glyphicon-download" aria-hidden="true"></span> 下载
-                </button>
-            </li>
-            <li class="list-group-item">
-                <form class="form-inline">
-                    <div class="form-group">
-                        <label for="exampleInputName2">Name</label>
-                        <input type="text" class="form-control" id="exampleInputName2" placeholder="Jane Doe">
-                    </div>
-                    <div class="form-group">
-                        <label for="exampleInputEmail2">Email</label>
-                        <input type="email" class="form-control" id="exampleInputEmail2" placeholder="jane.doe@example.com">
-                    </div>
-                    <button type="button" class="btn btn-default ">
-                        <span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询
-                    </button>
-                </form>
-            </li>
-        </ul>
+                }
+            ]
+        });
+    })
+</script>
+<div class="newTaskBox clearfix">
+    <div class="ntItem">
+        <div class="innerItem">
+            <a href="" class="innerItemLink il1">
+                <span class="ilTitle">审核待处理任务</span>
+                <strong class="ilVal">10</strong>
+                <i></i>
+            </a>
+        </div>
     </div>
-
-    <table id="example" class="table table-bordered table-striped" cellspacing="0" width="100%"></table>
-    
+    <div class="ntItem">
+        <div class="innerItem">
+            <a href="" class="innerItemLink il2">
+                <span class="ilTitle">消息待处理任务</span>
+                <strong class="ilVal">11</strong>
+                <i></i>
+            </a>
+        </div>
+    </div>
+    <div class="ntItem">
+        <div class="innerItem">
+            <a href="" class="innerItemLink il3">
+                <span class="ilTitle">消息待处理任务</span>
+                <strong class="ilVal">11</strong>
+                <i></i>
+            </a>
+        </div>
+    </div>
+    <div class="ntItem">
+        <div class="innerItem">
+            <a href="" class="innerItemLink il4">
+                <span class="ilTitle">消息待处理任务</span>
+                <strong class="ilVal">11</strong>
+                <i></i>
+            </a>
+        </div>
+    </div>
+    <div class="ntItem">
+        <div class="innerItem">
+            <a href="" class="innerItemLink il5">
+                <span class="ilTitle">消息待处理任务</span>
+                <strong class="ilVal">11</strong>
+                <i></i>
+            </a>
+        </div>
+    </div>
 </div>
+
+<div style="margin-top:70px;width:100%">
+    <div id="main" style="width: 48%;height:400px;margin-left:15px;float:left"></div>
+    <div id="info" style="width: 48%;height:400px;float:right">
+        <div class="panel panel-danger" style="height:98%;width:520px">
+            <!-- Default panel contents -->
+            <div class="panel-heading">
+                <span class="glyphicon glyphicon-bullhorn" aria-hidden="true"></span>
+                通知公告
+            </div>
+
+            <!-- List group -->
+            <ul class="list-group">
+                <li class="list-group-item">
+                    开发者福音：微软Windows 10眼镜HoloLens提前发货
+                </li>
+                <li class="list-group-item">
+                    阿里回应入股神州专车：无深度投资出行领域计划
+                </li>
+                <li class="list-group-item">
+                    苹果官网今日开始接受iPhone SE预约 3288起售
+                </li>
+                <li class="list-group-item">
+                    三大运营商2015年净利润下滑 仍日赚3.8亿元
+                </li>
+                <li class="list-group-item">
+                    消息人士称Google正努力打造直播应用YouTube Connect
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+
 
 
 

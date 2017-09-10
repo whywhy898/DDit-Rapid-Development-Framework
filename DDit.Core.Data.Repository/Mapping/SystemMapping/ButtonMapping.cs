@@ -14,7 +14,7 @@ namespace DDit.Core.Data.Repository.Mapping.SystemMapping
 
         public ButtonMapping() {
             HasKey(a => a.ButtonID);
-            ToTable("BUTTON","Base");
+            ToTable("BUTTON","BASE");
             this.Property(a => a.ButtonID).HasColumnName("BUTTON_ID");
             this.Property(a => a.ButtonName).HasColumnName("BUTTON_NAME");
             this.Property(a => a.ButtonOpID).HasColumnName("BUTTON_OPID");

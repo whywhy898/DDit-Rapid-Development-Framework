@@ -1,0 +1,152 @@
+﻿@{
+    Layout = null;
+}
+
+@Styles.Render("~/Scripts", "~/Content")
+@Scripts.Render("~/bundles/js")
+
+<style type="text/css">
+    .dataTables_scrollHead {
+        display: none;
+    }
+</style>
+
+<script type="text/javascript">
+    $(function () {
+        var workFlowSelfTable = $('#workFlowSelfTable').custromTable({
+            isNo: false,
+            pageLength: 4,
+            scrollY: 480,
+            order: [[0, 'desc']],
+            columnsClick: false,
+            ajax: {
+                url: "/InitiateFlow/GetSreachFlowInfo",
+                data: function (d) {
+                    d.FlowName = $("#workflowName").val();
+                    return JSON.stringify(d);
+                }
+            },
+            columns: [
+                { data: 'FlowInfoId', visible: false },
+                {
+                    render: function (data, type, row, meta) {
+
+                        var state = "";
+                        if (row.FlowInfoState == 0) state = "条件不通过"
+                        if (row.FlowInfoState == 1) state = "处理中"
+                        if (row.FlowInfoState == 2) state = "结束"
+                        if (row.FlowInfoState == 3) state = "驳回"
+                        
+                        var html = ""
+                        html += "<div class='bs-callout bs-callout-info'>"
+                        html += "    <div style='float:left;width:90%'>"
+                        html += "         <h4 style='display:inline-block;margin-top:-4'>" + row.FlowName + "</h4><span style='font-size:12px;margin-left:5px' class='label label-info'>" + row.FlowCategory + "</span>"
+                        html += "         <p>当前状态:<span style='font-size:12px;color:green'>" + state + "</span> 创建时间:" + row.CreateTime + "</p>"
+                        html += "         <p>备注:" + row.FlowRemark + "</p>"
+                        html += "    </div>"
+                        html += "    <div style='float:left;padding-top:10px'>"
+                        html += "        <button type='button' data-FlowInfoId='" + row.FlowInfoId + "' class='btn btn-warning' name='seachFlowApprove'>"
+                        html += "            <span class='glyphicon glyphicon-list-alt' aria-hidden='true'></span> 流程进度"
+                        html += "        </button>"
+                        html += "    </div>"
+                        html += "</div>"
+                        return html
+                    }
+                }
+            ]
+        });
+
+        $("#workFlowSelfTable").on("click", "[name='seachFlowApprove']", function () {
+
+            currentSeachFlowInfoId = $(this).data("flowinfoid");
+
+            seachFlowApproveLayer();
+        })
+
+        var seachFlowApproveLayer = function () {
+            FlowApprovelayer = parent.layer.open({
+                type: 1,
+                title: "流程审批进度",
+                area: ['700px', '500px'],
+                closeBtn: 1,
+                shadeClose: false,
+                skin: 'layerStyle',
+                content: $("#seachFlowApprove").html(),
+                btn: [dditConfig.btn.close, ],
+                success: function (i, l) {
+                    parent.$("#flowApproveForm").FromEvent(function () {
+
+                        var chaildwindow = document.getElementById("InitiateFlowSreachSelfFlowView").contentWindow
+
+                        var flowinfoId = chaildwindow.currentSeachFlowInfoId;
+
+                        //初始化表格配置
+                        var seachTable = $('#FlowApproveTable').custromTable({
+                            scrollY: 290,
+                            ordering:false,
+                            ajax: {
+                                url: "/InitiateFlow/GetFlowApproveSelf",
+                                data: function (d) {
+                                    d.FlowInfoId = flowinfoId;
+                                    return JSON.stringify(d);
+                                }
+                            },
+                            columns: [
+                                { data: 'ApproveId', visible: false },
+                                { data: 'FlowStepName', title: "步骤名称" },
+                                { data: 'ApproveUserName', title: "审批人昵称" },
+                                { data: 'ApproveResult', title: "审批状态",render: function (data, type, row, meta) {
+                                    var result = "";
+                                    if (row.ApproveResult == 0) result = "<span style='color:#331f1f'>处理中</span>";
+                                    if (row.ApproveResult == 1) result = "<span style='color:#12ea69'>审批通过</span>";
+                                    if (row.ApproveResult == 2) result = "<span style='color:#ef310b'>审批驳回</span>";
+                                    return result;
+                                   }
+                                },
+                                { data: 'ReallyApproveUserName', title: "实际审批人", width: 100 },
+                                
+                                { data: 'ApproveTime', title: "审批时间", width: 100 },
+                                { data: 'ApproveRemark', title: "审批备注" }
+                            ]
+                        });
+
+                    })
+                }
+            })
+        }
+
+        $("#workflowQuery").click(function () {
+
+            workFlowSelfTable.ajax.reload();
+        });
+
+    })
+ </script>
+
+
+<div class="margin w100f xoverhide">
+    <div class="panel panel-default" style="margin-top: 10px;">
+        <ul class="list-group">
+            <li class="list-group-item">
+                <form class="form-inline" onsubmit="return false;">
+                    <div class="form-group">
+                        <label for="RoleName">流程名称</label>
+                        <input type="text" class="form-control" name="workflowName" id="workflowName" placeholder="流程关键字查询">
+                    </div>
+                    <button type="button" class="btn btn-info " id="workflowQuery">
+                        <span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询
+                    </button>
+                </form>
+            </li>
+        </ul>
+    </div>
+
+    <table id="workFlowSelfTable" class="w100f" cellspacing="0"></table>
+</div>
+
+
+<div id="seachFlowApprove" class="displayn">
+    <form id="flowApproveForm" style="padding:10px">
+        <table id="FlowApproveTable" class="table table-bordered table-striped" cellspacing="0"></table>
+    </form>
+</div>

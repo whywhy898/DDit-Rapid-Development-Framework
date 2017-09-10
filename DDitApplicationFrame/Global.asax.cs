@@ -21,6 +21,7 @@ using System.Web.Compilation;
 using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Core.Mapping;
 using System.Data.Entity.Core.Metadata.Edm;
+using System.Net.Http;
 
 
 
@@ -79,8 +80,9 @@ namespace DDitApplicationFrame
             config.Formatters.JsonFormatter
                         .SerializerSettings
                         .ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+           
+           // EF预热，手动在内存中加载mapping view,调试如果觉得启动慢可以注释这段代码，发布程序很有用
 
-            //EF预热，手动在内存中加载mapping view
             using (var unitofwork = container.Resolve<UnitOfWork>())
             {
                 var objectContext = ((IObjectContextAdapter)unitofwork.context).ObjectContext;

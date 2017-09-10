@@ -1,0 +1,746 @@
+﻿@{
+    Layout = null;
+}
+
+@Styles.Render("~/Scripts", "~/Content")
+@Scripts.Render("~/bundles/js")
+
+<script type="text/javascript">
+    $(function () {
+        var forminfotable = $('#FormInfoTable').custromTable({
+            ajax: {
+                url: "/Form/GetFormInfos",
+                data: function (d) {
+                    d.FormName = $("#FormName").val();
+                    return JSON.stringify(d);
+                }
+            },
+            columns: [
+                { data: 'FormId', visible: false },
+                { data: 'FormName', title: "表单名称" },
+                { data: 'DBName', title: "关联表名称" },
+                { data: 'FieldKey', title: "表主键" },
+                { data: 'CreatTime', title: "创建时间",width:120 },
+                {
+                    data: '', title: "操作", width: 100, render: function (data, type, row, meta) {
+                        var browsebtn = " <button type='button' name='browse' data-mes='" + row.FormId + "' class='btn btn-success btn-xs' style='width:100px'>"
+                            browsebtn += " <span class='glyphicon glyphicon-eye-open' aria-hidden='true'></span> 浏览"
+                            browsebtn += " </button>"
+                        return row.isConfiguration ? browsebtn : "未配置元素";
+                    }
+                }
+            ]
+        });
+        
+        var formInfoLayer = function () {
+            formLayer = parent.layer.open({
+                type: 1,
+                title: "创建表单",
+                area: ['500px', '480px'],
+                closeBtn: 1,
+                shadeClose: false,
+                skin: 'layerStyle',
+                content: $("#formTemplate").html(),
+                btn: [dditConfig.btn.close, dditConfig.btn.comfrie],
+                yes: function (index, layero) {
+                     confrimFormInfo();
+                },
+                success: function (i, l) {
+                    parent.$("#formInfo").FromEvent(function () {
+
+                        $("#DBName").select2({
+                            placeholder: "DBName",
+                            minimumInputLength: 1,
+                            language: "zh-CN",
+                            allowClear: true,
+                            ajax: {
+                                type: "post",
+                                url: '/Form/AutoCompleteDBName',
+                                processResults: function (data) {
+                                    return {
+                                        results: data
+                                    };
+                                }
+                            }
+                        });
+
+                        $("#FieldKey").select2({
+                            placeholder: "DBKey",
+                            allowClear: true,
+                            language: "zh-CN",
+                            minimumResultsForSearch: Infinity
+                        });
+
+                        $('#DBName').on('select2:select', function (evt) {
+                            var $DBname = $("#DBName");
+                            var $FieldKey = $("#FieldKey");
+                            $DBname.valid();
+                            $FieldKey.empty();
+                            var dbname = $DBname.val();
+                            $.post("/Form/GetDBFieldsByDBName", { DBName: dbname }, function (data) {
+                                $.each(data, function (i, v) {
+                                    var html = "<option value="+v.id+">"+v.text+"</option>";
+                                    $FieldKey.append(html);
+                                })
+                                $FieldKey.trigger("change");
+                                $FieldKey.valid();
+                            });
+                        });
+
+                        //验证表单
+                        $("#formInfo").validate({
+                            rules: {
+                                FormName: {
+                                    required: true
+                                },
+                                DBName: {
+                                    required: true
+                                },
+                                FieldKey: {
+                                    required: true
+                                }
+                            },
+                            messages: {
+                                FormName: {
+                                    required: "必填"
+                                },
+                                DBName: {
+                                    required: "必填"
+                                },
+                                FieldKey: {
+                                    required: "必填"
+                                }
+                            },
+                            errorPlacement: dditConfig.validerrorPlacement,
+                            highlight: dditConfig.validHighlight,
+                            success: dditConfig.validSuccess
+                        })
+                    })
+                }
+            });
+        }
+
+        var confrimFormInfo = function () {
+            var formInfo = parent.$("#formInfo");
+            if (formInfo.valid()) {
+                formInfo.ajaxSubmit({
+                    dataType: "json",
+                    success: function (data) {
+                        if (data.result) {
+                            parent.layer.close(parent.layer.index); //隐藏弹出
+                            forminfotable.ajax.reload();
+                            parent.alertify.success("操作成功！"); //弹出消息日志
+                        } else {
+                            parent.alertify.error(data.message);
+                        }
+                    },
+                    error: function (data) {
+                        var obj = eval('(' + data.responseText + ')');
+                        parent.alertify.error(obj.message);
+                    }
+                });
+            }
+        }
+
+        $("#formCreate").click(function () {
+            formInfoLayer();
+        })
+
+        $("#formEdit").click(function () {
+            var cc = forminfotable.rows('.selected')
+            if (cc[0].length > 0) {
+                var model = cc.data();   // 得到操作的实体
+                formInfoLayer();
+                parent.layer.title("编辑表单", formLayer)
+                parent.$("#formInfo").setForm(model[0]);
+                var html = "<option value=" + model[0].DBName + ">" + model[0].DBName + "</option>";
+                parent.$("#DBName").append(html).trigger("change.select2");
+                $.post("/Form/GetDBFieldsByDBName", { DBName: model[0].DBName }, function (data) {
+                    $.each(data, function (i, v) {
+                        var html = "<option value=" + v.id + ">" + v.text + "</option>";
+                        parent.$("#FieldKey").append(html);
+                    })
+                    parent.$("#FieldKey").val(model[0].FieldKey).trigger("change");
+                });
+
+            } else {
+                parent.alertify.log("请选择一条操作信息！");
+            }
+        });
+
+        $("#formDelete").click(function () {
+            var cc = forminfotable.rows('.selected')
+            if (cc[0].length > 0) {
+                var model = cc.data();   // 得到操作的实体
+                parent.layer.confirm("确定要删除该表单和表单配置吗！", dditConfig.hintLayer, function () {
+                    $.post("/Form/DeleteFormInfo", { FormId: model[0].FormId}, function (data) {
+                        if (data.result) {
+                            forminfotable.ajax.reload(null, false);
+                            parent.layer.close(parent.layer.index);
+                            alertify.success("信息操作成功！");
+                        } else {
+                            parent.alertify.success(data.message);
+                        }
+                    })
+                });
+            } else {
+                alertify.log("请选择一条操作信息！");
+            }
+        });
+
+        $.post("/Form/GetElementInfoList", {}, function (data) {
+            $.each(data, function (i, v) {
+                var eleHtml = "<div data-eleid='" + v.ElementId + "' data-et='" + v.ElementType + "' class='btn btn-default' style='display:block;width:150px;margin:10px' >"
+                eleHtml += "<img src='../Images/elementIcon/" + v.ElementIoc + "' class='eleimg'/>" + v.ElementText + ""
+                eleHtml += "</div>"
+                $("#elementArea").append(eleHtml);
+            })
+        })
+
+        $.get("/Dictionary/GetGetDicategoryList", {}, function (data) {
+            dictionary = data;
+        })
+
+        var configLayer = function () {
+           formeleLayer = parent.layer.open({
+                type: 1,
+                title: "配置表单元素",
+                area: ['900px', '650px'],
+                closeBtn: 1,
+                shadeClose: false,
+                skin: 'layerStyle',
+                content: $("#configuration").html(),
+                btn: [dditConfig.btn.close, dditConfig.btn.comfrie],
+                yes: function (index, layero) {
+                    confrimForm();
+                },
+                success: function (i, l) {
+                    parent.$("#configForm").FromEvent(function () {
+                        var num = 1;
+                        var fomeWindow = document.getElementById("FormIndex").contentWindow;
+                        var dictionary = fomeWindow.dictionary;
+                        var tableFs = fomeWindow.tableFields;
+                   
+                        var formElementInfos = fomeWindow.formElementInfos;
+
+                        var optionfs = "", optiondic = "";
+
+                        var createTempEle = function (model) {
+                             var id = "element" + num;
+                             var eleHtml = "<li class='ui-state-default'>";
+                             eleHtml += "<div class='item_row' data-eleid='" + model.element.ElementId + "' data-type='" + model.element.ElementType + "' id='" + id + "' style='display: block; width: 100%; float: left; opacity: 1'>"
+                             eleHtml += "<div class='item_field_label'>" + model.ElementLable + "</div>"
+                             eleHtml += "<div class='item_field_value'>" + model.element.ElementText + "</div>"
+                             eleHtml += "<div class='item_field_remove'><i title='移除控件' class='del'></i></div>"
+                             eleHtml += "</div> </li>"
+                             return eleHtml;
+                        }
+
+                        $("#elementArea div").draggable({ revert: true, opacity: 0.7, helper: "clone", revert: "invalid" });
+
+                        $("#viewArea").droppable({
+                            drop: function (event, ui) {
+                                var dra = $(ui.draggable);
+                                var parameterObj = {
+                                    ElementLable: dra.text(),
+                                    element: {
+                                        ElementId: dra.data("eleid"),
+                                        ElementType: dra.data("et"),
+                                        ElementText: dra.text()
+                                    }
+                                }
+                                var id = "element" + num;
+                                var eleHtml = createTempEle(parameterObj);
+                                $("#itemui").append(eleHtml)
+                                $("#itemui").sortable();
+                                $("#itemui").disableSelection();
+                                $("#" + id).trigger("click");
+                                num++;
+                            }
+                        });
+
+                        $("#itemui").on("click", ".del", function () {
+                            var li = $(this).closest("li");
+                            var eletcp = li.children("div").attr("id");
+                            var eleform= $("#porperArea").find("form")
+                            $.each(eleform, function (i,v) {
+                                var divtcp = $(v).children("div").data("ide")
+                                if (divtcp == eletcp) {
+                                    $(v).remove();
+                                    return false;
+                                }
+                            })
+                            li.remove();
+                            $("#itemui li:first").find("div").trigger("click");
+                        });
+
+                        $("#viewArea").on("click", ".item_row", function () {
+                            var self = this;
+                            var items = $("#viewArea .item_row");
+
+                            $.each(items, function (i, v) {
+                                if (v == self) {
+                                    $(self).css({ "background-color": "#E6E6E6" });
+                                    $(self).find(".del").css({ "display": "inline-block" })
+                                } else {
+                                    $(v).css({ "background-color": "" });
+                                    $(v).find(".del").css({ "display": "none" })
+                                }
+                            })
+                            var cc = $("#porperArea").find(".porperdiv");
+                            if (cc.length > 0) {
+                                var exais = false;
+                                $.each(cc, function (i,v) {
+                                    var ide = $(v).data("ide");
+                                    if ($(self).attr("id") == ide) {
+                                        exais = true;
+                                        $(v).show();
+                                        return;
+                                    }
+                                    $(v).hide();
+                                })
+                                if (exais==false) {
+                                    $("#porperArea").find(".porperdiv").hide();
+                                    createDiv(self);
+                                }
+                            } else {
+                                createDiv(self);
+                            }
+                        })
+
+                        var createDiv = function (elem) {
+                            var ide = $(elem).attr("id");
+                            var eletype = $(elem).data("type");
+                            var eletext = $(elem).children(":first");
+                            var eleid = $(elem).data("eleid");
+                            var eleValue = $(elem).data("eleValue");
+                            var opterHtml = "<form><div data-ide='" + ide + "' id='" + ide + "div' class='porperdiv'>"
+                            opterHtml += "    <input type='hidden' name='ElementId' value='" + eleid + "' />"
+                            opterHtml += "    <div class='form-group'>"
+                            opterHtml += "        <label for='FieldIden'>字段标识<span style='color:red'>*</span></label>"
+                            opterHtml += "        <select style='width:250px' name='FieldIden'><option value=''>请选择</option></select>"
+                            opterHtml += "    </div>"
+                            opterHtml += "    <div class='form-group'>"
+                            opterHtml += "        <label for='exampleInputPassword1'>字段说明<span style='color:red'>*</span></label>"
+                            opterHtml += "        <input type='text' class='form-control' name='ElementLable'>"
+                            opterHtml += "    </div>"
+                            opterHtml += "    <div class='form-group'>"
+                            opterHtml += "        <label for='vaild'>是否必填</label>"
+                            opterHtml += "        <select style='width:250px' name='ElementValid'><option value='1'>No</option><option value='2'>Yes</option></select>"
+                            opterHtml += "    </div>"
+                            if (eletype == "select" || eletype == "selectMultiple") {
+                                opterHtml += "   <div class='form-group'>"
+                                opterHtml += "       <label for='Dictionary'>数据字典</label>"
+                                opterHtml += "       <select style='width:250px' name='DataDictionary'><option value=''>请选择</option></select>"
+                                opterHtml += "   </div>"
+                            }
+                            if (eletype == "richText" || eletype == "textarea") {
+                                opterHtml += "    <div class='form-group'>"
+                                opterHtml += "        <label for='ElementHeight'>字段高度</label>"
+                                opterHtml += "        <input type='text' class='form-control' name='ElementHeight' value='200px'>"
+                                opterHtml += "    </div>"
+                            }
+                            if (eletype == "dateTime") {
+                                opterHtml += "   <div class='form-group'>"
+                                opterHtml += "       <label for='vaild'>日期格式</label>"
+                                opterHtml += "       <select style='width:250px' name='ElementFormatType'><option value='YYYY-MM-DD'>日期</option><option value='YYYY-MM-DD HH:MM'>日期和时间</option></select>"
+                                opterHtml += "   </div>"
+                            }
+                            if (eletype != "upload") {
+                                opterHtml += "    <div class='form-group'>"
+                                opterHtml += "        <label for='exampleInputPassword1'>默认值</label>"
+                                if (eletype == "dateTime") {
+                                    opterHtml += " <select style='width:250px' name='ElementDefValue'><option value=''>请选择</option><option value='tad'>今天</option><option value='tom'>明天</option></select>"
+                                } else {
+                                    opterHtml += " <input type='text' class='form-control' name='ElementDefValue' placeholder='可不填'>"
+                                }
+                                opterHtml += " </div>"
+                            }
+
+                            opterHtml += "</div></form>"
+                            $("#porperArea").append(opterHtml);
+                            //字段标识
+                            if (optionfs == "") {
+                                $.each(tableFs, function (i, v) {
+
+                                    var index = v.indexOf("(")
+                                    var filedname = v.substring(index + 1, v.length - 1);
+
+                                    optionfs += "<option value='" + filedname + "'>" + v + "</option>"
+                                })
+                            }
+                            var currentSelect = $("#" + ide + "div").find("[name='FieldIden']");
+                            currentSelect.append(optionfs).select2({
+                                minimumResultsForSearch: -1
+                            });
+
+                            //字段说明
+                            var currentExplain = $("#" + ide + "div").find("[name='ElementLable']");
+                            currentExplain.val(eletext.text()).blur(function () {
+                                var val = $(this).val();
+                                if (val != "") $(eletext).text(val);
+                            });
+                            //是否必填
+                            $("[name='ElementValid']").select2({
+                                minimumResultsForSearch: -1
+                            });
+
+                            //数据字典
+                            var dictionarySelect = $("#" + ide + "div").find("[name='DataDictionary']");
+                            if (dictionarySelect.length > 0) {
+                                if (optiondic == "") {
+                                    $.each(dictionary, function (i, v) {
+                                        optiondic += "<option value='" + v.dicid + "'>" + v.title + "</option>"
+                                    })
+                                }
+                                dictionarySelect.append(optiondic).select2({
+                                    minimumResultsForSearch: -1
+                                });
+                            }
+
+                            //默认值
+                            var currentvalid = $("#" + ide + "div").find("[name='ElementDefValue']");
+                            var currenteletype = $("#" + ide + "div").find("[name='ElementFormatType']");
+                            if (eletype == "dateTime") {
+                                currentvalid.select2({
+                                    minimumResultsForSearch: -1
+                                });
+                                currenteletype.select2({
+                                    minimumResultsForSearch: -1
+                                });
+                            }
+                            //元素赋值
+                            if (eleValue != undefined) {
+
+                                currentSelect.val(eleValue.FieldIden).trigger("change");
+
+                                $("#" + ide + "div").find("[name='ElementValid']").val(eleValue.ElementValid).trigger("change");
+
+                                if (dictionarySelect.length > 0) dictionarySelect.val(eleValue.DataDictionary).trigger("change");
+
+                                if (eletype == "dateTime") {
+                                    currentvalid.val(eleValue.ElementDefValue).trigger("change");
+                                    currenteletype.val(eleValue.ElementFormatType).trigger("change");
+                                } else {
+                                    currentvalid.val(eleValue.ElementDefValue);
+                                }
+                                if (eletype == "richText" || eletype == "textarea") {
+                                    $("#" + ide + "div").find("[name='ElementHeight']").val(eleValue.ElementHeight);
+                                }
+                            }
+                        }
+
+                        if (formElementInfos != undefined) {
+                            $.each(formElementInfos, function (i, v) {
+                                var id = "element" + num;
+                                var eleHtml = createTempEle(v);
+                                $("#itemui").append(eleHtml)
+                                $("#" + id).data("eleValue", v);
+                                $("#" + id).trigger("click");
+                                num++;
+                            })
+                            $("#itemui").sortable();
+                            $("#itemui").disableSelection();
+                        }
+
+                    })
+                },
+                end: function () {
+                    formElementInfos = undefined;
+                }
+            });
+        }
+
+        var confrimForm = function () {
+            var array = [];
+            var isComplete = true;
+            var eles = parent.$("#porperArea").children("form");
+            var orderdiv = parent.$("#itemui").children("li");
+            var formid = parent.$("#FormId").val();
+            var ident = parent.$("[name='FieldIden']");
+            var lable = parent.$("[name='ElementLable']");
+
+            $.each(ident, function (i,v) {
+                if ($(v).val() == "") {
+                    isComplete = false;
+                    return false;
+                }
+            })
+
+            $.each(lable, function (i, v) {
+                if ($(v).val() == "") {
+                    isComplete = false;
+                    return false;
+                }
+            })
+
+            if (eles.length > 0) {
+                if (isComplete == false) {
+                    alertify.log("请完善表单元素配置再提交！");
+                    return;
+                }
+                $.each(eles, function (i, v) {
+                    var eletcp = $(v).children("div").data("ide");
+                    var currentobj = $(v).serializeObject()
+                    currentobj.FormId = formid;
+                    $.each(orderdiv, function (di,dv) {
+                        var tcp = $(dv).children("div").attr("id")
+                        if (tcp == eletcp) currentobj.ElementOrder = di;
+                        
+                    })
+                    array.push(currentobj);
+                })
+ 
+                $.post("/Form/CreateFormELement", { model: array }, function (data) {
+                    if (data.result) {
+                        parent.layer.close(parent.layer.index);
+                        forminfotable.ajax.reload();
+                        parent.alertify.success("操作成功！"); //弹出消息日志
+                    }
+                });
+            } else {
+                parent.alertify.log("没有表单元素无法提交！");
+            }
+        }
+
+        $("#configElement").click(function () {
+            var cc = forminfotable.rows('.selected')
+            if (cc[0].length > 0) {
+                var model = cc.data();   // 得到操作的实体
+                
+                $.post("/Form/FormOperate", { DBName: model[0].DBName, FormId: model[0].FormId }, function (data) {
+                    if (data.result == false) {
+                        tableFields = data.Data;
+  
+                        configLayer();
+                        parent.$("#FormId").val(model[0].FormId);
+                    } else {
+                        parent.alertify.log("表单已经完成配置！");
+                    }
+                })
+
+            } else {
+                alertify.log("请选择一条操作信息！");
+            }
+        })
+
+        $("#editElement").click(function () {
+            var cc = forminfotable.rows('.selected')
+            if (cc[0].length > 0) {
+                var model = cc.data();   // 得到操作的实体
+                
+                $.post("/Form/FormOperate", { DBName: model[0].DBName, FormId: model[0].FormId,isTask:true }, function (data) {
+                    if (data.result) {
+                        tableFields = data.Data;
+
+                        formElementInfos = data.dataList;
+                        configLayer();
+                        parent.$("#FormId").val(model[0].FormId);
+                        parent.layer.title("编辑表单元素", formeleLayer)
+                    } else {
+                        alertify.log("表单未完成配置！");
+                    }
+                })
+
+            } else {
+                alertify.log("请选择一条操作信息！");
+            }
+        })
+
+        $("#FormInfoTable").on("click","[name=browse]",function () {
+            var formid = $(this).data("mes");
+            $.post("/Form/GetFormInfoByid", { formId: formid }, function (data) {
+                createBrowseForm(data.elementPropertys);
+            },"json")
+        })
+
+        var createBrowseForm = function (arrayPropers) {
+            var formElementHtml = "<form id='bowseform' class='form-horizontal formPadding'>"
+            $.each(arrayPropers,function(i,v){
+                formElementHtml+="<div class='form-group'>"
+                formElementHtml += "<label class='col-sm-2 control-label labsty'>" + v.ElementLable
+                if (v.ElementValid == 2) {
+
+                   formElementHtml+="<span style='color:red'>*</span>"
+                }
+                formElementHtml+="</label>"
+                formElementHtml+="<div class='col-sm-10 pad-r20'>"
+                if (v.element.ElementType == "text" ) {
+                    formElementHtml += " <input type='text' class='form-control' name='" + v.FieldIden + "' placeholder='" + v.ElementLable + "'>"
+                } else if (v.element.ElementType == "textarea" || v.element.ElementType == "richText") {
+                    formElementHtml += "<textarea  class='form-control' id='" + v.FieldIden + "' name='" + v.FieldIden + "' style='height:" + v.ElementHeight + "'></textarea>";
+                } else if (v.element.ElementType == "dateTime") {
+                    formElementHtml += "<div class='input-group date' id='" + v.FieldIden + "'>"
+                    formElementHtml += "    <input type='text' class='form-control' name='" + v.FieldIden + "' placeholder='" + v.ElementLable + "' />"
+                    formElementHtml += "    <span class='input-group-addon'>"
+                    formElementHtml += "  <span class='glyphicon glyphicon-calendar'></span>"
+                    formElementHtml += "</span></div>"
+                } else if (v.element.ElementType == "select" || v.element.ElementType == "selectMultiple") {
+                    var multiple= v.element.ElementType == "selectMultiple"?"multiple='multiple'":"";
+                    $.ajax({
+                        type: "Post",
+                        url: "/Dictionary/GetDicValuebyCategoryId",
+                        data:{ CategoryId: v.DataDictionary },
+                        dataType:"json",
+                        async:false,
+                        success:function(data){
+                            formElementHtml += "<select name='" + v.FieldIden + "' id='" + v.FieldIden + "' class='form-control' " + multiple + " style='width:100%'>"
+                            formElementHtml += "<option></option>"
+                            $.each(data, function (di,dv) {
+                                formElementHtml += "<option value='" + dv.ID + "'>" + dv.DicValue + "</option>"
+                            })
+                            formElementHtml+="<select>"
+                        }
+                    })
+                } else if (v.element.ElementType == "upload") {
+                    formElementHtml += "<input id='" + v.FieldIden + "' name='" + v.FieldIden + "' type='file' class='file-loading'>"
+                }
+                formElementHtml+="</div></div>"         
+            })
+            formElementHtml += "</form>"
+
+            parent.layer.open({
+                type: 1,
+                title: "表单浏览",
+                area: ['500px', '550px'],
+                closeBtn: 1,
+                shadeClose: false,
+                skin: 'layerStyle',
+                content: formElementHtml,
+                btn: [dditConfig.btn.close],
+                success: function (i, l) {
+                    var jshtml = "function () {";
+                    $.each(arrayPropers, function (i, v) {
+                        if (v.element.ElementType == "dateTime") {
+                            jshtml += "$('#" + v.FieldIden + "').datetimepicker({"
+                            jshtml+="   format: '"+v.ElementFormatType+"',"
+                            jshtml+="    widgetPositioning: {"
+                            jshtml+="        horizontal: 'auto',"
+                            jshtml+="        vertical: 'bottom'"
+                            jshtml+="    }"
+                            jshtml+="});"
+                        }
+                        if (v.element.ElementType == "select" || v.element.ElementType == "selectMultiple") {
+                            jshtml += "$('#" + v.FieldIden + "').select2({"
+                            jshtml += "placeholder: '请选择',"
+                            if (v.element.ElementType == "selectMultiple") {
+                                jshtml += "multiple: true,"
+                            }
+                            jshtml += "    minimumResultsForSearch: -1,"
+                            jshtml += "});"
+                        }
+                        if (v.element.ElementType == "richText") {
+                            jshtml += "$('#" + v.FieldIden + "').summernote({"
+                            jshtml += "    lang: 'zh-CN',"
+                            jshtml += "    width: '100%',"
+                            jshtml += "    height: 200,"
+                            jshtml += "    focus: true,"
+                            jshtml += "    dialogsInBody: true"
+                            jshtml += " });"
+                        }
+                        if (v.element.ElementType == "upload") {
+
+                            jshtml +=" $('#" + v.FieldIden + "').fileinput({"
+                            jshtml +="     language: 'zh',"
+                            jshtml +="     showUpload: false,"
+                            jshtml +="     maxFileCount: 1"
+                            jshtml +=  "});"
+                        }
+                    })
+                    jshtml+="}"
+                    parent.$("#bowseform").FromEvent(jshtml);  
+                }
+            })
+
+        }
+
+     
+    });
+</script>
+
+<div class="margin w100f xoverhide">
+    <div class="panel panel-default" style="margin-top: 10px">
+        <ul class="list-group">
+            <li class="list-group-item">
+                <button type="button" class="btn btn-default" id="formCreate">
+                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增表单
+                </button>
+                <button type="button" class="btn btn-default" id="formEdit">
+                    <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> 编辑表单
+                </button>
+                <button type="button" class="btn btn-default" id="formDelete">
+                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> 删除表单
+                </button>
+                <button type='button' class='btn btn-default' id="configElement">
+                    <span class='glyphicon glyphicon-text-size' aria-hidden='true'></span>配置元素
+                </button>
+                <button type='button' class='btn btn-default' id="editElement">
+                    <span class='glyphicon glyphicon-italic' aria-hidden='true'></span>编辑元素
+                </button>
+            </li>
+            <li class="list-group-item">
+                <form class="form-inline">
+                    <div class="form-group" style="">
+                        <label for="FormName">表单名称</label>
+                        <input type="text" class="form-control" name="FormName" id="FormName" placeholder="formName">
+                    </div>
+                    <button type="button" class="btn btn-info " id="formQuery">
+                        <span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询
+                    </button>
+                </form>
+            </li>
+        </ul>
+    </div>
+    <table id="FormInfoTable" class="table table-bordered table-striped w100f" cellspacing="0"></table>
+</div>
+
+<div id="formTemplate" class="displayn">
+    <form class="form-horizontal formPadding" id="formInfo" method="post" action="/Form/AddORUpdateFormInfo">
+        @Html.Hidden("FormId")
+        <div class="form-group">
+            <label for="FormName" class="col-sm-2 control-label labsty">表单名称<span style="color:red">*</span></label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" maxlength="15" name="FormName" placeholder="FormName">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="DBName" class="col-sm-2 control-label labsty">数据库名称<span style="color:red">*</span></label>
+            <div class="col-sm-10">
+                <select name="DBName" id="DBName" style="width:100%"></select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="FieldKey" class="col-sm-2 control-label labsty">数据库主键<span style="color:red">*</span></label>
+            <div class="col-sm-10">
+                @*<input type="text" class="form-control" name="FieldKey" maxlength="50" placeholder="DBKey">*@
+                <select name="FieldKey" id="FieldKey" style="width:100%"></select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="remark" class="col-sm-2 control-label labsty">备注</label>
+            <div class="col-sm-10">
+                <textarea class="form-control" name="remark" rows="8" maxlength="500"></textarea>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div id="configuration" class="displayn">
+    <div style="width:100%;height:100%" id="configForm">
+        @Html.Hidden("FormId")
+        <div style="width:100%;height:15%;padding:10px;border-bottom:1px solid #ccc;font-size:14px">
+            <div class="alert alert-danger" role="alert">
+                <span class='glyphicon glyphicon-question-sign' style="font-size:20px" aria-hidden='true'></span>
+                将左侧按钮拖拽到表单区并填写相应属性,表单区可进行上下拖拽排序。
+            </div>
+        </div>
+        <div style="width:100%;height:85%">
+            <div id="elementArea" style="width:20%;float:left;height:100%"></div>
+            <div id="viewArea" class="item_table">
+                <ul id="itemui"></ul>
+            </div>
+            <div id="porperArea" class="item_proper"></div>
+        </div>
+    </div>
+</div>
+

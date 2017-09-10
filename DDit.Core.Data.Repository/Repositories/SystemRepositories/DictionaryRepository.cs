@@ -69,5 +69,16 @@ namespace DDit.Core.Data.Repository.Repositories.SystemRepositories
                 dal.Save();
             }
         }
+
+
+        public List<Dictionary> GetDictionaryVules(int categotyId)
+        {
+            using (UnitOfWork dal = BaseInfo._container.Resolve<UnitOfWork>())
+            {
+                return dal.GetRepository<Dictionary>().Get(a => a.DicCategoryID == categotyId).ToList();
+            }
+        }
+
+        
     }
 }

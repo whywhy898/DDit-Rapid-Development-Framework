@@ -14,7 +14,7 @@ namespace DDit.Core.Data.Repository.Mapping.SystemMapping
         public RoleMappingButtonMapping()
         {
             HasKey(a => a.ID);
-            ToTable("ROLE_BUTTON", "Base");
+            ToTable("ROLE_BUTTON", "BASE");
             this.Property(a => a.ID).HasColumnName("ID");
             this.Property(a => a.RoleID).HasColumnName("ROLE_ID");
             this.Property(a => a.MenuID).HasColumnName("MENU_ID");

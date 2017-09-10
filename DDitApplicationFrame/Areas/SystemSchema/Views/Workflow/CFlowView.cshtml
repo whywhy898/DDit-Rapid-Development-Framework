@@ -1,0 +1,691 @@
+﻿@{
+    Layout = null;
+}
+@using DDit.Core.Data.Entity.SystemEntity
+@Styles.Render("~/Scripts", "~/Content")
+@Scripts.Render("~/bundles/js")
+
+<script type="text/javascript">
+    $(function () {
+
+        var workFlowTable = $('#workFlowTable').custromTable({
+            ajax: {
+                url: "/Workflow/GetWorkFinfos",
+                data: function (d) {
+                    d.FlowName = $("#WorkFlowName").val();
+                    return JSON.stringify(d);
+                }
+            },
+            columns: [
+                { data: 'FlowID', visible: false },
+                { data: 'FlowName', title: "流程名称" },
+                { data: 'FormName', title: "流程表单" },
+                { data: 'FlowSortName', title: "流程分类" },
+                { data: 'CreateUserName', title: "创建人" },
+                {
+                    data: 'CreateTime', title: "创建时间", width: 100
+                }
+            ]
+        });
+
+        var openWorkFlowlayer = function () {
+            workflowlayer = parent.layer.open({
+                type: 1,
+                title: "新增工作流",
+                area: ['550px', '450px'],
+                closeBtn: 1,
+                shadeClose: false,
+                skin: 'layerStyle',
+                content: $("#createWorkflow").html(),
+                btn: [dditConfig.btn.close, dditConfig.btn.comfrie],
+                yes: function (index, layero) {
+                    workFlowConfrimBtn();
+                },
+                success: function (i, l) { 
+                    parent.$("#workflowForm").FromEvent(function () {
+
+                        $("#FlowSort").SelectBind({
+                            param: {Category: "工作流" },
+                            valid:true ,
+                            value: typeof (options) != "undefined" ? options.FlowSort : ""
+                         });
+
+                        $("#FormID").SelectBind({ url: "/Form/SelectBindForm", valid: true, value: typeof (options) != "undefined" ? options.FormID : "" })
+
+                        //验证表单
+                        $("#workflowForm").validate({
+                            rules: {
+                                FlowName: {
+                                    required: true
+                                },
+                                FlowSort: {
+                                    required: true
+                                },
+                                FormID: {
+                                    required: true
+                                }
+                            },
+                            messages: {
+                                FlowName: {
+                                    required: "必填",
+                                },
+                                FlowSort: {
+                                    required: "必填"
+                                },
+                                FormID: {
+                                    required: "必填",
+                                },
+                            },
+                            errorPlacement: dditConfig.validerrorPlacement,
+                            highlight: dditConfig.validHighlight,
+                            success: dditConfig.validSuccess
+                        })
+
+                    })
+                },
+                end: function () {
+                    parent.window.options = undefined;
+                }
+            });
+        }
+
+        var workFlowConfrimBtn = function () {
+            var workFlow = parent.$("#workflowForm");
+            if (workFlow.valid()) {
+                workFlow.ajaxSubmit({
+                    dataType: "json",
+                    success: function (data) {
+                        if (data.result) {
+                            parent.layer.closeAll(); //隐藏弹出
+                            workFlowTable.ajax.reload(null, false);
+                            parent.alertify.success("操作成功！"); //弹出消息日志
+                        } else {
+                           parent.alertify.error(data.message);
+                        }
+                    },
+                    error: function (data) {
+                        var obj = eval('(' + data.responseText + ')');
+                        parent.alertify.error(obj.message);
+                    }
+                });
+            }
+        }
+
+        $("#workFlowCreate").click(function () {
+            openWorkFlowlayer();
+        });
+
+        $("#workFlowEdit").click(function () {
+            var cc = workFlowTable.rows('.selected')
+            if (cc[0].length > 0) {
+                var model = cc.data();
+                parent.window.options = model[0];// 得到操作的实体
+                openWorkFlowlayer();
+                parent.$("#workflowForm").setForm(model[0]);  //给表单赋值
+
+                parent.layer.title("编辑工作流", workflowlayer)
+            } else {
+               parent.alertify.log("请选择一条操作信息！");
+            }
+
+        });
+
+
+        $("#workFlowDelete").click(function () {
+            var cc = workFlowTable.rows('.selected')
+            if (cc[0].length > 0) {
+                var model = cc.data();
+                parent.layer.confirm("确定要删除该信息吗！", dditConfig.hintLayer, function () {
+                    $.post("/Workflow/DeleteWorkFlow", { FlowID: model[0].FlowID }, function (data) {
+                        if (data.result) {
+                            workFlowTable.ajax.reload(null, false);
+                            parent.layer.closeAll();
+                            parent.alertify.success("信息操作成功！");
+                        } else {
+                            parent.alertify.error("已经有流任务存在，无法删除该工作流！");
+                        }
+                    },"json");
+                });
+            } else {
+                parent.alertify.log("请选择一条操作信息！");
+            }
+        });
+
+        var openFlowlayer = function () {
+            flowlayer = parent.layer.open({
+                type: 1,
+                title: "流程设计",
+                area: ['900px', '480px'],
+                closeBtn: 1,
+                shadeClose: false,
+                skin: 'layerStyle',
+                content: $("#createflow").html(),
+                btn: [dditConfig.btn.close, dditConfig.btn.comfrie],
+                yes: function (index, layero) {
+                    var json = JSON.stringify(parent.flow.exportData());
+                 //   console.log(json);
+                    flowConfrimBtn(json);
+                },
+                success: function (i, l) {
+                    parent.$("#flowForm").FromEvent(function () {
+
+                        var chaildwindow = document.getElementById("WorkFlowCFlowView").contentWindow
+
+                        var property = {
+                            width: 1200,
+                            height: 350,
+                            toolBtns: ["start round mix", "end round", "task", "node"],
+                            haveHead: false,
+                            headLabel: true,
+                            //headBtns: ["new", "open", "save", "undo", "redo", "reload"],//如果haveHead=true，则定义HEAD区的按钮
+                            haveTool: true,
+                            haveGroup: false,
+                            useOperStack: false
+                        };
+                        var remark = {
+                            cursor: "选择指针",
+                            direct: "结点连线",
+                            start: "入口结点",
+                            end: "结束结点",
+                            task: "任务结点",
+                            node: "自动结点",
+                        };
+
+                        var flow = $.createGooFlow($("#flowView"), property);
+                        flow.setNodeRemarks(remark)
+                       // 添加节点事件
+                        flow.onItemAdd = function (id, type, jsons) {
+                            var jsonobj = eval(flow.exportData());
+                            var allnodes = jsonobj.nodes;
+                            if (jsons.type!=undefined && jsons.type.indexOf("start") > -1) {
+                                var ishas = false;
+                                for (var Key in allnodes) {
+                                    if (allnodes[Key].type.indexOf("start") > -1) {
+                                        ishas = true;
+                                    }
+                                }
+                                if (ishas) {
+                                    alertify.error("开始节点只能有一个");
+                                    return false
+                                } else {
+                                    jsons.name = "开始";
+                                }
+                            } else if (jsons.type != undefined && jsons.type.indexOf("end") > -1) {
+                                var ishas = false;
+                                for (var Key in allnodes) {
+                                    if (allnodes[Key].type.indexOf("end") > -1) {
+                                        ishas = true;
+                                    }
+                                }
+                                if (ishas) {
+                                    alertify.error("结束节点只能有一个");
+                                    return false
+                                } else {
+                                    jsons.name = "结束";
+                                }
+                            }                       
+                            return true;
+                        }
+
+                        //双击节点事件
+                        flow.$workArea.delegate(".ico + td", "dblclick", { inthis: flow }, function (e) {
+                            var This = e.data.inthis;
+                            var id = $(this).parents(".GooFlow_item").attr("id");
+                            setSeptLayer(id);
+                        });
+
+                        //双击线事件
+                        //单元连接线双击事件
+                        var tmpClk = "PolyLine";
+                        if (GooFlow.prototype.useSVG != "")
+                            tmpClk = "g";
+                        $(flow.$draw).delegate(tmpClk, "dblclick", { inthis: flow }, function (e) {
+                            var This = e.data.inthis;
+                            var lineid = This.$focus;
+                            setLineLayer(lineid);
+                        });
+
+                        var setSeptLayer = function (id) {
+                            var div = $(chaildwindow.document).find("#setSeptDiv");
+                     
+                            layer.open({
+                                type: 1,
+                                title: "节点设置",
+                                area: ['500px', '450px'],
+                                closeBtn: 1,
+                                shadeClose: false,
+                                skin: 'layerStyle',
+                                content: div.html(),
+                                btn: [dditConfig.btn.close, dditConfig.btn.comfrie],
+                                yes: function (index, layero) {
+                                    setSetpComfrim(id);
+                                },
+                                success: function (i, l) {
+
+                                    var jsonInfo = flow.getItemInfo(id, "node");
+
+                                    $("#nodeIden").val(id);
+                                    $("#DepartmentInfo").select2({
+                                        placeholder: "请选择",
+                                        minimumResultsForSearch: Infinity,
+                                        multiple: true
+                                    }).val("").trigger("change");
+
+                                    $("#nodeNames").val(jsonInfo.name);
+
+                                    if (jsonInfo.remark != undefined) $("#remark").val(jsonInfo.remark);
+                                    if (jsonInfo.stepUser != undefined) {
+                                        var userArray = jsonInfo.stepUser.split(',');
+                                        $("#DepartmentInfo").val(userArray).trigger("change");
+                                    }
+
+                                    $('#DepartmentInfo').on("change", function (evt) {
+                                        if ($(this).val() != null)
+                                            $(this).valid();
+                                    });
+
+                                    //验证表单
+                                    $("#setSeptForm").validate({
+                                        ignore: "",
+                                        rules: {
+                                            nodeNames: {
+                                                required: true
+                                            },
+                                            departmentInfo: {
+                                                required: true
+                                            }
+                                        },
+                                        messages: {
+                                            nodeNames: {
+                                                required: "必填"
+                                            },
+                                            departmentInfo: {
+                                                required: "必填"
+                                            }
+                                        },
+                                        highlight: dditConfig.validHighlight,
+                                        success: dditConfig.validSuccess
+                                    });
+                                }
+                            });
+                        }
+
+                        var setSetpComfrim = function (id) {
+                            var septform= $("#setSeptForm")
+                            if (septform.valid()) {
+                                var nodejson = flow.getItemInfo(id, "node");
+                                nodejson.stepUser = $("#DepartmentInfo").val().join(",")
+                                nodejson.sepName=$("#nodeNames").val()
+                                nodejson.remark = $("#remark").val()
+
+                                flow.setName(id, $("#nodeNames").val(), "node")
+                                parent.layer.close(parent.layer.index)
+                            }
+                        }
+
+                        var setLineLayer = function (lineid) {
+                            var div = $(chaildwindow.document).find("#setLineDiv");
+                            layer.open({
+                                type: 1,
+                                title: "流转线设计",
+                                area: ['600px', '450px'],
+                                closeBtn: 1,
+                                shadeClose: false,
+                                skin: 'layerStyle',
+                                content: div.html(),
+                                btn: [dditConfig.btn.close, dditConfig.btn.comfrie],
+                                yes: function (index, layero) {
+                                    setLineConfrim(lineid);
+                                },
+                                success: function (i, l) {
+
+                                    var jsonlinesInfo = flow.getItemInfo(lineid, "line");
+                                    $("#flowlineName").val(jsonlinesInfo.name);
+                                    if (jsonlinesInfo.ConditionInfo != undefined&&jsonlinesInfo.ConditionInfo.length>0) {
+                                        $.each(jsonlinesInfo.ConditionInfo, function (i, v) {
+                                            createColumn(v);
+                                        })
+                                    } else {
+                                        createColumn();
+                                    }
+                                    $("#condientTable").DataTable({
+                                        lengthChange: false,   
+                                        searching: false,
+                                        paging: false,
+                                        ordering: false,
+                                        info:false
+                                    });
+                                    //添加栏位按钮
+                                    $("#clan").click(function () {
+                                        createColumn();
+                                    })
+                                    //删除栏位按钮
+                                    $("#dlan").click(function () {
+                                        $("#condientTable tbody").find("tr:last").remove();
+                                        tableNum--;
+                                    })
+                                },
+                                end: function () {
+                                    tableNum = 1;
+                                }
+                            })
+                        }
+
+                        var tableNum = 1;
+
+                        var createColumn = function (value) {
+                            var prentFileds = chaildwindow.fields
+                            console.log(prentFileds)
+                            var trid = "tr" + tableNum;
+                            var colunmHtml = "<tr id='" + trid + "'>"
+                            colunmHtml += "   <td style='text-align:center;line-height:30px'>" + tableNum + "</td>"
+                            colunmHtml +="   <td>"
+                            colunmHtml += "      <select name='field' style='width:100%'>"
+                            colunmHtml += "           <option value=''></option>"
+                            $.each(prentFileds, function (i, v) {
+                                var index=v.indexOf("(")
+                                var filedname = v.substring(index + 1, v.length - 1);
+                                colunmHtml += "       <option value='" + filedname + "'>"+v+"</option>"
+                            })
+                            colunmHtml +="       </select>"
+                            colunmHtml +="   </td>"
+                            colunmHtml +="   <td>"
+                            colunmHtml += "       <select name='compare' style='width:100%'>"
+                            colunmHtml += "          <option value=''></option>"
+                            colunmHtml += "          <option value='>'>大于</option>"
+                            colunmHtml += "          <option value='=='>等于</option>"
+                            colunmHtml += "          <option value='<'>小于</option>"
+                            colunmHtml += "          <option value='>='>大等于</option>"
+                            colunmHtml += "          <option value='<='>小等于</option>"
+                            colunmHtml += "          <option value='!='>不等</option>"
+                            colunmHtml +="        </select>"
+                            colunmHtml +="   </td>"
+                            colunmHtml +="   <td>"
+                            colunmHtml +="       <input type='text' class='form-control' style='width:150px' name='compareValue'>"
+                            colunmHtml +="   </td>"
+                            colunmHtml +="   <td>"
+                            colunmHtml += "       <select name='logic' style='width:100%'>"
+                            colunmHtml += "        "
+                            colunmHtml += "          <option value='||'>Or</option>"
+                            colunmHtml += "          <option value='&&'>And</option>"
+                            colunmHtml +="        </select>"
+                            colunmHtml +="    </td>"
+                            colunmHtml +="</tr>"
+                            $("#condientTable tbody").append(colunmHtml);
+                   
+                            //初始化元素
+                            $("#" + trid + " [name='field']").select2({ minimumResultsForSearch: Infinity, placeholder: "请选择" }).val(value != undefined ? value.Field : "").trigger("change");
+                            $("#" + trid + " [name='compare']").select2({ minimumResultsForSearch: Infinity, placeholder: "请选择" }).val(value != undefined ? value.Compare : "").trigger("change");
+                            $("#" + trid + " [name='compareValue']").val(value != undefined ? value.CompareValue : "")
+                            $("#" + trid + " [name='logic']").select2({ minimumResultsForSearch: Infinity }).val(value != undefined ? value.Logic : "").trigger("change");
+                            tableNum++;
+                        }
+
+                        var setLineConfrim = function (lineid) {
+                            var tr = $("#condientTable tbody").find("tr");
+                            var hasEmpte = true;
+                            if (tr.length > 1) {
+                                $.each(tr, function (i, v) {
+                                    var field = $(v).find("[name='field']").val();
+                                    var compare = $(v).find("[name='compare']").val();
+                                    var compareValue = $(v).find("[name='compareValue']").val();
+                                    if (field == "" || compare == "" || compareValue == "") {
+                                        hasEmpte = false;
+                                        return false;
+                                    }
+                                })
+                            } else {
+                                var field = $("[name='field']").val();
+                                var compare = $("[name='compare']").val();
+                                var compareValue = $("[name='compareValue']").val();
+                                if (field == "" || compare == "" || compareValue == "") hasEmpte = false;
+                            }
+                            if (hasEmpte == false) {
+                                parent.alertify.error("流转条件填写不完整");
+                                return;
+                            }
+                            var linejson = flow.getItemInfo(lineid, "line");
+
+                            flow.setName(lineid, $("#flowlineName").val(), "line");
+                            var conditenArray = [];
+
+                            $.each(tr, function (i,v) {
+                                var field = $(v).find("[name='field']").val();
+                                var compare = $(v).find("[name='compare']").val();
+                                var compareValue = $(v).find("[name='compareValue']").val();
+                                var logic = $(v).find("[name='logic']").val();
+
+                                var infoobj = {
+                                    Index: i,
+                                    Field: field,
+                                    Compare: compare,
+                                    CompareValue: compareValue,
+                                    Logic: logic,
+                                    Group:field+compare+compareValue
+                                }
+                                conditenArray.push(infoobj);
+                            });
+                            linejson.ConditionInfo = conditenArray;
+
+                            parent.layer.close(parent.layer.index);
+                        }
+                    })
+                }
+            });
+
+        }
+
+        var flowConfrimBtn = function (json) {
+
+            var fid=parent.$("#FlowID").val();
+            parent.layer.confirm("确定要提交当前流程设计吗？", dditConfig.hintLayer, function () {
+                var loading = parent.layer.load(2);
+                $.post("/Workflow/SaveFlowView", { flowId: fid, jsonstr: json }, function (data) {
+                    parent.layer.close(loading);
+                    if (data.result) {
+                        parent.layer.closeAll();
+
+                        parent.alertify.success("流程设计提交成功!")
+                    }
+                })
+            })
+        }
+
+        $("#flowCreate").click(function () {
+            var table = workFlowTable.rows('.selected')
+            if (table[0].length > 0) {
+                var model = table.data();
+                $.post("/Workflow/GetTabFieldsAndHasfv", { formid: model[0].FormID, flowid: model[0].FlowID }, function (data) {
+                    var resultInfo = data;
+                    if (resultInfo.result) {
+                        fields = resultInfo.dataList;
+                        openFlowlayer();
+                        parent.$("#FlowID").val(model[0].FlowID);
+                    } else {
+                        alertify.log(resultInfo.message);
+                    }
+                },"json");
+            } else {
+                alertify.log("请选择一条操作信息！");
+            }
+        });
+
+        $("#flowEdit").click(function () {
+            var table = workFlowTable.rows('.selected')
+            if (table[0].length > 0) {
+                var model = table.data();
+                $.post("/Workflow/GetFlowView", { formid: model[0].FormID, flowid: model[0].FlowID }, function (data) {
+                    if (data.result) {
+                        openFlowlayer();
+                        fields = data.Data;
+                        parent.layer.title("编辑流程设计", flowlayer)
+                        console.log(data.dataList);
+                        parent.flow.loadData(data.dataList);
+                        parent.$("#FlowID").val(model[0].FlowID);
+                    } else {
+                        alertify.log(data.message);
+                    }
+                },"json");
+            } else {
+                alertify.log("请选择一条操作信息！");
+            }
+        });
+
+        $("#WorkFlowQuery").click(function () {
+            workFlowTable.ajax.reload();
+
+        });
+       
+    });
+</script>
+
+<div class="margin w100f xoverhide">
+    <div class="panel panel-default" style="margin-top: 10px">
+        <ul class="list-group">
+            <li class="list-group-item">
+                <button type="button" class="btn btn-default" id="workFlowCreate">
+                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增工作流
+                </button>
+
+                <button type="button" class="btn btn-default" id="workFlowEdit">
+                    <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> 编辑工作流
+                </button>
+
+                <button type="button" class="btn btn-default" id="workFlowDelete">
+                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> 删除工作流
+                </button>
+
+                <button type="button" class="btn btn-default" id="flowCreate">
+                    <span class="glyphicon glyphicon glyphicon-asterisk" aria-hidden="true"></span>创建流程
+                </button>
+
+                <button type="button" class="btn btn-default" id="flowEdit">
+                    <span class="glyphicon glyphicon glyphicon-edit" aria-hidden="true"></span>编辑流程 
+                </button>
+            </li>
+            <li class="list-group-item">
+                <form class="form-inline">
+                    <div class="form-group">
+                        <label for="WorkFlowName">流程名称</label>
+                        <input type="text" class="form-control" id="WorkFlowName" placeholder="流程名称">
+                    </div>
+                    <button type="button" class="btn btn-info " id="WorkFlowQuery">
+                        <span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询
+                    </button>
+                </form>
+            </li>
+        </ul>
+    </div>
+    <table id="workFlowTable" class="table table-bordered table-striped w100f" cellspacing="0"></table>
+</div>
+
+<div id="createflow" class="displayn">
+    <form id="flowForm">
+        @Html.Hidden("FlowID")
+        <div id="flowView"></div>
+    </form>
+</div>
+
+<div id="setSeptDiv" class="displayn">
+    <form class="form-horizontal formPadding" id="setSeptForm">
+        <div class="form-group">
+            <label for="MenuName" class="col-sm-2 control-label labsty">节点标识&nbsp;&nbsp;</label>
+            <div class="col-sm-10 pad-r20">
+                <input type="text" class="form-control" disabled="disabled" id="nodeIden">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="MenuUrl" class="col-sm-2 control-label labsty">节点名称<span style="color:red">*</span></label>
+            <div class="col-sm-10 pad-r20">
+                <input type="text" class="form-control" name="nodeNames" id="nodeNames">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="MenuParent" class="col-sm-2 control-label labsty">驳回类型&nbsp;&nbsp;</label>
+            <div class="col-sm-10 pad-r20">
+                <input type="text" class="form-control" disabled="disabled" value="开始步骤">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="MenuOrder" class="col-sm-2 control-label labsty">审核权限<span style="color:red">*</span></label>
+            <div class="col-sm-10 pad-r20">
+                <select class="form-control" id="DepartmentInfo" name="departmentInfo" style="width:100%">
+                    @foreach (var item in ViewBag.DepartmentUser as List<Dictionary>)
+                    {
+                        <optgroup label="@item.DicValue"></optgroup>
+
+                        foreach (var user in item.Users)
+                        {
+                            <option value="@user.UserID">@user.UserReallyname</option>
+                        }
+                    }
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="MenuIcon" class="col-sm-2 control-label labsty">备注&nbsp;&nbsp;</label>
+            <div class="col-sm-10 pad-r20">
+                <input type="text" class="form-control" maxlength="30" id="remark">
+            </div>
+        </div>
+    </form>
+</div>
+
+<div id="setLineDiv" class="displayn">
+    <form class="form-inline" style="height:15%;padding:10px">
+            <div class="form-group">
+                <label for="UserName">流转名称</label>
+                <input type="text" class="form-control" style="width:250px" id="flowlineName">
+            </div>
+            <button type="button" class="btn btn-default " id="clan">
+                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 添加栏位
+            </button>
+            <button type="button" class="btn btn-default" id="dlan">
+                <span class="glyphicon glyphicon-minus" aria-hidden="true"></span> 删减栏位
+            </button>
+    </form>
+    <table id="condientTable" class="table table-bordered table-striped w100f" cellspacing="0">
+        <thead>
+            <tr>
+                <th style="width:10%">序号</th>
+                <th style="width:35%">字段名称</th>
+                <th style="width:20%">比较</th>
+                <th style="width:20%">比较值</th>
+                <th style="width:15%">逻辑</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
+
+
+<div id="createWorkflow" class="displayn">
+    <form id="workflowForm" method="post" action="/Workflow/WorkFlowOperation" class="form-horizontal formPadding">
+        @Html.Hidden("FlowID")
+        <div class="form-group">
+            <label for="FlowName" class="col-sm-2 control-label labsty">工作流名称<span style="color:red">*</span></label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" maxlength="20" name="FlowName" placeholder="FlowName">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="FlowSort" class="col-sm-2 control-label labsty">工作流类别<span style="color:red">*</span></label>
+            <div class="col-sm-10">
+                <select name="FlowSort" id="FlowSort" style="width:100%"></select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="FormID" class="col-sm-2 control-label labsty">配置表单<span style="color:red">*</span></label>
+            <div class="col-sm-10">
+                <select name="FormID" id="FormID" style="width:100%"></select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="remark" class="col-sm-2 control-label labsty">工作备注</label>
+            <div class="col-sm-10">
+                <textarea class="form-control" name="remark" rows="5"></textarea>
+            </div>
+        </div>
+    </form>
+</div>

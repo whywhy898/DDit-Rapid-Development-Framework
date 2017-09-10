@@ -13,13 +13,13 @@ namespace DDit.Core.Data.Repository.Mapping.SystemMapping
        public MassageMapping() {
 
            HasKey(k => k.MessageID);
-           ToTable("MESSAGE", "Base");
+           ToTable("MESSAGE", "BASE");
 
            this.Property(a => a.MessageID).HasColumnName("MESSAGEID");
            this.Property(a => a.MessageTitle).HasColumnName("MESSAGETITLE");
            this.Property(a => a.MessageText).HasColumnName("MESSAGETEXT");
            this.Property(a => a.SendUser).HasColumnName("SENDUSER");
-           this.Property(a => a.RecUser).HasColumnName("RECUSER");
+           this.Property(a => a.RecUser).HasColumnName("RECUSER"); 
            this.Property(a => a.SendTime).HasColumnName("SENDTIME");
            this.Property(a => a.ExpirationTime).HasColumnName("EXPIRATIONTIME");
            this.Property(a => a.IsSendEmail).HasColumnName("ISSENDEMAIL");

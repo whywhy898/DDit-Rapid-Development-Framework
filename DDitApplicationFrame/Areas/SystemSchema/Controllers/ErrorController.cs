@@ -25,7 +25,6 @@ namespace DDitApplicationFrame.Areas.SystemSchema.Controllers
         [ValidateInput(false)]
         public ActionResult Path500(ErrorMessage msg)
         {
-           
             ViewData = new ViewDataDictionary<ErrorMessage>(msg);
             return View("ISE");
         }

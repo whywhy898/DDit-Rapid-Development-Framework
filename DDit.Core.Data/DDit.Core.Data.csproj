@@ -75,6 +75,9 @@
   <ItemGroup>
     <Compile Include="Entity\CoreEntity\News.cs" />
     <Compile Include="Entity\BaseEntity.cs" />
+    <Compile Include="Entity\FormEntity\ElementInfo.cs" />
+    <Compile Include="Entity\FormEntity\FormElement.cs" />
+    <Compile Include="Entity\FormEntity\FormInfo.cs" />
     <Compile Include="Entity\SystemEntity\Button.cs" />
     <Compile Include="Entity\SystemEntity\Dictionary.cs" />
     <Compile Include="Entity\SystemEntity\DictionaryCategory.cs" />
@@ -86,9 +89,21 @@
     <Compile Include="Entity\SystemEntity\Menu.cs" />
     <Compile Include="Entity\SystemEntity\MenuMappingButton.cs" />
     <Compile Include="Entity\SystemEntity\RoleMappingButton.cs" />
-    <Compile Include="Entity\SystemEntity\Test.cs" />
     <Compile Include="Entity\SystemEntity\UserMappingMessage.cs" />
+    <Compile Include="Entity\WorkFlowEntity\ActiveCondition.cs" />
+    <Compile Include="Entity\WorkFlowEntity\DoEntity\FlowApproveDo.cs" />
+    <Compile Include="Entity\WorkFlowEntity\DoEntity\FlowApproveInfoDo.cs" />
+    <Compile Include="Entity\WorkFlowEntity\DoEntity\FlowTaskDo.cs" />
+    <Compile Include="Entity\WorkFlowEntity\FlowActive.cs" />
+    <Compile Include="Entity\WorkFlowEntity\DoEntity\WorkFlowDo.cs" />
+    <Compile Include="Entity\WorkFlowEntity\FlowApprove.cs" />
+    <Compile Include="Entity\WorkFlowEntity\FlowInfo.cs" />
+    <Compile Include="Entity\WorkFlowEntity\FlowStep.cs" />
+    <Compile Include="Entity\WorkFlowEntity\FlowView.cs" />
+    <Compile Include="Entity\WorkFlowEntity\WorkFlow.cs" />
     <Compile Include="IRepositories\ICoreRepositories\INewsRepository.cs" />
+    <Compile Include="IRepositories\IFormRepositories\IElementInfoRepository.cs" />
+    <Compile Include="IRepositories\IFormRepositories\IFormInfoRepository.cs" />
     <Compile Include="IRepositories\ISystemRepositories\IButtonRepository.cs" />
     <Compile Include="IRepositories\ISystemRepositories\IDictionaryCategoryRepository.cs" />
     <Compile Include="IRepositories\ISystemRepositories\IDictionaryRepository.cs" />
@@ -103,9 +118,10 @@
     <Compile Include="IRepositories\ISystemRepositories\IMenuRepository.cs" />
     <Compile Include="IRepositories\ISystemRepositories\IRoleRepository.cs" />
     <Compile Include="IRepositories\ISystemRepositories\ISystemInfoRepository.cs" />
-    <Compile Include="IRepositories\ISystemRepositories\ITestRepository.cs" />
     <Compile Include="IRepositories\ISystemRepositories\IUserAndMessageRepository.cs" />
     <Compile Include="IRepositories\ISystemRepositories\IUserRepository.cs" />
+    <Compile Include="IRepositories\IWorkFlowRepositories\IFlowTaskRepository.cs" />
+    <Compile Include="IRepositories\IWorkFlowRepositories\IWorkFlowRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

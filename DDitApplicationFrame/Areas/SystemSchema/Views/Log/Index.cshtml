@@ -1,12 +1,11 @@
 ﻿@{
     Layout = null;
 }
-@Styles.Render("~/Scripts/bootstrap/css/1", "~/Scripts/datatables/css/1", "~/Content/1", "~/Scripts/alertjs/themes/1", "~/Scripts/select2/css/1", "~/Scripts/iconpicker/css/1", "~/Scripts/fancyTree/skin-win7/1", "~/Scripts/fileUpload/1")
-<link href="~/Scripts/calendar/fullcalendar.css" rel="stylesheet" />
+
+@Styles.Render("~/Scripts", "~/Content")
 @Scripts.Render("~/bundles/js")
-<script src="~/Scripts/calendar/moment.min.js"></script>
-<script src="~/Scripts/calendar/fullcalendar.js"></script>
-<script src="~/Scripts/calendar/locale/zh-cn.js"></script>
+@Scripts.Render("~/Scripts/calendar")
+
 <script type="text/javascript">
     $(function () {
     

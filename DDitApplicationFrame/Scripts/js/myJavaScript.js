@@ -65,12 +65,18 @@
         return this.each(function () {
             var input, name;
             if (data == null) { this.reset(); return; }
+            console.log(this.length);
             for (var i = 0; i < this.length; i++) {
                 input = this.elements[i];
                 //checkbox的name可能是name[]数组形式
                 name = (input.type == "checkbox") ? input.name.replace(/(.+)\[\]$/, "$1") : input.name;
                 if (data[name] == undefined) continue;
+             
                 switch (input.type) {
+                    case "select-one":
+                       
+                    //    $(FlowSort).val(data[name]).trigger("change");
+                        break;
                     case "checkbox":
                         if (data[name] == "") {
                             input.checked = false;
@@ -106,6 +112,19 @@
         script.text = contentCode;
         $(this).append(script);
     };
+
+    $.fn.serializeObject = function () {
+        var form = this;
+        var o = {};
+        $.each(form.serializeArray(), function (index) {
+            if (o[this['name']]) {
+                o[this['name']] = o[this['name']] + "," + this['value'];
+            } else {
+                o[this['name']] = this['value'];
+            }
+        });
+        return o;
+    }
 
     $.fn.extend({
         "custromTable": function (options) {
@@ -155,6 +174,33 @@
         }
     });
 
+    $.fn.SelectBind = function (options) {
+       var url = options.url == undefined ? "/Dictionary/SelectBinding" : options.url;
+       var param = options.param == undefined ? {} : options.param;
+       var current = $(this);
+       $.post(url, param, function (data) {
+           current.empty();
+           current.append("<option></option>");
+           $.each(data, function (i, v) {
+               var option = "<option value=" + v.id + ">" + v.text + "</option>"
+               current.append(option);
+           })
+           current.select2({
+               placeholder: '请选择',
+               allowClear: true,
+               minimumResultsForSearch: -1
+           })
+           if (options.value != undefined && options.value!="") current.val(options.value).trigger("change");
+       }, "json")
+       
+       if (options.valid != undefined) {
+           current.on('select2:select', function (evt) {
+               current.valid();
+           });
+       }
+
+    };
+
     var tableDefault = {
         serverSide: true, //开启服务端模式
         processing: true,
@@ -202,8 +248,47 @@ var dditConfig = {
         skin: 'layerStyle',
         offset: '200px',
         btn: ["取消", "确定"]
+    },
+    validerrorPlacement: function (error, element) {
+        var parents = element.parent()
+        var type = element.attr("type");
+
+        if (parents.hasClass("date")) {
+            error.insertAfter(parents);
+        } else if (type == "file") {
+            error.insertAfter($(element).closest('.input-group'));
+        } else {
+            error.appendTo(parents);
+        }
+    },
+    validHighlight: function (element) {
+        var type = element.tagName;
+        if (type == "SELECT") {
+            $(element).next("span")
+                .children()
+                .children()
+                .css({ "border-color": "#a94442" })
+        }
+        if (type == "TEXTAREA") {
+            $(element).next("div").css({ "border-color": "#a94442" });
+        }
+   
+        $(element).closest('.form-group').addClass('has-error');
+    },
+    validSuccess: function (label) {
+        var element = label.prev();
+        var type = element[0].tagName;
+        if (type == "SPAN") {
+            element.children().children().css({ "border-color": "" })
+        }
+        if (element.is(".note-editor")) {
+            element.css({ "border-color": "" });
+        }
+        label.closest('.form-group').removeClass('has-error');
+        label.remove();
     }
 }
+
 
 
 

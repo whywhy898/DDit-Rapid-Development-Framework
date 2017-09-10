@@ -4,12 +4,8 @@
 
 @using DDit.Core.Data.Entity.SystemEntity
 
-@Styles.Render("~/Scripts/bootstrap/css/1", "~/Scripts/datatables/css/1", "~/Content/1", "~/Scripts/alertjs/themes/1", "~/Scripts/select2/css/1", "~/Scripts/iconpicker/css/1", "~/Scripts/fancyTree/skin-win7/1", "~/Scripts/fileUpload/1")
+@Styles.Render("~/Scripts", "~/Content")
 @Scripts.Render("~/bundles/js")
-
-<link href="~/Scripts/datetimepicker/css/bootstrap-datetimepicker.css" rel="stylesheet" />
-<script src="~/Scripts/datetimepicker/js/moment-with-locales.js"></script>
-<script src="~/Scripts/datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
 
 
 <script type="text/javascript">
@@ -177,11 +173,7 @@
                         $("#DepartmentUserTree").fancytree({
                             checkbox: true,
                             selectMode: 3,
-                            activate: function (event, data) {
-                              
-                            },
                             select: function (event, data) {
-
                                 var $recUser = $("#recUser");
                                 var cour = $recUser.val();
                                 var $value=[];
@@ -271,32 +263,8 @@
                                     required: "必填"
                                 }
                             },
-                            highlight: function (element) {
-                                var type = element.tagName;
-                                if (type == "SELECT") {
-                                    $(element).next("span")
-                                        .children()
-                                        .children()
-                                        .css({ "border-color": "#a94442" })
-                                }
-                                if (type == "TEXTAREA") {
-                                    $(element).next("div").css({ "border-color": "#a94442" });
-                                }
-                                $(element).closest('.form-group').addClass('has-error');
-                            },
-                            success: function (label) {
-                                var element = label.prev();
-                                var type = element[0].tagName;
-                                if (type == "SPAN") {
-                                    element.children().children().css({ "border-color": "" })
-                                }
-                                if (element.is(".note-editor")) {
-                                    element.css({ "border-color": "" });
-                                }
-                      
-                                label.closest('.form-group').removeClass('has-error');
-                                label.remove();
-                            }
+                            highlight: dditConfig.validHighlight,
+                            success: dditConfig.validSuccess
                         });
 
                     });
@@ -442,7 +410,7 @@
                         <input type="text" class="form-control" id="mestitle" placeholder="messageTitle">
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group mleft10">
                         <label for="etime">消息发送时间</label>
                         <div class='input-group date' id='datetimepicker'>
                             <input type='text' class="form-control" id="sendate" placeholder="sendDate" />
@@ -511,17 +479,17 @@
                             <li class="folder expanded children">
                                 @item.DicValue
                                 @{
-                            if (item.Users.Count > 0)
-                            {
-                                <ul>
-                                    @foreach (var Userinfo in item.Users)
+                                    if (item.Users.Count > 0)
                                     {
-                                        <li data-id="@Userinfo.UserID">
-                                            @Userinfo.UserReallyname
-                                        </li>
+                                        <ul>
+                                            @foreach (var Userinfo in item.Users)
+                                            {
+                                                <li data-id="@Userinfo.UserID">
+                                                    @Userinfo.UserReallyname
+                                                </li>
+                                            }
+                                        </ul>
                                     }
-                                </ul>
-                            }
                                 }
                             </li>
                         }

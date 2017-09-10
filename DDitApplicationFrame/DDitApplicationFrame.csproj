@@ -170,7 +170,10 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Areas\SystemSchema\Controllers\FormController.cs" />
+    <Compile Include="Areas\SystemSchema\Controllers\InitiateFlowController.cs" />
     <Compile Include="Areas\SystemSchema\Controllers\MessageController.cs" />
+    <Compile Include="Areas\SystemSchema\Controllers\WorkflowController.cs" />
     <Compile Include="Areas\SystemSchema\SystemSchemaAreaRegistration.cs" />
     <Compile Include="Common\BaseController.cs" />
     <Compile Include="Common\ErrorHandleAttribute.cs" />
@@ -183,12 +186,9 @@
     <Compile Include="Areas\SystemSchema\Controllers\LogController.cs" />
     <Compile Include="Areas\SystemSchema\Controllers\MenuController.cs" />
     <Compile Include="Areas\SystemSchema\Controllers\RoleController.cs" />
-    <Compile Include="Areas\SystemSchema\Controllers\TestController.cs" />
     <Compile Include="Areas\SystemSchema\Controllers\UserController.cs" />
     <Compile Include="Common\RegisterModule.cs" />
     <Compile Include="Controllers\MainController.cs" />
-    <Compile Include="Controllers\NewsController.cs" />
-    <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -279,6 +279,14 @@
     <Content Include="Content\themes\base\minified\jquery.ui.theme.min.css" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Images\dele.png" />
+    <Content Include="Images\elementIcon\richText.png" />
+    <Content Include="Images\elementIcon\select.png" />
+    <Content Include="Images\elementIcon\selectmultiple.png" />
+    <Content Include="Images\elementIcon\text.png" />
+    <Content Include="Images\elementIcon\textarea.png" />
+    <Content Include="Images\elementIcon\time.png" />
+    <Content Include="Images\elementIcon\upload.png" />
     <Content Include="Images\icon\message.png" />
     <Content Include="Images\loadimg.gif" />
     <Content Include="Images\call.png" />
@@ -387,7 +395,7 @@
     <Content Include="Scripts\calendar\fullcalendar.css" />
     <Content Include="Scripts\calendar\fullcalendar.js" />
     <Content Include="Scripts\calendar\locale\zh-cn.js" />
-    <Content Include="Scripts\calendar\moment.min.js" />
+    <Content Include="Scripts\calendar\moment.js" />
     <Content Include="Scripts\charts\js\echarts.common.min.js" />
     <Content Include="Scripts\charts\js\echarts.js" />
     <Content Include="Scripts\charts\theme\dark.js" />
@@ -396,6 +404,9 @@
     <Content Include="Scripts\charts\theme\roma.js" />
     <Content Include="Scripts\charts\theme\shine.js" />
     <Content Include="Scripts\charts\theme\vintage.js" />
+    <Content Include="Scripts\cheack\awesome-bootstrap-checkbox.css" />
+    <Content Include="Scripts\cheack\build.css" />
+    <Content Include="Scripts\cheack\font-awesome.css" />
     <Content Include="Scripts\datatables\images\Sorting icons.psd" />
     <Content Include="Scripts\bootstrap\css\bootstrap-theme.css.map" />
     <Content Include="Scripts\bootstrap\css\bootstrap.css.map" />
@@ -408,7 +419,6 @@
     <Content Include="Scripts\datetimepicker\fonts\fontawesome-webfont.svg" />
     <Content Include="Scripts\datetimepicker\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Scripts\datetimepicker\js\bootstrap-datetimepicker.js" />
-    <Content Include="Scripts\datetimepicker\js\bootstrap-datetimepicker.min.js" />
     <Content Include="Scripts\datetimepicker\js\moment-with-locales.js" />
     <Content Include="Scripts\fancyTree\jquery-ui.custom.js" />
     <Content Include="Scripts\fancyTree\jquery.fancytree.js" />
@@ -424,6 +434,11 @@
     <Content Include="Areas\SystemSchema\Views\_ViewStart.cshtml" />
     <Content Include="Areas\SystemSchema\Views\Message\Index.cshtml" />
     <Content Include="Areas\SystemSchema\Views\Message\UserMessagePage.cshtml" />
+    <Content Include="Areas\SystemSchema\Views\Form\Index.cshtml" />
+    <Content Include="Areas\SystemSchema\Views\InitiateFlow\Index.cshtml" />
+    <Content Include="Areas\SystemSchema\Views\Workflow\CFlowView.cshtml" />
+    <Content Include="Areas\SystemSchema\Views\InitiateFlow\SreachSelfFlowView.cshtml" />
+    <Content Include="Areas\SystemSchema\Views\InitiateFlow\HandleFlowView.cshtml" />
     <None Include="Properties\PublishProfiles\DDit.pubxml" />
     <Content Include="Images\500.png" />
     <Content Include="Images\404.png" />
@@ -461,11 +476,23 @@
     <Content Include="Scripts\fileUpload\fileinput.css" />
     <Content Include="Scripts\fileUpload\fileinput.js" />
     <Content Include="Scripts\fileUpload\fileinput_locale_zh.js" />
+    <Content Include="Scripts\fonts\fontawesome-webfont.svg" />
+    <Content Include="Scripts\gooflow\fonts\demo.css" />
+    <Content Include="Scripts\gooflow\fonts\iconflow.css" />
+    <Content Include="Scripts\gooflow\fonts\iconflow.js" />
+    <Content Include="Scripts\gooflow\fonts\iconflow.svg" />
+    <Content Include="Scripts\gooflow\GooFlow.css" />
+    <Content Include="Scripts\gooflow\GooFlow.js" />
+    <Content Include="Scripts\gooflow\gooflow_blank.gif" />
+    <Content Include="Scripts\gooflow\GooFlow_color.js" />
+    <Content Include="Scripts\gooflow\GooFunc.js" />
+    <Content Include="Scripts\gooflow\img\gooflow_blank.gif" />
     <Content Include="Scripts\img\loading-sm.gif" />
     <Content Include="Scripts\img\loading.gif" />
     <Content Include="Scripts\iconpicker\css\icon-picker.css" />
     <Content Include="Scripts\iconpicker\js\iconPicker.js" />
     <Content Include="Scripts\js\jquery-ui-1.8.24.js" />
+    <Content Include="Scripts\js\jquery-ui.js" />
     <Content Include="Scripts\js\jquery.contextmenu.r2.js" />
     <Content Include="Scripts\js\jquery.form.js" />
     <Content Include="Scripts\js\jquery.js" />
@@ -534,7 +561,6 @@
     <Content Include="Scripts\select2\js\select2.full.min.js" />
     <Content Include="Scripts\select2\js\select2.js" />
     <Content Include="Scripts\select2\js\select2.min.js" />
-    <Content Include="Models\HtmlPage1.html" />
     <Content Include="Scripts\summernote\lang\summernote-ar-AR.js" />
     <Content Include="Scripts\summernote\lang\summernote-ar-AR.min.js" />
     <Content Include="Scripts\summernote\lang\summernote-bg-BG.js" />
@@ -639,7 +665,6 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Areas\SystemSchema\Views\Home\Add.cshtml" />
     <Content Include="Areas\SystemSchema\Views\Home\Index.cshtml" />
     <Content Include="Areas\SystemSchema\Views\Account\Login.cshtml" />
     <Content Include="Views\Shared\LogLayout.cshtml" />
@@ -649,12 +674,10 @@
     <Content Include="Areas\SystemSchema\Views\User\Index.cshtml" />
     <Content Include="Areas\SystemSchema\Views\Role\Index.cshtml" />
     <Content Include="Areas\SystemSchema\Views\Menu\Index.cshtml" />
-    <Content Include="Areas\SystemSchema\Views\Home\Main.cshtml" />
     <Content Include="Areas\SystemSchema\Views\Button\Index.cshtml" />
     <Content Include="Areas\SystemSchema\Views\Log\Index.cshtml" />
     <Content Include="Areas\SystemSchema\Views\Button\CreateButtonByMuen.cshtml" />
     <Content Include="Areas\SystemSchema\Views\Dictionary\Index.cshtml" />
-    <Content Include="Areas\SystemSchema\Views\Test\Index.cshtml" />
     <Content Include="Views\Main\Index.cshtml" />
     <Content Include="Views\News\Index.cshtml" />
     <Content Include="Scripts\summernote\font\summernote.eot" />
@@ -668,9 +691,18 @@
     <Content Include="Scripts\datetimepicker\fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="Scripts\datetimepicker\fonts\glyphicons-halflings-regular.woff" />
     <Content Include="Scripts\datetimepicker\fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="Scripts\gooflow\fonts\iconflow.eot" />
+    <Content Include="Scripts\gooflow\fonts\iconflow.ttf" />
+    <Content Include="Scripts\gooflow\fonts\iconflow.woff" />
+    <Content Include="Scripts\fonts\fontawesome-webfont.eot" />
+    <Content Include="Scripts\fonts\fontawesome-webfont.ttf" />
+    <Content Include="Scripts\fonts\fontawesome-webfont.woff" />
+    <Content Include="Scripts\fonts\fontawesome-webfont.woff2" />
+    <Content Include="Scripts\fonts\FontAwesome.otf" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config">

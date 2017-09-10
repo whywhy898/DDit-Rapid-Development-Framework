@@ -16,5 +16,7 @@ namespace DDit.Core.Data.IRepositories.ISystemRepositories
         void DisabledDic(int btnID);
 
         void ModifyDic(DictionaryCategory model);
+
+        List<dynamic> GetDictionaryByCategory(DictionaryCategory model);
     }
 }

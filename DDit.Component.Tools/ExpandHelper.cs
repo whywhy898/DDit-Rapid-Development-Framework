@@ -8,6 +8,8 @@ using System.Linq.Expressions;
 using System.Data.Entity;
 using AutoMapper;
 using System.Reflection;
+using System.Globalization;
+using System.Threading;
 
 
 namespace DDit.Component.Tools
@@ -113,6 +115,33 @@ namespace DDit.Component.Tools
                throw new ArgumentException("操作对象为null");
            return Sour.ProjectToQueryable<T>();
        }
+
+
+       /// <summary>  
+       /// 字典类型转化为对象  
+       /// </summary>  
+       /// <param name="dic"></param>  
+       /// <returns></returns>  
+       public static T DicToObject<T>(Dictionary<string, object> dic) where T : new()
+       {
+           var md = new T();
+           //CultureInfo cultureInfo = Thread.CurrentThread.CurrentCulture;
+           //TextInfo textInfo = cultureInfo.TextInfo;
+           foreach (var d in dic)
+           {
+               var filed = d.Key;
+               try
+               {
+                   var value = d.Value;
+                   md.GetType().GetProperty(filed).SetValue(md, value);
+               }
+               catch (Exception e)
+               {
+                   return md;
+               }
+           }
+           return md;
+        } 
 
        public static Expression<Func<T, bool>> True<T>() { return f => true; }
        public static Expression<Func<T, bool>> False<T>() { return f => false; }

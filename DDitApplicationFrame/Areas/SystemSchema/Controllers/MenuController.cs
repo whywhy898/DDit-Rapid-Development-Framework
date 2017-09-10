@@ -40,6 +40,14 @@ namespace DDitApplicationFrame.Areas.SystemSchema.Controllers
         }
 
         [HttpPost]
+        public ActionResult GetMenuBtnById(int menuId) {
+
+            var menuBtnList = this.ButtonRepository.GetBtnByMenuId(menuId);
+
+            return JsonResult(menuBtnList);
+        }
+
+        [HttpPost]
         public ActionResult AddOrEditMenuInfo([ModelBinder(typeof(CustomModelBind))]Menu Menumodel)
         {
             var menuModel = this.MenuRepository.OrderAssignment(Menumodel);

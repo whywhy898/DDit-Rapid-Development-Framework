@@ -13,7 +13,7 @@ namespace DDit.Core.Data.Repository.Mapping.SystemMapping
     {
         public SystemInfoMapping() {
             HasKey(a => a.SystemID);
-            this.ToTable("SYSTEMINFO", "Base");
+            this.ToTable("SYSTEMINFO", "BASE");
 
             this.Property(a => a.SystemID).HasColumnName("SYSTEM_ID");
             this.Property(a => a.SystemTitle).HasColumnName("SYSTEM_TITLE");

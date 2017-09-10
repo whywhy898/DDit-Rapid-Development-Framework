@@ -10,14 +10,11 @@
     <meta name="viewport" content="width=device-width" />
     <meta http-equiv="X-UA-Compatible" content="IE=Edge, Chrome=1" />
     <title>龙图信息开发框架</title>
-    @Styles.Render("~/Scripts/bootstrap/css/1", "~/Scripts/summernote/1", "~/Scripts/datatables/css/1", "~/Content/1", "~/Scripts/alertjs/themes/1", "~/Scripts/select2/css/1", "~/Scripts/iconpicker/css/1", "~/Scripts/fancyTree/skin-lion/1", "~/Scripts/fileUpload/1")
+    @Styles.Render("~/Scripts", "~/Content")
     <link rel="stylesheet" type="text/css" href=@Url.Content("~/Content/css/colora.css") id="color">
     @Scripts.Render("~/bundles/js")
     <script src="~/Scripts/layer/layer.js"></script>
 
-    <link href="~/Scripts/datetimepicker/css/bootstrap-datetimepicker.css" rel="stylesheet" />
-    <script src="~/Scripts/datetimepicker/js/moment-with-locales.js"></script>
-    <script src="~/Scripts/datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
 </head>
 <body onload="daytime()">
     <nav class="navbar navbar-inverse boxbg" id="header">
@@ -73,7 +70,7 @@
                     </div>
                     <div class="main col-lg-12 col-md-12 col-xs-12 fl" style="padding:0" id="Main">
                         <div class="sy clearfix">
-                            @Html.Action("Main", "Home", null)
+                            @RenderBody()
                         </div>
                     </div>
                 </div>
@@ -81,7 +78,7 @@
         </div>
     </div>
 
-    <div class="container-fluid footer boxbg">技术支持：大连龙图信息技术有限公司
+    <div class="container-fluid footer boxbg">技术支持：大连龙图信息技术股份有限公司
         <div id="time"><span></span><b></b></div>
     </div>
     <!-- 右键功能 -->
@@ -248,7 +245,7 @@
                         <div class="fr col-sm-8" style="right">
                             <h3>龙图信息快速开发框架</h3>
                             <p>当前版本:2.2.11</p>
-                            <p>大连龙图信息股份有限公司</p>
+                            <p>大连龙图信息技术股份有限公司</p>
                         </div>
                     </div>
                 </div>
@@ -264,13 +261,9 @@
         </div>
     </div>
 
-    @RenderSection("scripts", required: false)
-    @*@RenderBody()*@
     <script src="~/Scripts/js/main.js"></script>
     <script type="text/javascript">
-
         $(function () {
-
             //站内消息
             $.post("/Message/GetMesByUser", { isAll: false }, function (data) {
                 if (data.length > 0) {

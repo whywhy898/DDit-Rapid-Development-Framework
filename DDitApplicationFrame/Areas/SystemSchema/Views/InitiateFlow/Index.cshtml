@@ -1,0 +1,325 @@
+﻿@{
+    Layout = null;
+}
+
+@Styles.Render("~/Scripts", "~/Content")
+@Scripts.Render("~/bundles/js")
+
+<style type="text/css">
+    .dataTables_scrollHead {
+        display: none;
+    }
+</style>
+
+<script type="text/javascript">
+    $(function () {
+
+        $.post("/User/GetUserInfos", {}, function (data) {
+            userinfo = data;
+        }, "json")
+
+        var workFlowTable = $('#workFlowTable').custromTable({
+            isNo: false,
+            pageLength: 4,
+            scrollY: 480,
+            order: [[0, 'asc']],
+            columnsClick: false,
+            ajax: {
+                url: "/Workflow/GetWorkFinfos",
+                data: function (d) {
+                    d.FlowName = $("#workflowName").val();
+                    return JSON.stringify(d);
+                }
+            },
+            columns: [
+                { data: 'FlowID', visible: false },
+                {
+                    render: function (data, type, row, meta) {
+                        var html = ""
+                        html += "<div class='bs-callout bs-callout-info'>"
+                        html += "    <div style='float:left;width:80%'>"
+                        html += "         <h4>" + row.FlowName + "</h4>"
+                        html += "         <p><span style='font-size:12px' class='label label-info'>" + row.FlowSortName + "</span> 备注:" + row.remark + "</p>"
+                        html += "    </div>"
+                        if (row.IsPerfect) {
+                            html += "    <div style='float:right;width:20%;padding-top:10px'>"
+                            html += "        <button type='button' data-FormId='" + row.FormID + "' data-FlowId='" + row.FlowID + "' class='btn btn-success' name='creatWorkFlow'>"
+                            html += "            <span class='glyphicon glyphicon-random' aria-hidden='true'></span> 发起流程"
+                            html += "        </button>"
+                            html += "        <button type='button' data-FlowId='" + row.FlowID + "' data-FormId='" + row.FormID + "' class='btn btn-primary' name='WorkFlowPreview' >"
+                            html += "            <span class='glyphicon glyphicon-eye-open' aria-hidden='true'></span> 流程预览"
+                            html += "        </button>"
+                            html += "    </div>"
+                        }
+                        html += "</div>"
+                        return html
+                    }
+                }
+            ]
+        });
+
+        $("#workFlowTable").on("click", "[name='creatWorkFlow']", function () {
+            var formid = $(this).data("formid");
+            var flowid = $(this).data("flowid");
+
+            $.post("/Form/GetFormInfoByid", { formId: formid }, function (data) {
+                createBrowseForm(data.elementPropertys, formid, flowid);
+            }, "json")
+        })
+
+        $("#workFlowTable").on("click", "[name='WorkFlowPreview']", function () {
+            var formid = $(this).data("formid");
+            var flowid = $(this).data("flowid");
+            $.post("/Workflow/GetFlowView", { formid: formid, flowid: flowid }, function (data) {
+                if (data.result) {
+                    //  console.log(data.dataList);
+                    previewLayer();
+                    parent.flow.loadData(data.dataList);
+                    parent.$("#FlowID").val(flowid);
+                } else {
+                    parent.alertify.log(resultInfo.message);
+                }
+            }, "json");
+
+        })
+
+        $("#workflowQuery").click(function () {
+
+            workFlowTable.ajax.reload();
+        });
+
+        var createBrowseForm = function (arrayPropers, formid, flowid) {
+            var formElementHtml = "<form id='bowseform' method='post'  enctype='application/x-www-form-urlencoded' action='/InitiateFlow/StartFlow' class='form-horizontal formPadding'>"
+            formElementHtml += " <input type='hidden' value='" + formid + "' name='formid' />"
+            formElementHtml += " <input type='hidden' value='" + flowid + "' name='flowid' />"
+            $.each(arrayPropers, function (i, v) {
+                formElementHtml += "<div class='form-group'>"
+                formElementHtml += "<label class='col-sm-2 control-label labsty'>" + v.ElementLable
+                if (v.ElementValid == 2) {
+                    formElementHtml += "<span style='color:red'>*</span>"
+                }
+                formElementHtml += "</label>"
+                formElementHtml += "<div class='col-sm-10 pad-r20'>"
+                if (v.element.ElementType == "text") {
+                    formElementHtml += " <input type='text' class='form-control' name='" + v.FieldIden + "' placeholder='" + v.ElementLable + "'>"
+                } else if (v.element.ElementType == "textarea" || v.element.ElementType == "richText") {
+                    formElementHtml += "<textarea  class='form-control' id='" + v.FieldIden + "' name='" + v.FieldIden + "' style='height:" + v.ElementHeight + "'></textarea>";
+                } else if (v.element.ElementType == "dateTime") {
+                    formElementHtml += "<div class='input-group date' id='" + v.FieldIden + "'>"
+                    formElementHtml += "    <input type='text' class='form-control' name='" + v.FieldIden + "' placeholder='" + v.ElementLable + "' />"
+                    formElementHtml += "    <span class='input-group-addon'>"
+                    formElementHtml += "  <span class='glyphicon glyphicon-calendar'></span>"
+                    formElementHtml += "</span></div>"
+                } else if (v.element.ElementType == "select" || v.element.ElementType == "selectMultiple") {
+                    var multiple = v.element.ElementType == "selectMultiple" ? "multiple='multiple'" : "";
+                    $.ajax({
+                        type: "Post",
+                        url: "/Dictionary/GetDicValuebyCategoryId",
+                        data: { CategoryId: v.DataDictionary },
+                        dataType: "json",
+                        async: false,
+                        success: function (data) {
+                            formElementHtml += "<select name='" + v.FieldIden + "' id='" + v.FieldIden + "' class='form-control' " + multiple + " style='width:100%'>"
+                            formElementHtml += "<option></option>"
+                            $.each(data, function (di, dv) {
+                                formElementHtml += "<option value='" + dv.ID + "'>" + dv.DicValue + "</option>"
+                            })
+                            formElementHtml += "<select>"
+                        }
+                    })
+                } else if (v.element.ElementType == "upload") {
+                    formElementHtml += "<input id='" + v.FieldIden + "' name='" + v.FieldIden + "' type='file' class='file-loading'>"
+                }
+                formElementHtml += "</div></div>"
+            })
+            formElementHtml += "</form>"
+
+            parent.layer.open({
+                type: 1,
+                title: "发起流程",
+                area: ['500px', '600px'],
+                closeBtn: 1,
+                shadeClose: false,
+                skin: 'layerStyle',
+                content: formElementHtml,
+                btn: [dditConfig.btn.close, dditConfig.btn.comfrie],
+                yes: function (index, layero) {
+                    flowFormConfrim(index);
+                },
+                success: function (i, l) {
+                    var jshtml = "function () {";
+                    $.each(arrayPropers, function (i, v) {
+                        if (v.element.ElementType == "dateTime") {
+                            jshtml += "$('#" + v.FieldIden + "').datetimepicker({"
+                            jshtml += "   format: '" + v.ElementFormatType + "',"
+                            jshtml += "    widgetPositioning: {"
+                            jshtml += "        horizontal: 'auto',"
+                            jshtml += "        vertical: 'bottom'"
+                            jshtml += "    }"
+                            jshtml += "});"
+                        }
+                        if (v.element.ElementType == "select" || v.element.ElementType == "selectMultiple") {
+                            jshtml += "$('#" + v.FieldIden + "').select2({"
+                            jshtml += "placeholder: '请选择',"
+                            if (v.element.ElementType == "selectMultiple") {
+                                jshtml += "multiple: true,"
+                            }
+                            jshtml += "    minimumResultsForSearch: -1,"
+                            jshtml += "});"
+                        }
+                        if (v.element.ElementType == "richText") {
+
+                            jshtml += "$('#" + v.FieldIden + "').summernote({"
+                            jshtml += "    lang: 'zh-CN',"
+                            jshtml += "    width: '100%',"
+                            jshtml += "    height: 200,"
+                            jshtml += "    focus: true,"
+                            jshtml += "    dialogsInBody: true"
+                            jshtml += " });"
+                        }
+                        if (v.element.ElementType == "upload") {
+
+                            jshtml += " $('#" + v.FieldIden + "').fileinput({"
+                            jshtml += "     language: 'zh',"
+                            jshtml += "     showUpload: false,"
+                            jshtml += "     maxFileCount: 1"
+                            jshtml += "});"
+                        }
+                    })
+                    //验证表单
+                    jshtml += " $('#bowseform').validate({"
+                    jshtml += "    rules: {"
+                    $.each(arrayPropers, function (i, v) {
+                        if (v.ElementValid == 2) {
+                            jshtml += "        " + v.FieldIden + ": {"
+                            jshtml += "            required: true"
+                            jshtml += "        },"
+                        }
+                    });
+                    jshtml += "    },"
+                    jshtml += "    messages: {"
+                    $.each(arrayPropers, function (i, v) {
+                        if (v.ElementValid == 2) {
+                            jshtml += "       " + v.FieldIden + ": {"
+                            jshtml += "            required: '必填'"
+                            jshtml += "        },"
+                        }
+                    });
+                    jshtml += "    },"
+                    jshtml += "   highlight: dditConfig.validHighlight,"
+                    jshtml += "   success: dditConfig.validSuccess,"
+                    jshtml += "   errorPlacement:dditConfig.validerrorPlacement"
+                    jshtml += "})"
+                    jshtml += "}"
+                    parent.$("#bowseform").FromEvent(jshtml);
+                }
+            })
+        }
+
+        var flowFormConfrim = function (index) {
+            var configForm = parent.$("#bowseform")
+            if (configForm.valid()) {
+                configForm.ajaxSubmit({
+                    dataType: "json",
+                    success: function (data) {
+                        if (data.result) {
+                            parent.layer.close(parent.layer.index);
+                            parent.alertify.success("操作成功！");
+                        } else {
+                            parent.alertify.error(data.message);
+                        }
+                    },
+                    error: function (data) {
+                        var obj = eval('(' + data.responseText + ')');
+                        parent.alertify.error(obj.message);
+                    }
+                });
+            }
+        }
+
+        var previewLayer = function () {
+            flowlayer = parent.layer.open({
+                type: 1,
+                title: "浏览模板",
+                area: ['900px', '480px'],
+                closeBtn: 1,
+                shadeClose: false,
+                skin: 'layerStyle',
+                content: $("#createflow").html(),
+                btn: [dditConfig.btn.close, ],
+                success: function (i, l) {
+                    parent.$("#flowForm").FromEvent(function () {
+
+                        var chaildwindow = document.getElementById("InitiateFlowIndex").contentWindow
+
+                        var property = {
+                            width: 1200,
+                            height: 350,
+                            haveHead: false,
+                            headLabel: true,
+                            haveTool: false,
+                            haveGroup: false,
+                            useOperStack: false
+                        };
+
+                        var flow = $.createGooFlow($("#flowView"), property);
+
+                        //双击节点事件
+                        flow.$workArea.delegate(".ico + td", "click", { inthis: flow }, function (e) {
+
+                            var element = $(this).parents(".GooFlow_item");
+                            var id = element.attr("id");
+                            var getinfo = flow.getItemInfo(id, "node");
+                            var array = getinfo.stepUser.split(",");
+                            var sprinfo = "";
+                            for (var s = 0; s < array.length; s++) {
+                                var cc = $.grep(chaildwindow.userinfo, function (n, i) {
+                                    return n.UserID.toString() == array[s]
+                                })
+
+                                sprinfo += cc[0].UserReallyname + ",";
+                            }
+
+                            sprinfo = sprinfo.substring(0, sprinfo.length - 1);
+
+                            layer.tips('审批人:' + sprinfo, element, {
+                                tips: [1, '#3595CC'],
+                                time: 4000
+                            });
+
+                        });
+
+                    })
+                }
+            })
+        }
+    })
+</script>
+
+<div class="margin w100f xoverhide">
+    <div class="panel panel-default" style="margin-top: 10px">
+        <ul class="list-group">
+            <li class="list-group-item">
+                <form class="form-inline" onsubmit="return false;">
+                    <div class="form-group">
+                        <label for="RoleName">流程名称</label>
+                        <input type="text" class="form-control" name="workflowName" id="workflowName" placeholder="流程关键字查询">
+                    </div>
+                    <button type="button" class="btn btn-info " id="workflowQuery">
+                        <span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询
+                    </button>
+                </form>
+            </li>
+        </ul>
+    </div>
+
+    <table id="workFlowTable" class="w100f" cellspacing="0"></table>
+
+</div>
+
+<div id="createflow" class="displayn">
+    <form id="flowForm">
+        @Html.Hidden("FlowID")
+        <div id="flowView"></div>
+    </form>
+</div>

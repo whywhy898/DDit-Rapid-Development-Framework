@@ -65,6 +65,8 @@ namespace DDitApplicationFrame.Areas.SystemSchema.Controllers
             return Json(result);
         }
 
+
+
         [HttpPost]
         public ActionResult DistributionMenuAndButton(int RoleID, List<int> menuId, List<RoleMappingButton> modelList)
         {

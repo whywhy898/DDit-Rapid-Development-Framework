@@ -3,12 +3,10 @@
 }
 
 @using DDit.Core.Data.Entity.SystemEntity;
-@using System.Web.Optimization
 
-@Styles.Render("~/Scripts/bootstrap/css/1", "~/Scripts/datatables/css/1", "~/Content/1", "~/Scripts/alertjs/themes/1", "~/Scripts/select2/css/1", "~/Scripts/iconpicker/css/1", "~/Scripts/fancyTree/skin-win7/1", "~/Scripts/fileUpload/1")
+@Styles.Render("~/Scripts", "~/Content")
 @Scripts.Render("~/bundles/js")
 
-@*@StackExchange.Profiling.MiniProfiler.RenderIncludes()*@
 <script type="text/javascript">
     $(function () {
 
@@ -46,16 +44,19 @@
             menutable.ajax.reload();
         })
 
-        $.ajax({
-            type: "get",
-            url:  "/Menu/ParentMenu",
-            data: {},
-            dataType: "json",
-            async: true,
-            success: function (data) {
-                odata=data;
-            }
-        })
+        var getMenuInfo = (function func() {
+            $.ajax({
+                type: "get",
+                url: "/Menu/ParentMenu",
+                data: {},
+                dataType: "json",
+                async: true,
+                success: function (data) {
+                    odata = data;
+                }
+            })
+            return func;
+        })();
 
         //菜单弹出层
         var openMenuLayer = function () {
@@ -73,6 +74,7 @@
                 },
                 success: function (i, l) {
                     parent.$("#menuForm").FromEvent(function () {
+                        var mData = document.getElementById("MenuIndex").contentWindow.odata;
                         //验证表单
                         $("#menuForm").validate({
                             rules: {
@@ -144,10 +146,9 @@
                                     return $state;
                                 }
                             });
-
-                            var  odata= document.getElementById("MenuIndex").contentWindow.odata;
+                 
                             control.empty();//清空下拉框
-                            $.each(odata, function (i, item) {
+                            $.each(mData, function (i, item) {
                                 control.append("<option class='" + item.MenuIcon + "' data-leve='" + item.MenuParentID + "' value='" + item.MenuID + "'>&nbsp;" + item.MenuName + "</option>");
                                 $.each(item.Childs, function (ci, vi) {
                                     control.append("<option class='" + vi.MenuIcon + "' data-leve='" + vi.MenuParentID + "' value='" + vi.MenuID + "'>&nbsp;" + vi.MenuName + "</option>");
@@ -159,11 +160,7 @@
 
                         //图标插件初始化
                         $("[name='MenuIcon']").iconPicker({ type: true });
-
-                        var cc = document.getElementById("MenuIndex").contentWindow.menuPid
-
-                        console.log(cc);
-            
+         
                     });
                 }
             });
@@ -177,8 +174,9 @@
                     success: function (data) {
                         if (data.result) {
                             parent.layer.close(index);
-                            menutable.ajax.reload(null, menuId == "" ? true : false);          //刷新列表
-                            alertify.success("操作成功！");    //弹出消息日志
+                            menutable.ajax.reload(null, menuId == "" ? true : false);      
+                            alertify.success("操作成功！");
+                            getMenuInfo();
                         } else {
                             alertify.error(data.message);
                         }
@@ -227,25 +225,34 @@
         var confrimDisBtn = function (index) {
             var menu = menutable.rows('.selected');
             var model = menu.data();
+            var mb=model[0].mbList
             var lis =parent.$(".gbin1-list li")
-            if (lis.length > 0) {
-                var mbobj = {};
-                lis.each(function (i, v) {
-                    mbobj["mplist[" + i + "].MenuID"] = model[0].MenuID;
-                    mbobj["mplist[" + i + "].ButtonID"] = $(v).data("tag");
-                    mbobj["mplist[" + i + "].OrderBy"] = i + 1;
-                });
-                mbobj["MenuID"] = model[0].MenuID;
-                $.post("/Button/MenuMappingButton", mbobj, function (data) {
-                    if (data.result) {
-                        alertify.success("菜单和按钮分配成功！");
-                        menutable.ajax.reload();
-                    }
-                });
+            if (mb.length > 0) {
+                SaveMenuBtn(lis, model);
             } else {
-                alertify.log("请选择要分配的按钮信息！");
+                if (lis.length > 0) {
+                    SaveMenuBtn(lis,model);
+                } else {
+                    parent.alertify.log("请选择要分配的按钮信息！");
+                }
             }
-            parent.layer.close(index);
+        }
+
+        var SaveMenuBtn = function (lis, model) {
+            var mbobj = {};
+            lis.each(function (i, v) {
+                mbobj["mplist[" + i + "].MenuID"] = model[0].MenuID;
+                mbobj["mplist[" + i + "].ButtonID"] = $(v).data("tag");
+                mbobj["mplist[" + i + "].OrderBy"] = i + 1;
+            });
+            mbobj["MenuID"] = model[0].MenuID;
+            $.post("/Button/MenuMappingButton", mbobj, function (data) {
+                if (data.result) {
+                    parent.layer.close(parent.layer.index);
+                    parent.alertify.success("菜单和按钮分配成功！");
+                    menutable.ajax.reload();
+                }
+            });
         }
 
         //新增菜单按钮
@@ -319,8 +326,6 @@
 
      }) 
 </script>
-
-
 
 <div class="margin w100f xoverhide">
     <div class="panel panel-default" style="margin-top: 10px">

@@ -25,7 +25,10 @@ namespace DDit.Core.Data.Repository.Repositories.SystemRepositories
 
                menuBtnRepository.Delete(menuModel.mbList.ToList());
 
-               menuBtnRepository.Insert(mplist);
+               if (mplist!=null&&mplist.Count > 0)
+               {
+                   menuBtnRepository.Insert(mplist);
+               }
 
                dal.Save();
             }

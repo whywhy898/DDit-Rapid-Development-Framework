@@ -271,11 +271,13 @@ tbody tr.even.selected td {
     padding-top:10px;
 }
 /*弹出层样式*/
-.layerStyle {
+/*.layerStyle {
     z-index: 300 !important;
-}
+}*/
 .layerStyle .layui-layer-content {
     overflow-x:hidden !important;
+    /*height:auto !important;*/
+    border-bottom: 1px solid #ccc;
     /*padding:10px  !important;*/
 }
 .layerStyle .layui-layer-title {
@@ -283,9 +285,9 @@ tbody tr.even.selected td {
     color:white;
     font-size:16px;
 }
-.layui-layer-shade {
+/*.layui-layer-shade {
     z-index: 200 !important;
-}
+}*/
 /*首页消息弹出层样式*/
 .MainlayerStyle {
     -webkit-animation-duration: 2s !important;
@@ -356,6 +358,176 @@ tbody tr.even.selected td {
     height: 45px;
 }
 
+/*自定义表单*/
+.eleimg {
+   margin-right:10px;
+   height:18px;
+   width:18px
+}
+
+.item_proper {
+  width:30%;
+  float:left;
+  height:100%;
+  padding:10px;
+}
+
+.item_table {
+    position: relative;
+    border-left: 1px solid #ccc;
+    border-right: 1px solid #ccc;
+    padding: 8px;
+    overflow: auto;
+    overflow-y: auto;
+    overflow-x: hidden;
+    float: left;
+    height: 100%;
+    width: 50%;   
+}
+
+.item_row {
+    height: 40px;
+    line-height: 40px;
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    overflow: hidden;
+    cursor: move;
+    margin-top: -1px;
+    position: relative;
+}
+
+.item_field_label {
+    float: left;
+    width: 120px;
+    padding-left: 20px;
+    background-color: #f5f5f5;
+    vertical-align: top;
+    display: block;
+    text-align:center;
+}
+
+.item_field_value {
+    float: left;
+    height: 100%;
+    padding-left: 10px;
+    color: #9f9f9f;
+    display: block;
+}
+
+.item_field_remove {
+    z-index: 101;
+    cursor: pointer;
+    position: absolute;
+    margin-left: 100px;
+    right:10px;
+}
+
+.del {
+     background:url(../Images/dele.png) no-repeat 0 0;
+     display:none;
+     width: 20px;
+     height: 20px;
+     margin-top: 8px;
+}
+
+#itemui {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+
+#itemui li {
+    font-size: 12px;
+    height: 36px;
+    margin-bottom: 5px;
+}
+
+.sortable-placeholder {
+    height: 40px;
+    line-height: 40px;
+    border: 1px dashed #dad55e;
+    color: #777620;
+}
+
+.bs-callout {
+    padding: 20px;
+    margin: 5px 0;
+    height:100px;
+    border: 1px solid #8e8e8e;
+    border-left-width: 1px;
+    border-left-color: rgb(238, 238, 238);
+    border-left-width: 5px;
+    border-radius: 3px;
+}
+.bs-callout h4 {
+   margin-top: 5px;
+   margin-bottom: 0;
+  
+}
+.bs-callout P {
+    margin-top: 10px;
+    margin-bottom: 5px;
+    font-size:12px;
+}
+
+.bs-callout-warning {
+    border-left-color: #aa6708;
+}
+.bs-callout-warning h4{
+    border-left-color: #aa6708;
+}
+.bs-callout-danger {
+    border-left-color: #ce4844;
+}
+.bs-callout-danger h4 {
+    color: #ce4844;
+}
+.bs-callout-info {
+    border-left-color: #1b809e;
+}
+.bs-callout-info h4 {
+    color: #1b809e;
+}
+
+/*工作流审批样式*/
+
+
+
+.appleft {
+   padding-top:10px;
+}
+
+.appright {
+  width: 32%;
+height: 450px;
+padding-left: 15px;
+border-left: 1px solid #ccc;
+position: fixed;
+right: 0;
+margin-right: 25px;
+z-index: 3;
+}
+
+.appform {
+  height:100%;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.appRemark {
+  padding:10px;
+  width:100%;
+}
+
+.clearfix:after {
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+}
+.clearfix {display: block;}
 
 /*.layui-layer-btn a {
     margin:0px !important;

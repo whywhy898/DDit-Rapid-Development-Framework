@@ -5,7 +5,7 @@
 @using DDit.Core.Data.Entity.SystemEntity;
 @using DDitApplicationFrame.Common;
 
-@Styles.Render("~/Scripts/bootstrap/css/1", "~/Scripts/datatables/css/1", "~/Content/1", "~/Scripts/alertjs/themes/1", "~/Scripts/select2/css/1", "~/Scripts/iconpicker/css/1", "~/Scripts/fancyTree/skin-win7/1", "~/Scripts/fileUpload/1")
+@Styles.Render("~/Scripts", "~/Content")
 @Scripts.Render("~/bundles/js")
 
 <script type="text/javascript">
@@ -125,17 +125,19 @@
                              checkbox: true,
                              selectMode: 2,
                              activate: function (event, data) {
-                                 var cc = data.node.data.btn;
-                                 if (cc != undefined && cc.length > 0) {
-                                     showBtn(data.node)
-                                 } else {
-                                     $("#btngroups").html("")
-                                 }
+                                 var node=data.node;
+                                 var menuid = data.node.data.id;
+                                 $.post("/Menu/GetMenuBtnById", { menuId: menuid }, function (data) {
+                                     var menu_btn = data;
+                                     if (menu_btn != undefined && menu_btn.length > 0) {
+                                         showBtn(menu_btn, node)
+                                     } else {
+                                         $("#btngroups").html("")
+                                     }
+                                 },"json");
                              },
                              select: function (event, data) {
-                                 console.log("12");
                                  var obj = data.node;
-
                                  var btnObj = $("#distributeRole").data("btnAuth")
                                  var btnstr = "";
                                  if (!data.node.folder) {
@@ -154,25 +156,24 @@
                                         })
                                     }
                                  }
-
                              }
                          });
 
-                         function showBtn(obj) {
+                         function showBtn(menuBtn,obj) {
                              var group = $(obj.li).attr("data-btnstr");
-                             var cc = obj.data.btn;
+                             var cc = menuBtn;
                              var btngroup = "";
                              $.each(cc, function (i, v) {
                                  var selClass = "";
                                  if (group != undefined && group != "") {
                                      var btnArry = group.split(',');
-                                     if (btnArry.indexOf(v.ButtonModel.ButtonID.toString()) >= 0) {
+                                     if (btnArry.indexOf(v.ButtonID.toString()) >= 0) {
                                          selClass = "right";
                                      }
                                  }
                                  btngroup += "<div class='col-md-4 mbottom10'>";
-                                 btngroup += "<button type='button' class='btn btn-default " + selClass + "' name='" + v.ButtonModel.ButtonID + "'>"
-                                 btngroup += "<span class='" + v.ButtonModel.ButtonMagic + "' aria-hidden='true'></span>" + v.ButtonModel.ButtonName + "</button></div>"
+                                 btngroup += "<button type='button' class='btn btn-default " + selClass + "' name='" + v.ButtonID + "'>"
+                                 btngroup += "<span class='" + v.ButtonMagic + "' aria-hidden='true'></span>" + v.ButtonName + "</button></div>"
                              })
                              $("#btngroups").html(btngroup)
                          }
@@ -213,6 +214,7 @@
                 var rbArray = [];
                 $.each(selecedTree, function (i, v) {
                     var btnofmenu = $(v.li).attr("data-btnstr")
+                    
                     menuArray.push(v.data.id);
                     if (btnofmenu != undefined && btnofmenu != "") {
                         $.each(btnofmenu.split(","), function (si, sv) {
@@ -392,28 +394,28 @@
                             <li data-id="@item.MenuID" class="folder expanded children">
                                 @item.MenuName
                                 @{
-                            if (item.Childs.Count > 0)
-                            {
-                                <ul>
-                                    @foreach (var itemchild in item.Childs)
+                                    if (item.Childs.Count > 0)
                                     {
-                                        <li data-id="@itemchild.MenuID" data-btn="@(BaseController.SerializeObject(itemchild.mbList))">
-                                            @itemchild.MenuName
-                                            @{
-                                        if (itemchild.Childs != null && itemchild.Childs.Count > 0)
-                                        {
-                                            <ul>
-                                                @foreach (var itemchilds in itemchild.Childs)
-                                                {
-                                                    <li data-id="@itemchilds.MenuID">@itemchilds.MenuName</li>
-                                                }
-                                            </ul>
-                                        }
+                                        <ul>
+                                            @foreach (var itemchild in item.Childs)
+                                            {
+                                                <li data-id="@itemchild.MenuID">
+                                                    @itemchild.MenuName
+                                                    @{
+                                                        if (itemchild.Childs != null && itemchild.Childs.Count > 0)
+                                                        {
+                                                            <ul>
+                                                                @foreach (var itemchilds in itemchild.Childs)
+                                                                {
+                                                                    <li data-id="@itemchilds.MenuID">@itemchilds.MenuName</li>
+                                                                }
+                                                            </ul>
+                                                        }
+                                                    }
+                                                </li>
                                             }
-                                        </li>
+                                        </ul>
                                     }
-                                </ul>
-                            }
                                 }
                             </li>
                         }
@@ -422,9 +424,7 @@
             </div>
             <div class="col-md-8">
                 <div class="container-fluid mtop30">
-                    <div class="row" id="btngroups">
-
-                    </div>
+                    <div class="row" id="btngroups"> </div>
                 </div>
             </div>
         </div>

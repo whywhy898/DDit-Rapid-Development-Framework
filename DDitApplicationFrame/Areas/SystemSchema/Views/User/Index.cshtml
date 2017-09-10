@@ -6,7 +6,7 @@
 @using DDit.Core.Data.Entity.SystemEntity;
 @using DDitApplicationFrame.Common;
 
-@Styles.Render("~/Scripts/bootstrap/css/1","~/Scripts/summernote/1", "~/Scripts/datatables/css/1", "~/Content/1", "~/Scripts/alertjs/themes/1", "~/Scripts/select2/css/1", "~/Scripts/iconpicker/css/1", "~/Scripts/fancyTree/skin-win7/1", "~/Scripts/fileUpload/1")
+@Styles.Render("~/Scripts", "~/Content")
 @Scripts.Render("~/bundles/js")
 
 <script type="text/javascript">
@@ -94,6 +94,8 @@
                             tags: "true",
                             placeholder: "选择部门",
                             allowClear: true,
+                        }).on('select2:select', function (evt) {
+                            $(this).valid();
                         }).val(null).trigger("change");
 
                         // 手机号码验证
@@ -174,13 +176,9 @@
                                     required: "不能为空"
                                 }
                             },
-                            highlight: function (element) {
-                                $(element).closest('.form-group').addClass('has-error');
-                            },
-                            success: function (label) {
-                                label.closest('.form-group').removeClass('has-error');
-                                label.remove();
-                            }
+                            errorPlacement: dditConfig.validerrorPlacement,
+                            highlight: dditConfig.validHighlight,
+                            success: dditConfig.validSuccess
                         })
                     })
                 }
@@ -230,7 +228,7 @@
                 }
                 openDistriRoleLayer();
             } else {
-                alertify.log("请选择一条要操作的信息！");
+                parent.alertify.log("请选择一条要操作的信息！");
             }
        });
 
@@ -245,7 +243,7 @@
             $.post("/User/DistributionRole", { UserId: userid, RoleIDlist: roleIDlist }, function (data) {
                 if (data.result) {
                     parent.layer.close(index);
-                    alertify.success("分配角色成功！");
+                    parent.alertify.success("分配角色成功！");
                     table.ajax.reload(null, true);
                 } else {
                     alertify.error(data.message);
@@ -310,9 +308,8 @@
                         initialCaption: model[0].HeadPortrait
                     });
                 }
-            
             } else {
-                alertify.log("请选择一条操作信息！");
+                parent.alertify.log("请选择一条操作信息！");
             }
         });
 
@@ -355,7 +352,6 @@
 
         });
     })
-
 </script>
 
 <div class="margin w100f xoverhide">
@@ -422,7 +418,7 @@
         <div class="form-group">
             <label for="Department" class="col-sm-2 control-label labsty">部门<span style="color:red">*</span></label>
             <div class="col-sm-6">
-                <select name="DepartmentID" id="Department" class="form-control" style="width:265px">
+                <select name="DepartmentID" id="Department" class="form-control" style="width:250px">
                     @foreach (var item in ViewBag.bumen as List<Dictionary>)
                     {
                         <option value="@item.ID">@item.DicValue</option>
@@ -470,11 +466,10 @@
                     foreach (var item in ViewBag.role as List<Role>)
                     {
                         <a href="javascript:;" class="list-group-item" style="padding:0 15px">
-                            <div class="checkbox" >
-                                <label>
-                                    <input type="checkbox" name="@item.RoleID"> @item.RoleName
-                                </label>
-                            </div>
+                            <div class="checkbox checkbox-success">
+                                <input type="checkbox" name="@item.RoleID"> 
+                                <label>@item.RoleName </label>
+                             </div>
                         </a>
                     }
                }

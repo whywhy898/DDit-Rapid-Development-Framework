@@ -109,13 +109,19 @@ namespace DDit.Component.Data
 
         public void Update(TEntity entityToUpdate)
         {
+           
 
             dbSet.Attach(entityToUpdate);
             context.Entry(entityToUpdate).State = EntityState.Modified;
 
         }
 
-
+        /// <summary>
+        /// 高级修改
+        /// </summary>
+        /// <param name="entity">实体</param>
+        /// <param name="list">操作的字段名集合</param>
+        /// <param name="flag">默认是true要修改的，false不修改的</param>
         public void UpdateSup(TEntity entity, List<string> list, bool flag=true)
         {
             dbSet.Attach(entity);

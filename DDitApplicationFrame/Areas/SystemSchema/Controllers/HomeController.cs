@@ -43,14 +43,6 @@ namespace DDitApplicationFrame.Areas.SystemSchema.Controllers
             return PartialView(newMenu);
         }
 
-
-        [ChildActionOnly]
-        public ActionResult Main() {
-
-            return PartialView();
-        }
-
-
         public ActionResult ControllerError(BaseEntity baseEntity=null)
         {
             var rolelist = UserRepository.GetbyID(UserInfo.UserID).RoleList;

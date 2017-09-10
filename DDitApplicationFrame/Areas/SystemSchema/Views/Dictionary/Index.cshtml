@@ -4,13 +4,11 @@
 
 @using DDit.Core.Data.Entity.SystemEntity;
 
-@Styles.Render("~/Scripts/bootstrap/css/1", "~/Scripts/datatables/css/1", "~/Content/1", "~/Scripts/alertjs/themes/1", "~/Scripts/select2/css/1", "~/Scripts/iconpicker/css/1", "~/Scripts/fancyTree/skin-win7/1", "~/Scripts/fileUpload/1")
+@Styles.Render("~/Scripts", "~/Content")
 @Scripts.Render("~/bundles/js")
-
 
 <script type="text/javascript">
     $(function () {
-
         $("#dicTree").fancytree({
             selectMode: 2,
             source: {
@@ -327,10 +325,9 @@
         <div class="form-group">
             <label for="Category" class="col-sm-2 control-label labsty"></label>
             <div class="col-sm-10 pad-r20">
-                <div class="checkbox">
-                    <label>
-                        <input type="checkbox" name="Enabled" checked="checked" id="dicValueEnabled" /> 是否可用
-                    </label>
+                <div class="checkbox checkbox-success">
+                    <input type="checkbox" name="Enabled" checked="checked" id="dicValueEnabled" />
+                    <label>是否可用</label>
                 </div>
             </div>
         </div>

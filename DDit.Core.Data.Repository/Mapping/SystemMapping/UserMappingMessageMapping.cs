@@ -13,7 +13,7 @@ namespace DDit.Core.Data.Repository.Mapping.SystemMapping
        public UserMappingMessageMapping() {
 
            HasKey(k => k.ID);
-           ToTable("USER_MESSAGE", "Base");
+           ToTable("USER_MESSAGE", "BASE");
            this.Property(a => a.ID).HasColumnName("ID");
            this.Property(a => a.MessageID).HasColumnName("MESSAGEID");
            this.Property(a => a.UserID).HasColumnName("USERID");

@@ -14,7 +14,7 @@ namespace DDit.Core.Data.Repository.Mapping.SystemMapping
         public LoginLogMapping() {
 
             HasKey(a => a.LoginID);
-            ToTable("LOGINLOG", "Base");
+            ToTable("LOGINLOG", "BASE");
             this.Property(a => a.LoginID).HasColumnName("LOGIN_ID");
             this.Property(a => a.LoginIP).HasColumnName("LOGIN_IP");
             this.Property(a => a.LoginName).HasColumnName("LOGIN_NAME");

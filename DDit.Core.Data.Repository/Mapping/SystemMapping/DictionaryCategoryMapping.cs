@@ -14,7 +14,7 @@ namespace DDit.Core.Data.Repository.Mapping.SystemMapping
         public DictionaryCategoryMapping() {
 
             HasKey(a => a.ID);
-            ToTable("DICTIONARYCATEGORY", "Base");
+            ToTable("DICTIONARYCATEGORY", "BASE");
             this.Property(a => a.ID).HasColumnName("ID");
             this.Property(a => a.Category).HasColumnName("CATEGORY");
             this.Property(a => a.Enabled).HasColumnName("ENABLED");

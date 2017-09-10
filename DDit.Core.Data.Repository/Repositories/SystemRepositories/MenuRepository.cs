@@ -62,7 +62,10 @@ namespace DDit.Core.Data.Repository.Repositories.SystemRepositories
         public List<Menu> GetParentMenu() {
             using (UnitOfWork dal = BaseInfo._container.Resolve<UnitOfWork>())
             {
-                var result = dal.GetRepository<Menu>().Get(filter: p => p.MenuParentID == null, includeProperties: "Childs,Childs.mbList.ButtonModel").ToList();
+               // var result = dal.GetRepository<Menu>().Get(filter: p => p.MenuParentID == null, includeProperties: "Childs,Childs.mbList.ButtonModel").ToList();
+
+                var result = dal.GetRepository<Menu>().Get(filter: p => p.MenuParentID == null, includeProperties: "Childs").ToList();
+                
                 return result;
             }
         }
