@@ -22,14 +22,7 @@ namespace DDit.Core.Data.Repository.Repositories.WorkFlowRepositories
 
         public Tuple<int, List<WorkFlowDo>> GetWorkFlowItem(WorkFlow model)
         {
-            Mapper.Initialize(a =>
-            {
-                a.CreateMap<WorkFlow, WorkFlowDo>()
-                    .ForMember(de => de.CreateUserName, op => { op.MapFrom(s => s.CuserInfo.UserReallyname); })
-                    .ForMember(de => de.FormName, op => { op.MapFrom(s => s.forminfo.FormName); })
-                    .ForMember(de => de.IsPerfect, op => { op.MapFrom(s => s.flowSteps.Count>0?true:false); })
-                    .ForMember(de => de.FlowSortName, op => { op.MapFrom(s =>  s.SortInfo.DicValue); });
-            });
+
             using (var dal = BaseInfo._container.Resolve<UnitOfWork>())
             {
                 var messageRepository = dal.GetRepository<WorkFlow>();

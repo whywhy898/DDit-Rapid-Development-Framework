@@ -19,14 +19,14 @@ namespace DDit.Component.Data
         internal DbContext context;
         internal DbSet<TEntity> dbSet;
 
-        public GenericRepository(DbContext context)
+        public  GenericRepository(DbContext context)
         {
             this.context = context;
             this.dbSet = context.Set<TEntity>();
             this.context.Database.Log = new Action<string>(q => Debug.WriteLine(q));
         }
 
-        public IQueryable<TEntity> Get(
+        public virtual IQueryable<TEntity> Get(
             Expression<Func<TEntity, bool>> filter = null,
             Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
             string includeProperties = "")
@@ -50,18 +50,19 @@ namespace DDit.Component.Data
                 return query;
             }
         }
-   
-        public TEntity GetByID(object id)
+
+        public virtual TEntity GetByID(object id)
         {
             return dbSet.Find(id);
         }
 
-        public void Insert(TEntity entity)
+        public virtual void Insert(TEntity entity)
         {
             dbSet.Add(entity);
         }
 
-        public void Insert(IEnumerable<TEntity> entityL) {
+        public virtual void Insert(IEnumerable<TEntity> entityL)
+        {
             try
             {
                 context.Configuration.AutoDetectChangesEnabled = false;
@@ -76,13 +77,13 @@ namespace DDit.Component.Data
             }
         }
 
-        public void Delete(object id)
+        public virtual void Delete(object id)
         {
             TEntity entityToDelete = dbSet.Find(id);
             Delete(entityToDelete);
         }
 
-        public void Delete(List<TEntity> idl)
+        public virtual void Delete(List<TEntity> idl)
         {
             try
             {
@@ -107,13 +108,11 @@ namespace DDit.Component.Data
             dbSet.Remove(entityToDelete);
         }
 
-        public void Update(TEntity entityToUpdate)
+        public virtual void Update(TEntity entityToUpdate)
         {
            
-
             dbSet.Attach(entityToUpdate);
             context.Entry(entityToUpdate).State = EntityState.Modified;
-
         }
 
         /// <summary>
@@ -148,7 +147,7 @@ namespace DDit.Component.Data
             }
         }
 
-        public IQueryable<TEntity> ExecuteSQLQuery<TEntity>(string sql, SqlParameter[] parmArray=null)
+        public virtual IQueryable<TEntity> ExecuteSQLQuery<TEntity>(string sql, SqlParameter[] parmArray = null)
         {
 
            IQueryable<TEntity> result=context.Database.SqlQuery<TEntity>(sql, parmArray).AsQueryable();
@@ -157,7 +156,7 @@ namespace DDit.Component.Data
         }
 
 
-        public void Save()
+        public virtual void Save()
         {
             context.SaveChanges();
         }

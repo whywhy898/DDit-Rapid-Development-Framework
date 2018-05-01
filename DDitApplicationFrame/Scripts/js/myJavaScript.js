@@ -59,7 +59,7 @@
         }
         return "";
     }
-
+  
     //表单赋值
     $.fn.setForm = function (data) {
         return this.each(function () {
@@ -225,7 +225,7 @@
                 last: "尾页"
             }
         },
-        scrollY: 400,
+        scrollY: 375,
         scrollCollapse: false,
         ordering: true,
         order: [[1, 'desc']],

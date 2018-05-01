@@ -11,6 +11,7 @@ using DDit.Core.Data.Entity.SystemEntity;
 using DDit.Core.Data.Entity.SystemEntity.DoEntity;
 using System.Data.Entity;
 using System.Linq.Expressions;
+using System.Data.Objects;
 
 namespace DDit.Core.Data.Repository.Repositories.SystemRepositories
 {
@@ -19,11 +20,7 @@ namespace DDit.Core.Data.Repository.Repositories.SystemRepositories
 
         public Tuple<int, List<MessageDo>> GetMessageList(Message model)
         {
-            Mapper.Initialize(a =>
-            {
-                a.CreateMap<Message, MessageDo>()
-                    .ForMember(de => de.SendUserName, op => { op.MapFrom(s => s.SendUserInfo.UserReallyname); });
-            });
+
             using (var dal = BaseInfo._container.Resolve<UnitOfWork>())
             {
                 var messageRepository = dal.GetRepository<Message>();
@@ -115,7 +112,9 @@ namespace DDit.Core.Data.Repository.Repositories.SystemRepositories
                                                                    a.RecUser.EndsWith("," + stringtoid)||
                                                                    a.RecUser == stringtoid);
 
-                 conditions = conditions.And(a => a.ExpirationTime == null||DbFunctions.TruncateTime(DateTime.Now) <= DbFunctions.TruncateTime(a.ExpirationTime));
+                 var today = DateTime.Now;
+
+                 conditions = conditions.And(a => a.ExpirationTime == null || today <= a.ExpirationTime);
 
                  var currentUserMessage = messageR.Get(conditions).Select(a => a.MessageID);
 
@@ -125,7 +124,7 @@ namespace DDit.Core.Data.Repository.Repositories.SystemRepositories
 
                     var usermes=userMesR.Get(a => a.UserID == currentUserId).Select(a=>a.MessageID);
 
-                    var list = currentUserMessage.Except(usermes);
+                    var list = currentUserMessage.ToList().Except(usermes.ToList());
 
                     if (list.Count() > 0) {
                         var addUserMessage =new List<UserMappingMessage>();
@@ -140,10 +139,9 @@ namespace DDit.Core.Data.Repository.Repositories.SystemRepositories
                             addUserMessage.Add(mes);
                         }));
                         userMesR.Insert(addUserMessage);
+                        dal.Save();
                     }
                  }
-
-                 dal.Save();
             }
         }
 

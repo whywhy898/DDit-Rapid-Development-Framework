@@ -18,14 +18,6 @@ namespace DDit.Core.Data.Repository.Repositories.WorkFlowRepositories
     {
         public Tuple<int, List<FlowTaskDo>> GetFlowInfoBySelf(FlowInfo model)
         {
-            Mapper.Initialize(a =>
-            {
-                a.CreateMap<FlowInfo, FlowTaskDo>()
-                    .ForMember(de => de.FlowCategory, op => { op.MapFrom(s => s.WorkFlowInfo.SortInfo.DicValue); })
-                    .ForMember(de => de.UserName, op => { op.MapFrom(s => s.Userinfo.UserReallyname); })
-                    .ForMember(de => de.FlowName, op => { op.MapFrom(s => s.WorkFlowInfo.FlowName); })
-                    .ForMember(de => de.FlowRemark, op => { op.MapFrom(s => s.WorkFlowInfo.remark); });
-            });
 
             using (var dal = BaseInfo._container.Resolve<UnitOfWork>())
             {
@@ -65,17 +57,7 @@ namespace DDit.Core.Data.Repository.Repositories.WorkFlowRepositories
 
         public Tuple<int, List<FlowApproveInfoDo>> GetFlowApproveInfo(FlowApprove model)
         {
-            Mapper.Initialize(a =>
-           {
-               a.CreateMap<FlowApprove, FlowApproveInfoDo>()
-                   .ForMember(de => de.FlowName, op => { op.MapFrom(s => s.FlowTaskInfo.WorkFlowInfo.FlowName); })
-                   .ForMember(de => de.FormId, op => { op.MapFrom(s => s.FlowTaskInfo.FormId); })
-                   .ForMember(de => de.FormInfoId, op => { op.MapFrom(s => s.FlowTaskInfo.FormInfoId); })
-                   .ForMember(de => de.StartTime, op => { op.MapFrom(s => s.FlowTaskInfo.CreateTime); })
-                   .ForMember(de => de.StartUserName, op => { op.MapFrom(s => s.FlowTaskInfo.Userinfo.UserReallyname); })
-                   .ForMember(de => de.FlowStepName, op => { op.MapFrom(s => s.FlowStepInfo.name); });
-           });
-
+        
             using (var dal = BaseInfo._container.Resolve<UnitOfWork>())
             {
                 var messageRepository = dal.GetRepository<FlowApprove>();

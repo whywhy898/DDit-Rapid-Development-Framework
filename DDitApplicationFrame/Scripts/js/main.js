@@ -19,6 +19,43 @@ $('.tree li.parent_li > span').on('click', function (e) {
 $("table[role='grid']").find('tr').css({"height":"37px"})
 
 $('.main .sy').show().siblings().hide();
+
+
+//加载窗体
+function loadifarme(aId,aDiv, aUrl) {
+    $("div[msg=" + aDiv + "]").remove();
+
+    var f = $("<iframe class='fw99 fh99 displayn' id='" + aId + "' src='" + aUrl + "'></iframe>");
+    $("<div msg='" + aDiv + "' class='fw100 fh100 tan-cent'><img src='../../Images/loadimg.gif' /></div>").appendTo("#Main").append(f).show()
+
+    f.load(function () {
+        $(this).prev("img").remove();
+        $(this).show();
+        var head = this.contentWindow.document.getElementsByTagName("head");
+        var color = getCookie('color') == null ? "colora" : getCookie('color');
+
+        var linkColor = $("<link rel='stylesheet' type='text/css' href='/Content/css/" + color + ".css' id='color'>");
+        $(head).append(linkColor);
+    });
+}
+
+function OpenNewTab(id, url, name, imgurl) {
+    if (imgurl == undefined)
+        imgurl = "";
+    if (!arrTile[name]) {       //判断是不是已添加了li
+        loadifarme(id, name, url);
+        $('#tit ul').append($("<li></li>").attr({
+            'msg': name,
+            'class': 'boxbg',
+            'data-url': url
+        }).html('<img/>' + name + '<b></b>').find('img').attr("class", imgurl).css({ "margin-top": "-3px" }).parent());
+        arrTile[name] = 1;
+    }
+    $('div[msg=' + name + ']').show().siblings().hide();
+    $('#tit').find('li[msg=' + name + ']').addClass('boxbg').siblings().removeClass('boxbg');
+    cilcktitle()
+}
+
 $('#tree').on("click", "span[data-div]", function () {
     var aDiv = $(this).data('div');
     var aUrl = $(this).data('url');
@@ -26,46 +63,16 @@ $('#tree').on("click", "span[data-div]", function () {
         return;
     var amenuID = $(this).data('menuid');
     var oImg = $(this).find("i").attr("class");
-    if (!arrTile[aDiv]) {       //判断是不是已添加了li
+    var ifameId = aUrl.split("/").join('');
 
-        loadifarme(aDiv, aUrl);
+    OpenNewTab(ifameId, aUrl, aDiv, oImg);
 
-        var oDiv = $(this).text();
-        //获取左边相对应图标
-        $('#tit ul').append($("<li></li>").attr({
-            'msg': aDiv,
-            'class': 'boxbg',
-            'data-url':aUrl
-        }).html('<img/>' + oDiv + '<b></b>').find('img').attr('class', oImg).css({"margin-top":"-3px"}).parent());
-        arrTile[aDiv] = 1;
-    }
-    //点击左侧列表  右边显示相对应内容
-    $('div[msg=' + aDiv + ']').show().siblings().hide();
-    $('#tit').find('li[msg=' + aDiv + ']').addClass('boxbg').siblings().removeClass('boxbg');
+})
 
-    //点击右侧效果
-    $('#tit').off().on('click', 'li,span', function () {
-        var $this = $(this),
-        msg = $this.attr('msg');
-        $('#tit').find('span,li').removeClass('boxbg');
-        if ($this.attr('msg')) {
-            $this.addClass('boxbg');
-        } else {
-            $this.addClass('boxbg');
-        }
-        if (msg) {
-            $('.main div[msg="' + msg + '"]').show().siblings().hide();
-        } else {
-            $('.main div[msg]').hide();
-            $('.sy').show();
-        }
-        $('#tit span').removeClass('boxbg');
-    });
 
-    //点击右键效果
-    cilcktitle()
+$(function () {
 
-    //点击右侧关闭
+    //点击Tab页关闭
     $('#tit').on("click", "b", function (e) {
         var $this = $(this).parent('li'),	//查找b的唯一父元素li 
             msg = $this.attr('msg');	//返回文档中li的参数msg
@@ -96,6 +103,25 @@ $('#tree').on("click", "span[data-div]", function () {
         }
         e.stopPropagation();
     })
+
+    //点击所有Tab页面效果
+    $('#tit').on('click', 'li,span', function () {
+        var $this = $(this),
+        msg = $this.attr('msg');
+        $('#tit').find('span,li').removeClass('boxbg');
+        if ($this.attr('msg')) {
+            $this.addClass('boxbg');
+        } else {
+            $this.addClass('boxbg');
+        }
+        if (msg) {
+            $('.main div[msg="' + msg + '"]').show().siblings().hide();
+        } else {
+            $('.main div[msg]').hide();
+            $('.sy').show();
+        }
+        $('#tit span').removeClass('boxbg');
+    });
 })
 
 
@@ -106,7 +132,8 @@ function cilcktitle() {
             'open': function (t) {
                 var aUrl = $(t).data('url');
                 var aDiv = $(t).attr('msg');
-                loadifarme(aDiv, aUrl);
+                var ifameId = aUrl.split("/").join('');
+                loadifarme(ifameId,aDiv, aUrl);
             },
             'delete': function (t) {
                 //console.log(t)
@@ -217,24 +244,6 @@ $('.tabchange').find('a').click(function () {
     $('.tabchange').find('div.tabox').eq($(this).index()).css('display', 'block');
 })
 
-//加载窗体
-function loadifarme(aDiv, aUrl) {
-    $("div[msg=" + aDiv + "]").remove();
-    var ifameId = aUrl.split("/").join('');
-    var f = $("<iframe class='fw99 fh99 displayn' id='" + ifameId + "' src='" + aUrl + "'></iframe>");
-    $("<div msg='" + aDiv + "' class='fw100 fh100 tan-cent'><img src='../../Images/loadimg.gif' /></div>").appendTo("#Main").append(f).show()
-
-    f.load(function () {
-        $(this).prev("img").remove();
-        $(this).show();
-        var head = this.contentWindow.document.getElementsByTagName("head");
-        var color = getCookie('color') == null ? "colora" : getCookie('color');
-        
-        var linkColor = $("<link rel='stylesheet' type='text/css' href='/Content/css/" + color + ".css' id='color'>");
-        $(head).append(linkColor);
-    });
- 
-}
 
 
 function setLink(colorLinkName) {

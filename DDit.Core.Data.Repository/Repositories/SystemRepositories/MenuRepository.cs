@@ -18,12 +18,7 @@ namespace DDit.Core.Data.Repository.Repositories.SystemRepositories
     {
         public Tuple<int, List<MenuDo>> GetMenuList(Menu model)
         {
-            Mapper.Initialize(a =>
-            {
-                a.CreateMap<Menu, MenuDo>()
-                    .ForMember(de => de.MenuParentName, op => { op.MapFrom(s => s.Father.MenuName); });
-            });
-
+       
             using (UnitOfWork dal = BaseInfo._container.Resolve<UnitOfWork>())
             {
                 var menuRepository = dal.GetRepository<Menu>();

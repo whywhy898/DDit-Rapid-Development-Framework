@@ -47,6 +47,10 @@
       <HintPath>..\packages\Autofac.Mvc5.4.0.2\lib\net45\Autofac.Integration.Mvc.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="AutoMapper, Version=6.2.2.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.6.2.2\lib\net45\AutoMapper.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\EntityFramework.6.0.2\lib\net45\EntityFramework.dll</HintPath>
@@ -94,6 +98,7 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -175,6 +180,7 @@
     <Compile Include="Areas\SystemSchema\Controllers\MessageController.cs" />
     <Compile Include="Areas\SystemSchema\Controllers\WorkflowController.cs" />
     <Compile Include="Areas\SystemSchema\SystemSchemaAreaRegistration.cs" />
+    <Compile Include="Common\AutoMapperProfile.cs" />
     <Compile Include="Common\BaseController.cs" />
     <Compile Include="Common\ErrorHandleAttribute.cs" />
     <Compile Include="Common\ErrorMessage.cs" />

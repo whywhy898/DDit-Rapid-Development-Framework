@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
     <meta http-equiv="X-UA-Compatible" content="IE=Edge, Chrome=1" />
-    <title>龙图信息开发框架</title>
+    <title>DDit开发框架</title>
     @Styles.Render("~/Scripts", "~/Content")
     <link rel="stylesheet" type="text/css" href=@Url.Content("~/Content/css/colora.css") id="color">
     @Scripts.Render("~/bundles/js")
@@ -78,7 +78,7 @@
         </div>
     </div>
 
-    <div class="container-fluid footer boxbg">技术支持：大连龙图信息技术股份有限公司
+    <div class="container-fluid footer boxbg">技术支持：sheep团队.net技术研发组
         <div id="time"><span></span><b></b></div>
     </div>
     <!-- 右键功能 -->
@@ -217,11 +217,11 @@
                                 <div style="float: left; margin-left: 50px;"><img src="../Images/call.png"></div>
                                 <div style="float: left;padding-left: 50px; font-size: 26px;">
                                     <b>技术支持热线：</b>
-                                    <i style="  letter-spacing: 3px; display: block;">4006-700-581</i>
+                                    <i style="  letter-spacing: 3px; display: block;">15141173250</i>
                                 </div>
                                 <div class="ico" style="width: 100%;float: left; margin: 20px 0;">
-                                    <span data-toggle="tooltip" data-placement="right" title="微信：345664"></span>
-                                    <span data-toggle="tooltip" data-placement="left" title="QQ：88835684"></span>
+                                    <span data-toggle="tooltip" data-placement="right" title="微信：whywhy898"></span>
+                                    <span data-toggle="tooltip" data-placement="left" title="QQ群：413426654"></span>
                                 </div>
                             </div>
                         </div>
@@ -242,10 +242,10 @@
                 <div class="modal-body" style="width: 500px;">
                     <div class="row">
                         <div class="fl col-sm-4" style=" float:left"><img src="../Images/ewm.png"></div>
-                        <div class="fr col-sm-8" style="right">
-                            <h3>龙图信息快速开发框架</h3>
+                        <div class="fr col-sm-8">
+                            <h3>DDit快速开发框架</h3>
                             <p>当前版本:2.2.11</p>
-                            <p>大连龙图信息技术股份有限公司</p>
+                            <p>Sheep团队技术支持</p>
                         </div>
                     </div>
                 </div>
@@ -263,7 +263,7 @@
 
     <script src="~/Scripts/js/main.js"></script>
     <script type="text/javascript">
-        $(function () {
+        $(function () {      
             //站内消息
             $.post("/Message/GetMesByUser", { isAll: false }, function (data) {
                 if (data.length > 0) {

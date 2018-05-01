@@ -8,6 +8,7 @@ using Newtonsoft.Json;
 using DDit.Core.Data.Entity.SystemEntity;
 using DDit.Core.Data.IRepositories.ISystemRepositories;
 using DDitApplicationFrame.Common;
+using DDitApplicationFrame.Common;
 
 namespace DDitApplicationFrame.Service.Imp
 {
@@ -26,7 +27,9 @@ namespace DDitApplicationFrame.Service.Imp
             {
                 #region 生成cookice
 
-                if (DDitApplicationFrame.Common.CacheHelp.GetCache(model.UserName) == null)
+                var coock=HttpContext.Current.Response.Cookies.Get(FormsAuthentication.FormsCookieName).Value;
+
+                if (coock == null)
                 {
                     DateTime expiration = DateTime.Now.Add(FormsAuthentication.Timeout);
 
@@ -41,6 +44,7 @@ namespace DDitApplicationFrame.Service.Imp
                     cookies.Expires = expiration;
 
                     HttpContext.Current.Response.Cookies.Add(cookies);
+                    
                 }
 
                 #endregion

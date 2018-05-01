@@ -34,9 +34,9 @@ body{
 .copyright {
     text-align: center;
     color: #fff;
-    position: absolute;
+    /*position: absolute;*/
     top: 100%;
-    margin-top: -50px;
+    /*margin-top: -50px;*/
     width: 97%;
     font-family: Microsoft Yahei;
     line-height: 25px;

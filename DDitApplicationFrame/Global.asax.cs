@@ -22,6 +22,7 @@ using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Core.Mapping;
 using System.Data.Entity.Core.Metadata.Edm;
 using System.Net.Http;
+using AutoMapper;
 
 
 
@@ -32,6 +33,17 @@ namespace DDitApplicationFrame
 
     public class MvcApplication : System.Web.HttpApplication
     {
+        public static class AutoMapperForMvc
+        {
+            public static void Register()
+            {
+                Mapper.Initialize(x =>
+                {
+                    x.AddProfile<AutoMapperProfile>();
+                });
+            }
+
+        }
         protected void Application_Start()
         {
             //开启MiniProfilerEF6监控，需要时取消注释
@@ -62,7 +74,8 @@ namespace DDitApplicationFrame
             #endregion
 
             AreaRegistration.RegisterAllAreas();
-
+            //AutoMapper注册
+            AutoMapperForMvc.Register();
             WebApiConfig.Register(GlobalConfiguration.Configuration);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
@@ -89,6 +102,7 @@ namespace DDitApplicationFrame
                 var mappingCollection = (StorageMappingItemCollection)objectContext.MetadataWorkspace.GetItemCollection(DataSpace.CSSpace);
                 mappingCollection.GenerateViews(new List<EdmSchemaError>());
             }
+    
         }
 
         protected void Application_BeginRequest()

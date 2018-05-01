@@ -45,3 +45,8 @@ $RECYCLE.BIN/
 Network Trash Folder
 Temporary Items
 .apdisk
+DDitApplicationFrame.v12.suo
+DDitApplicationFrame/bin/Microsoft.Web.Infrastructure.dll
+DDitApplicationFrame/bin/System.Net.Http.Formatting.dll
+DDitApplicationFrame/bin/System.Web.Http.dll
+DDitApplicationFrame/bin/System.Web.Http.WebHost.dll
