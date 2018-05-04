@@ -33,7 +33,7 @@
             },
             columns: [
                 { data: 'ID', visible: false },
-                { data: 'DicCategory.Category', title: "字典分类" },
+                { data: 'DicCategory.Category', name: "DicCategoryID", title: "字典分类" },
                 { data: 'DicValue', title: "字典值" },
                 {
                     data: 'Enabled', title: "是否可用", render: function (data, type, row, meta) {
@@ -260,7 +260,6 @@
         });
    
     });
-
 </script>
 
 <div class="container-fluid" style="height:100%">

@@ -5,6 +5,7 @@ using System.Data.Entity;
 using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
@@ -93,7 +94,21 @@ namespace DDit.Component.Tools
            conn.Close();//连接需要关闭  
            conn.Dispose();
            return table;
-       }  
+       }
+
+       /// <summary>
+       /// 得到排序的列名称（针对关联字段）
+       /// </summary>
+       /// <typeparam name="T"></typeparam>
+       /// <param name="dataName"></param>
+       /// <returns></returns>
+       public static string GetOrderName<T>(dynamic dataName) where T: class
+       {
+           Type type = typeof(T);
+           object obj = Activator.CreateInstance(type);
+           var isExit = type.GetProperties(BindingFlags.Public | BindingFlags.Instance).Where(a => a.Name == dataName.data).FirstOrDefault();
+           return isExit == null ? dataName.name : dataName.data;
+       }
     }
 
    public enum FlowState {

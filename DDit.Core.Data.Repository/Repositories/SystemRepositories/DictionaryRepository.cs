@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DDit.Component.Tools;
+using System.Reflection;
 
 namespace DDit.Core.Data.Repository.Repositories.SystemRepositories
 {
@@ -29,7 +30,8 @@ namespace DDit.Core.Data.Repository.Repositories.SystemRepositories
                     foreach (var item in model.order)
                     {
                         var column = model.columns.ElementAt(int.Parse(item.column));
-                        templist = templist.OrderSort(column.data, item.dir);
+                        var orderName = CommonHelper.GetOrderName<Dictionary>(column);
+                        templist = templist.OrderSort(orderName, item.dir);
                     }
                 }
 
